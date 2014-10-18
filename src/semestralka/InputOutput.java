@@ -17,6 +17,7 @@ public class InputOutput {
 
 	public static final String SOURADNICE_PREKLADIST_SOUBOR = "data\\souradnicePrekladist.txt";
 	public static final String SOURADNICE_HOSPOD_SOUBOR = "data\\souradniceHospod.txt";
+	public static final String CESTY_PIVOVARU_SOUBOR = "data\\cestyPivovaru.txt";
 	public static final String CESTY_PREKLADIST_SOUBOR = "data\\cestyPrekladist.txt";
 	public static final String CESTY_HOSPOD_SOUBOR = "data\\cestyHospod.txt";
 
@@ -34,7 +35,7 @@ public class InputOutput {
 				bwFile.newLine();
 			}
 			bwFile.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("I/O error in: " + SOURADNICE_PREKLADIST_SOUBOR + "\n" + e.getMessage());
 		}
 	}
@@ -53,11 +54,24 @@ public class InputOutput {
 				bwFile.newLine();
 			}
 			bwFile.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("I/O error in: " + SOURADNICE_HOSPOD_SOUBOR + "\n" + e.getMessage());
 		}
 	}
-
+	
+	public static void zapisCestPivovaru(Cesta[] cestyPivovaru) {
+		try {
+			BufferedWriter bwFile = new BufferedWriter(new FileWriter(CESTY_PIVOVARU_SOUBOR));
+			for (int i = 0; i < cestyPivovaru.length; i++) {
+			bwFile.write(cestyPivovaru[i].toString());
+			bwFile.newLine();
+			}
+			bwFile.close();
+		} catch (IOException e) {
+			System.out.println("I/O error in: " + CESTY_PIVOVARU_SOUBOR + "\n" + e.getMessage());
+		}
+	}
+	
 	/**
 	 * Metoda zapisující údaje o cestách mezi pøekladišti a hospodami.
 	 * 
@@ -96,7 +110,7 @@ public class InputOutput {
 				}
 			}
 			bwFile.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("I/O error in: " + CESTY_HOSPOD_SOUBOR + "\n" + e.getMessage());
 		}
 	}

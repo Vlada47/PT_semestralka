@@ -13,6 +13,7 @@ public class Generator {
 
 	static Pozice[] souradnicePrekladist = new Pozice[StaticData.POCET_PREKLADIST];
 	static Pozice[] souradniceHospod = new Pozice[StaticData.POCET_HOSPOD];
+	static Cesta[] cestyPivovaru = new Cesta[StaticData.POCET_CEST_PIVOVARU];
 	static Cesta[][] cestyPrekladist = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
 	static Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
 	
@@ -57,6 +58,19 @@ public class Generator {
 		}
 	}
 	
+	public static void generujCestyPivovaru() {
+		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
+		for(int i = 0; i < souradniceHospod.length; i++) {
+			cesty.add(new Cesta(0, i, Math.sqrt(Math.pow((double)(souradniceHospod[i].getX() - StaticData.SOURADNICE_PIVOVARU_X), 2.0) + Math.pow((double)(souradniceHospod[i].getY() - StaticData.SOURADNICE_PIVOVARU_Y), 2.0))));
+		}
+		Collections.sort(cesty);
+		for(int i = 0; i < StaticData.POCET_CEST_PIVOVARU; i++) {
+			cestyPivovaru[i] = cesty.get(i);
+		}
+		cesty.clear();
+	}
+	
+	
 	/**
 	 * Metoda pro vygenerování cest mezi pøekladišti a nejbližšími hospodami (reprezentovaných objektem Cesta).
 	 * Metoda prohledává postupnì pro všechna pøekladištì souøadnice všech hospod a vypoèítává vzdálenosti, které ukládá do objektù Cesta.
@@ -67,9 +81,7 @@ public class Generator {
 		for(int i = 0; i < souradnicePrekladist.length; i++) {
 			//System.out.println("Prekladiste"+i);
 			for(int j = 0; j < souradniceHospod.length; j++) {
-				if(i != j) {
-					cesty.add(new Cesta(i, j, Math.sqrt(Math.pow((double)(souradniceHospod[j].getX() - souradnicePrekladist[i].getX()), 2.0) + Math.pow((double)(souradniceHospod[j].getY() - souradnicePrekladist[i].getY()), 2.0))));
-				}
+				cesty.add(new Cesta(i, j, Math.sqrt(Math.pow((double)(souradniceHospod[j].getX() - souradnicePrekladist[i].getX()), 2.0) + Math.pow((double)(souradniceHospod[j].getY() - souradnicePrekladist[i].getY()), 2.0))));
 			}
 			Collections.sort(cesty);
 			for(int j = 0; j < StaticData.POCET_CEST_PREKLADISTE; j++) {

@@ -19,10 +19,6 @@ public class Pivovar {
 		this.pozice = new Pozice(250,250);
 		this.dostupnaVozidla = new ArrayList<Vozidlo>();
 		this.vozidlaNaCeste = new ArrayList<Vozidlo>();
-		
-		for(int i = 0; i < 100; i++) {
-	//		this.dostupnaVozidla.add(new Vozidlo("vozidlo"+i));
-		}
 	}
 
 	public static Pivovar getInstance() {
