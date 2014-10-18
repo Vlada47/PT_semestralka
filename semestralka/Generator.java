@@ -1,0 +1,103 @@
+package semestralka;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+/**
+ * Tøída objektu obsahující struktury pro ukládání generovanıch dat o hospodách/pøekladištích a cestách mezi nimi.
+ * Generování probíhá v metodách objektu.
+ * @author Vlada47 & Shag0n
+ *
+ */
+public class Generator {
+
+	static Pozice[] souradnicePrekladist = new Pozice[StaticData.POCET_PREKLADIST];
+	static Pozice[] souradniceHospod = new Pozice[StaticData.POCET_HOSPOD];
+	static Cesta[][] cestyPrekladist = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
+	static Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
+	
+	/**
+	 * Metoda pro vygenerování souøadnic pøekladiš (reprezentovanıch objektem Pozice). Pøekladištì jsou rozmístìna tak, aby se nacházela vdy ve støedu jedné z osmi obdélníkovıch oblastí.
+	 * Objekty se souøadnicemi jsou pak uloeny do pole souradnicePrekladist.
+	 */
+	public static void generujPozicePrekladist() {
+
+		int x = StaticData.ROZMEZI_PREKLADISTE_X;
+		int y = StaticData.ROZMEZI_PREKLADISTE_Y;
+		int pocet = 0;
+
+		for (int j = 0; j < 4; j++) {
+			for (int i = 0; i < 2; i++) {
+				souradnicePrekladist[pocet++] = new Pozice(x, y);
+				x = x + (StaticData.ROZMEZI_PREKLADISTE_X * 2);
+			}
+			y = y + (StaticData.ROZMEZI_PREKLADISTE_Y * 2);
+			x = StaticData.ROZMEZI_PREKLADISTE_X;
+		}
+	}
+	
+	/**
+	 * Metoda pro vygenerování souøadnic hospod (reprezentovanıch objektem Pozice). Hospody jsou rovnomìrnì rozmístìny po celé ploše do, víceménì, møíkové struktury.
+	 * Objekty se souøadnicemi jsou pak uloeny do pole souradniceHospod.
+	 */
+	public static void generujPoziceHospod() {
+
+		int x = StaticData.ROZMEZI_HOSPODY_X;
+		int y = StaticData.ROZMEZI_HOSPODY_Y;
+
+		int pocet = 0;
+
+		for (int j = 0; j < 50; j++) {
+			for (int i = 0; i < 80; i++) {
+				souradniceHospod[pocet++] = new Pozice(x, y);
+				x = x + StaticData.ROZMEZI_HOSPODY_X;
+			}
+			y = y + (StaticData.ROZMEZI_HOSPODY_Y * 2);
+			x = StaticData.ROZMEZI_HOSPODY_X;
+		}
+	}
+	
+	/**
+	 * Metoda pro vygenerování cest mezi pøekladišti a nejblišími hospodami (reprezentovanıch objektem Cesta).
+	 * Metoda prohledává postupnì pro všechna pøekladištì souøadnice všech hospod a vypoèítává vzdálenosti, které ukládá do objektù Cesta.
+	 * Tyto objekty jsou pak setøídìny od nejkratší cesty po nejdelší a je vybráno prvních 50 z nich, které se uloí do dvourozmìrného pole cestyPrekladist. 
+	 */
+	public static void generujCestyPrekladist() {
+		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
+		for(int i = 0; i < souradnicePrekladist.length; i++) {
+			//System.out.println("Prekladiste"+i);
+			for(int j = 0; j < souradniceHospod.length; j++) {
+				if(i != j) {
+					cesty.add(new Cesta(i, j, Math.sqrt(Math.pow((double)(souradniceHospod[j].getX() - souradnicePrekladist[i].getX()), 2.0) + Math.pow((double)(souradniceHospod[j].getY() - souradnicePrekladist[i].getY()), 2.0))));
+				}
+			}
+			Collections.sort(cesty);
+			for(int j = 0; j < StaticData.POCET_CEST_PREKLADISTE; j++) {
+				cestyPrekladist[i][j] = cesty.get(j);
+			}
+			cesty.clear();
+		}
+	}
+	
+	/**
+	 * Metoda pro vygenerování cest mezi hospodami (reprezentovanıch objektem Cesta).
+	 * Metoda prohledává postupnì pro všechny hospody souøadnice všech ostatních hospod a vypoèítává vzdálenosti, které ukládá do objektù Cesta.
+	 * Tyto objekty jsou pak setøídìny od nejkratší cesty po nejdelší a je vybráno prvních 15 z nich, které se uloí do dvourozmìrného pole cestyHospod. 
+	 */
+	public static void generujCestyHospod() {
+		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
+		for(int i = 0; i < souradniceHospod.length; i++) {
+			//System.out.println("Hospoda"+i);
+			for(int j = 0; j < souradniceHospod.length; j++) {
+				if(i != j) {
+					cesty.add(new Cesta(i, j, Math.sqrt(Math.pow((double)(souradniceHospod[j].getX() - souradniceHospod[i].getX()), 2.0) + Math.pow((double)(souradniceHospod[j].getY() - souradniceHospod[i].getY()), 2.0))));
+				}
+			}
+			Collections.sort(cesty);
+			for(int j = 0; j < StaticData.POCET_CEST_HOSPODY; j++) {
+				cestyHospod[i][j] = cesty.get(j);
+			}
+			cesty.clear();
+		}
+	}	
+}
