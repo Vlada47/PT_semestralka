@@ -1,2 +1,0 @@
-PT_semestralka
-==============
