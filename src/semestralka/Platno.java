@@ -44,16 +44,9 @@ public class Platno extends JPanel {
 		g2.setStroke(new BasicStroke((float) 1));
 		g2.setColor(Color.GREEN);
 
-		Prekladiste[] polePrekladist = new Prekladiste[8];
-		for (int i = 0; i < polePrekladist.length; i++) {
-			polePrekladist[i] = new Prekladiste(Generator.souradnicePrekladist[i]);
-		}
-
-		Hospoda[] poleHospod = new Hospoda[4000];
-		for (int i = 0; i < poleHospod.length; i++) {
-			poleHospod[i] = new Hospoda(Generator.souradniceHospod[i]);
-		}
-
+		Prekladiste[] polePrekladist = InputOutput.nactiPrekladiste();
+		Hospoda[] poleHospod = InputOutput.nactiHospody();
+		
 		for (int i = 0; i < Generator.cestyPrekladist.length; i++) {
 			for (int j = 0; j < Generator.cestyPrekladist[i].length; j++) {
 
@@ -64,15 +57,15 @@ public class Platno extends JPanel {
 			}
 		}
 
-//		for (int i = 0; i < Generator.cestyHospod.length; i++) {
-//			for (int j = 0; j < Generator.cestyHospod[i].length; j++) {
-//
-//				g2.draw(new Line2D.Double(poleHospod[Generator.cestyHospod[i][j].getIdFrom()].pozice.x * 2,
-//						poleHospod[Generator.cestyHospod[i][j].getIdFrom()].pozice.y * 2,
-//						poleHospod[Generator.cestyHospod[i][j].getIdTo()].pozice.x * 2,
-//						poleHospod[Generator.cestyHospod[i][j].getIdTo()].pozice.y * 2));
-//			}
-//		}
+		for (int i = 0; i < Generator.cestyHospod.length; i++) {
+			for (int j = 0; j < Generator.cestyHospod[i].length; j++) {
+
+				g2.draw(new Line2D.Double(poleHospod[Generator.cestyHospod[i][j].getIdFrom()].pozice.x * 2,
+						poleHospod[Generator.cestyHospod[i][j].getIdFrom()].pozice.y * 2,
+						poleHospod[Generator.cestyHospod[i][j].getIdTo()].pozice.x * 2,
+						poleHospod[Generator.cestyHospod[i][j].getIdTo()].pozice.y * 2));
+			}
+		}
 
 		g.drawImage(platno, 0, 0, null);
 	}

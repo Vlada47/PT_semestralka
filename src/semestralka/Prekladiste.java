@@ -6,19 +6,21 @@ package semestralka;
  *
  */
 public class Prekladiste {
-	
+
 	private final int MAX_SUDU = 2000;
 
-	Pozice pozice = new Pozice(250,250);
+	int ID;
+	Pozice pozice = new Pozice(250, 250);
 	int pocetPlnychSudu;
 	int pocetPrazdnychSudu;
 
-	public Prekladiste(Pozice pozice) {
+	public Prekladiste(int ID, Pozice pozice) {
+		this.ID = ID;
 		this.pozice = pozice;
 	}
 
-	public Pozice getPosition(){
+	public Pozice getPosition() {
 		return pozice;
 	}
-	
+
 }

@@ -21,7 +21,7 @@ public class Pivovar {
 		this.vozidlaNaCeste = new ArrayList<Vozidlo>();
 		
 		for(int i = 0; i < 100; i++) {
-			this.dostupnaVozidla.add(new Vozidlo("vozidlo"+i));
+	//		this.dostupnaVozidla.add(new Vozidlo("vozidlo"+i));
 		}
 	}
 
