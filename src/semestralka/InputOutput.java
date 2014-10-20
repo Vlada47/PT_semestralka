@@ -1,7 +1,5 @@
 package semestralka;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -110,12 +108,12 @@ public class InputOutput {
 	public static Hospoda[] nactiHospody() {
 
 		String radka;
-		Hospoda[] hospody = new Hospoda[4000];
+		Hospoda[] hospody = new Hospoda[StaticData.POCET_HOSPOD];
 
 		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(SOURADNICE_HOSPOD_SOUBOR));
 
-			for (int i = 0; i < 4000; i++) {
+			for (int i = 0; i < StaticData.POCET_HOSPOD; i++) {
 				radka = bfr.readLine();
 				hospody[i] = vytvorHospodu(radka);
 				;
@@ -134,12 +132,12 @@ public class InputOutput {
 	public static Prekladiste[] nactiPrekladiste() {
 
 		String radka;
-		Prekladiste[] prekladiste = new Prekladiste[8];
+		Prekladiste[] prekladiste = new Prekladiste[StaticData.POCET_PREKLADIST];
 
 		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(SOURADNICE_PREKLADIST_SOUBOR));
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < StaticData.POCET_PREKLADIST; i++) {
 				radka = bfr.readLine();
 				prekladiste[i] = vytvorPrekladiste(radka);
 			}
@@ -154,19 +152,23 @@ public class InputOutput {
 	/**
 	 * Metoda pro naètení cest pøekladiš ze souboru.
 	 */
-	public static Cesta[] nactiCestyPrekladiste() {
+	public static Cesta[][] nactiCestyPrekladiste() {
 
 		String radka;
-		Cesta[] cestyPrekladiste = new Cesta[400];
+		Cesta[][] cestyPrekladiste = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
 
 		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(CESTY_PREKLADIST_SOUBOR));
 
-			for (int i = 0; i < 400; i++) {
-				radka = bfr.readLine();
-				cestyPrekladiste[i] = vytvorCestu(radka);
+			
+			for (int j = 0; j < StaticData.POCET_PREKLADIST; j++) {
+				for (int i = 0; i < StaticData.POCET_CEST_PREKLADISTE; i++) {
+					radka = bfr.readLine();
+					cestyPrekladiste[j][i] = vytvorCestu(radka);
+				}
 			}
 			bfr.close();
+				
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -177,17 +179,19 @@ public class InputOutput {
 	/**
 	 * Metoda pro naètení cest hospod ze souboru.
 	 */
-	public static Cesta[] nactiCestyHospod() {
+	public static Cesta[][] nactiCestyHospod() {
 
 		String radka;
-		Cesta[] cestyHospod = new Cesta[60000];
+		Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
 
 		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(CESTY_HOSPOD_SOUBOR));
 
-			for (int i = 0; i < 60000; i++) {
-				radka = bfr.readLine();
-				cestyHospod[i] = vytvorCestu(radka);
+			for (int j = 0; j < StaticData.POCET_HOSPOD; j++) {
+				for (int i = 0; i < StaticData.POCET_CEST_HOSPODY; i++) {
+					radka = bfr.readLine();
+					cestyHospod[j][i] = vytvorCestu(radka);
+				}
 			}
 			bfr.close();
 		} catch (IOException e) {

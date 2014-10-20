@@ -11,7 +11,7 @@ public class Main {
 		InputOutput.zapisHospody(Generator.souradniceHospod);
 		InputOutput.zapisCestPrekladist(Generator.cestyPrekladist);
 		InputOutput.zapisCestHospod(Generator.cestyHospod);
-		 Window.vytvorOkno();
+		//Window.vytvorOkno();
 	}
 
 }
