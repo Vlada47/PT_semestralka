@@ -9,7 +9,7 @@ public class Matice {
 	public Matice(Cesta[] cestyPivovaru, Cesta[][] cestyPrekladist, Cesta[][] cestyHospod) {
 		
 		for(int i = 0; i < this.maticeSousednosti.length; i++) {
-			Arrays.fill(this.maticeSousednosti[i], 0.0);
+			Arrays.fill(this.maticeSousednosti[i], -1.0);
 		}
 		
 		for(int i = 0; i < cestyHospod.length; i++) {
@@ -19,6 +19,7 @@ public class Matice {
 				double vzdalenost = cestyHospod[i][j].getVzdalenost();
 				
 				this.maticeSousednosti[indexFrom][indexTo] = vzdalenost;
+				this.maticeSousednosti[indexTo][indexFrom] = vzdalenost;
 			}
 		}
 		
@@ -29,6 +30,7 @@ public class Matice {
 				double vzdalenost = cestyPrekladist[i][j].getVzdalenost();
 				
 				this.maticeSousednosti[indexFrom][indexTo] = vzdalenost;
+				this.maticeSousednosti[indexTo][indexFrom] = vzdalenost;
 			}
 		}
 		
@@ -38,6 +40,7 @@ public class Matice {
 			double vzdalenost = cestyPivovaru[i].getVzdalenost();
 			
 			this.maticeSousednosti[indexFrom][indexTo] = vzdalenost;
+			this.maticeSousednosti[indexTo][indexFrom] = vzdalenost;
 		}
 	}
 	

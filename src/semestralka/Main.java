@@ -16,8 +16,10 @@ public class Main {
 		InputOutput.zapisCestPrekladist(Generator.cestyPrekladist);
 		InputOutput.zapisCestHospod(Generator.cestyHospod);
 
-		//Matice mojeMatice = new Matice(Generator.cestyPivovaru, Generator.cestyPrekladist, Generator.cestyHospod);
-		//double[][] maticeSousednosti = mojeMatice.getMaticeSousednosti();
+		Matice mojeMatice = new Matice(Generator.cestyPivovaru, Generator.cestyPrekladist, Generator.cestyHospod);
+		double[][] maticeSousednosti = mojeMatice.getMaticeSousednosti();
+		
+		//System.out.println(maticeSousednosti[3500][0]);
 	}
 
 }
