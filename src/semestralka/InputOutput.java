@@ -162,6 +162,32 @@ public class InputOutput {
 		}
 		return prekladiste;
 	}
+	
+	/**
+	 * Metoda pro naètení cest pivovaru ze souboru.
+	 * @return
+	 */
+	public static Cesta[] nactiCestyPivovaru() {
+		String radka;
+		Cesta[] cestyPivovaru = new Cesta[StaticData.POCET_CEST_PIVOVARU];
+		
+		try{
+			BufferedReader bfr = new BufferedReader(new FileReader(CESTY_PIVOVARU_SOUBOR));
+			
+			for(int i = 0; i < StaticData.POCET_CEST_PIVOVARU; i++) {
+				radka = bfr.readLine();
+				cestyPivovaru[i] = vytvorCestu(radka);
+			}
+			
+			bfr.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		return cestyPivovaru;
+	}
 
 	/**
 	 * Metoda pro naètení cest pøekladiš ze souboru.

@@ -79,7 +79,6 @@ public class Generator {
 	public static void generujCestyPrekladist() {
 		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 		for(int i = 0; i < souradnicePrekladist.length; i++) {
-			//System.out.println("Prekladiste"+i);
 			for(int j = 0; j < souradniceHospod.length; j++) {
 				cesty.add(new Cesta(i, j, Math.sqrt(Math.pow((double)(souradniceHospod[j].getX() - souradnicePrekladist[i].getX()), 2.0) + Math.pow((double)(souradniceHospod[j].getY() - souradnicePrekladist[i].getY()), 2.0))));
 			}
@@ -99,12 +98,12 @@ public class Generator {
 	public static void generujCestyHospod() {
 		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 		for(int i = 0; i < souradniceHospod.length; i++) {
-			//System.out.println("Hospoda"+i);
 			for(int j = 0; j < souradniceHospod.length; j++) {
 				if(i != j) {
 					cesty.add(new Cesta(i, j, Math.sqrt(Math.pow((double)(souradniceHospod[j].getX() - souradniceHospod[i].getX()), 2.0) + Math.pow((double)(souradniceHospod[j].getY() - souradniceHospod[i].getY()), 2.0))));
 				}
 			}
+			
 			Collections.sort(cesty);
 			for(int j = 0; j < StaticData.POCET_CEST_HOSPODY; j++) {
 				cestyHospod[i][j] = cesty.get(j);
