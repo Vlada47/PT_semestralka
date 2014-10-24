@@ -20,6 +20,16 @@ public class InputOutput {
 	public static final String CESTY_PIVOVARU_SOUBOR = "data\\cestyPivovaru.txt";
 	public static final String CESTY_PREKLADIST_SOUBOR = "data\\cestyPrekladist.txt";
 	public static final String CESTY_HOSPOD_SOUBOR = "data\\cestyHospod.txt";
+	public static final String MATICE_CEST_SOUBOR = "data\\maticeCest.txt";
+	
+	public static void zapisSouradniceACestyDoSouboru() {
+		InputOutput.zapisSouradnicPrekladiste(Generator.souradnicePrekladist);
+		InputOutput.zapisSouradnicHospod(Generator.souradniceHospod);
+		InputOutput.zapisCestPivovaru(Generator.cestyPivovaru);
+		InputOutput.zapisCestPrekladist(Generator.cestyPrekladist);
+		InputOutput.zapisCestHospod(Generator.cestyHospod);
+		System.out.println("Souradnice a cesty zapsany do souboru...");
+	}
 
 	/**
 	 * Metoda pro z·pis sou¯adnic p¯ekladiöù do souboru.
@@ -27,7 +37,7 @@ public class InputOutput {
 	 * @param prekladiste
 	 *            - Pole obsahujÌcÌ objekty se sou¯adnicemi p¯ekladiöù.
 	 */
-	public static void zapisPrekladiste(Pozice[] prekladiste) {
+	private static void zapisSouradnicPrekladiste(Pozice[] prekladiste) {
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(SOURADNICE_PREKLADIST_SOUBOR));
 			for (int i = 0; i < prekladiste.length; i++) {
@@ -46,7 +56,7 @@ public class InputOutput {
 	 * @param hospody
 	 *            - Pole obsahujÌcÌ objekty se sou¯adnicemi hospod.
 	 */
-	public static void zapisHospody(Pozice[] hospody) {
+	private static void zapisSouradnicHospod(Pozice[] hospody) {
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(SOURADNICE_HOSPOD_SOUBOR));
 			for (int i = 0; i < hospody.length; i++) {
@@ -59,7 +69,7 @@ public class InputOutput {
 		}
 	}
 	
-	public static void zapisCestPivovaru(Cesta[] cestyPivovaru) {
+	private static void zapisCestPivovaru(Cesta[] cestyPivovaru) {
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(CESTY_PIVOVARU_SOUBOR));
 			for (int i = 0; i < cestyPivovaru.length; i++) {
@@ -79,7 +89,7 @@ public class InputOutput {
 	 *            - Pole obsahujÌcÌ objekty s ˙daji o cest·ch mezi p¯ekladiöti a
 	 *            hospodami.
 	 */
-	public static void zapisCestPrekladist(Cesta[][] cestyPrekladist) {
+	private static void zapisCestPrekladist(Cesta[][] cestyPrekladist) {
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(CESTY_PREKLADIST_SOUBOR));
 			for (int i = 0; i < cestyPrekladist.length; i++) {
@@ -100,7 +110,7 @@ public class InputOutput {
 	 * @param cestyPrekladist
 	 *            - Pole obsahujÌcÌ objekty s ˙daji o cest·ch mezi hospodami.
 	 */
-	public static void zapisCestHospod(Cesta[][] cestyHospod) {
+	private static void zapisCestHospod(Cesta[][] cestyHospod) {
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(CESTY_HOSPOD_SOUBOR));
 			for (int i = 0; i < cestyHospod.length; i++) {
@@ -113,6 +123,46 @@ public class InputOutput {
 		} catch (IOException e) {
 			System.out.println("I/O error in: " + CESTY_HOSPOD_SOUBOR + "\n" + e.getMessage());
 		}
+	}
+	
+	public static void zapisMaticeNejkratsichCest(int[][] maticeNejkratsichCest) {
+		try {
+			BufferedWriter bwFile = new BufferedWriter(new FileWriter(MATICE_CEST_SOUBOR));
+			for(int i = 0; i < maticeNejkratsichCest.length; i++) {
+				for(int j = 0; j <maticeNejkratsichCest[i].length; j++) {
+					bwFile.write(Integer.toString(maticeNejkratsichCest[i][j])+" ");
+				}
+				bwFile.newLine();
+			}
+			bwFile.close();
+		}
+		catch(IOException e) {
+			System.out.println("I/O error in: " + MATICE_CEST_SOUBOR + "\n" + e.getMessage());
+		}
+	}
+	
+	public static int[][] nactiMaticiNejkratsichCest() {
+		String radka;
+		int[][] maticeNejkratsichCest = new int[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
+		
+		try{
+			BufferedReader bfr = new BufferedReader(new FileReader(MATICE_CEST_SOUBOR));
+			
+			for(int i = 0; i < maticeNejkratsichCest.length; i++) {
+				radka = bfr.readLine();
+				String[] hodnoty = radka.split(" ");
+				for(int j = 0; j < maticeNejkratsichCest[i].length; j++) {
+					maticeNejkratsichCest[i][j] = Integer.parseInt(hodnoty[j]); 
+				}
+			}
+			
+			bfr.close();
+		}
+		catch(IOException e) {
+			System.out.println("I/O error in: " + MATICE_CEST_SOUBOR + "\n" + e.getMessage());
+		}
+		
+		return maticeNejkratsichCest;
 	}
 
 	/**
@@ -130,7 +180,6 @@ public class InputOutput {
 			for (int i = 0; i < StaticData.POCET_HOSPOD; i++) {
 				radka = bfr.readLine();
 				hospody[i] = vytvorHospodu(radka);
-				;
 			}
 			bfr.close();
 		} catch (IOException e) {

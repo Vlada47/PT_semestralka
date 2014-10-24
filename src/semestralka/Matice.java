@@ -1,15 +1,39 @@
 package semestralka;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Matice {
 	
-	private double[][] maticeSousednosti = new double[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
+	public static Cesta[] cestyPivovaru;
+	public static Cesta[][] cestyPrekladist;
+	public static Cesta[][] cestyHospod;
 	
-	public Matice(Cesta[] cestyPivovaru, Cesta[][] cestyPrekladist, Cesta[][] cestyHospod) {
+	public static double[][] maticeSousednosti = new double[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
+	public static int[][] maticeNejkratsichCest = new int[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
+	
+	public static void vygenerujMatice(boolean generujMaticiNejkratsichCest) {
+		cestyPivovaru = InputOutput.nactiCestyPivovaru();
+		cestyPrekladist = InputOutput.nactiCestyPrekladiste();
+		cestyHospod = InputOutput.nactiCestyHospod();
+		System.out.println("Nacteny cesty ze souboru...");
 		
-		for(int i = 0; i < this.maticeSousednosti.length; i++) {
-			Arrays.fill(this.maticeSousednosti[i], -1.0);
+		vytvorMaticiSousednosti();
+		System.out.println("Vytvorena matice sousednosti...");
+		
+		if(generujMaticiNejkratsichCest) {
+			vytvorNejkratsiCesty();
+			System.out.println("Vytvorena matice nejkratsich cest...");
+			
+			InputOutput.zapisMaticeNejkratsichCest(maticeNejkratsichCest);
+			System.out.println("Matice nejkratsich cest zapsana do souboru...");
+		}
+	}
+	
+	private static void vytvorMaticiSousednosti() {	
+		for(int i = 0; i < maticeSousednosti.length; i++) {
+			Arrays.fill(maticeSousednosti[i], Double.MAX_VALUE);
+			maticeSousednosti[i][i] = 0.0;
 		}
 		
 		for(int i = 0; i < cestyHospod.length; i++) {
@@ -18,8 +42,8 @@ public class Matice {
 				int indexTo = cestyHospod[i][j].getIdTo();
 				double vzdalenost = cestyHospod[i][j].getVzdalenost();
 				
-				this.maticeSousednosti[indexFrom][indexTo] = vzdalenost;
-				this.maticeSousednosti[indexTo][indexFrom] = vzdalenost;
+				maticeSousednosti[indexFrom][indexTo] = vzdalenost;
+				maticeSousednosti[indexTo][indexFrom] = vzdalenost;
 			}
 		}
 		
@@ -29,8 +53,8 @@ public class Matice {
 				int indexTo = cestyPrekladist[i][j].getIdTo();
 				double vzdalenost = cestyPrekladist[i][j].getVzdalenost();
 				
-				this.maticeSousednosti[indexFrom][indexTo] = vzdalenost;
-				this.maticeSousednosti[indexTo][indexFrom] = vzdalenost;
+				maticeSousednosti[indexFrom][indexTo] = vzdalenost;
+				maticeSousednosti[indexTo][indexFrom] = vzdalenost;
 			}
 		}
 		
@@ -39,12 +63,70 @@ public class Matice {
 			int indexTo = cestyPivovaru[i].getIdTo();
 			double vzdalenost = cestyPivovaru[i].getVzdalenost();
 			
-			this.maticeSousednosti[indexFrom][indexTo] = vzdalenost;
-			this.maticeSousednosti[indexTo][indexFrom] = vzdalenost;
+			maticeSousednosti[indexFrom][indexTo] = vzdalenost;
+			maticeSousednosti[indexTo][indexFrom] = vzdalenost;
 		}
 	}
 	
-	public double[][] getMaticeSousednosti() {
-		return this.maticeSousednosti;
+	private static void vytvorNejkratsiCesty() {
+		int[][] maticePredchudcu = vytvorMaticiPredchudcu(maticeSousednosti);
+		for (int k = 0; k < maticeSousednosti.length; k++) {
+	        for (int i = 0; i < maticeSousednosti.length; i++) {
+	            for (int j = 0; j < maticeSousednosti.length; j++) {
+	                if (maticeSousednosti[i][k] == Double.MAX_VALUE || maticeSousednosti[k][j] == Double.MAX_VALUE) {
+	                    continue;                  
+	                }
+	                
+	                if (maticeSousednosti[i][j] > maticeSousednosti[i][k] + maticeSousednosti[k][j]) {
+	                	maticeSousednosti[i][j] = maticeSousednosti[i][k] + maticeSousednosti[k][j];
+	                    maticePredchudcu[i][j] = maticePredchudcu[k][j];
+	                }
+	            }
+	        }
+	    }
+	    maticeNejkratsichCest = maticePredchudcu;
+	}
+	
+	private static int[][] vytvorMaticiPredchudcu(double[][] maticeSousednosti) {
+	    int[][] m = new int[maticeSousednosti.length][maticeSousednosti.length];
+	    for (int i = 0; i < maticeSousednosti.length; i++) {
+	        for (int j = 0; j < maticeSousednosti.length; j++) {
+	            if (maticeSousednosti[i][j] != 0.0 && maticeSousednosti[i][j] != Double.MAX_VALUE) {
+	                m[i][j] = i;
+	            } else {
+	                m[i][j] = -1;
+	            }
+	        }
+	    }
+	    return m;
+	}
+	
+	public static void nactiMaticiNejkratsichCestZeSouboru() {
+		maticeNejkratsichCest = InputOutput.nactiMaticiNejkratsichCest();
+		System.out.println("Matice nejkratsich cest nactena ze souboru...");	
+	}
+	
+	public static ArrayList<Integer> getNejkratsiCesta(int odkud, int kam) {
+		ArrayList<Integer> nejkratsiCesta = new ArrayList<Integer>();
+		najdiNejkratsiCestu(maticeNejkratsichCest, odkud, kam, nejkratsiCesta);
+		return nejkratsiCesta;
+	}
+	
+	private static void najdiNejkratsiCestu(int[][] maticePredchudcu, int i, int j, ArrayList<Integer> a) {
+		if (i == j) a.add(i);
+		else if (maticePredchudcu[i][j] == -1) System.out.println("Cesta neexistuje");
+		else {
+			najdiNejkratsiCestu(maticePredchudcu, i, maticePredchudcu[i][j], a);
+			a.add(j);
+		}
+	}
+	
+	public static double getDelkaNejkratsiCesty(ArrayList<Integer> nejkratsiCesta) {
+		double delka = 0.0;
+		
+		for(int i = 0; i < nejkratsiCesta.size()-1; i++) {
+			delka += maticeSousednosti[nejkratsiCesta.get(i)][nejkratsiCesta.get(i+1)];
+		}
+		return delka;
 	}
 }

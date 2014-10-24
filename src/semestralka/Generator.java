@@ -17,11 +17,20 @@ public class Generator {
 	static Cesta[][] cestyPrekladist = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
 	static Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
 	
+	public static void generujSouradniceACesty() {
+		generujPozicePrekladist();
+		generujPoziceHospod();
+		generujCestyPivovaru();
+		generujCestyPrekladist();
+		generujCestyHospod();
+		System.out.println("Vygenerovany souradnice a cesty...");
+	}
+	
 	/**
 	 * Metoda pro vygenerování souøadnic pøekladiš (reprezentovanıch objektem Pozice). Pøekladištì jsou rozmístìna tak, aby se nacházela vdy ve støedu jedné z osmi obdélníkovıch oblastí.
 	 * Objekty se souøadnicemi jsou pak uloeny do pole souradnicePrekladist.
 	 */
-	public static void generujPozicePrekladist() {
+	private static void generujPozicePrekladist() {
 
 		int x = StaticData.ROZMEZI_PREKLADISTE_X;
 		int y = StaticData.ROZMEZI_PREKLADISTE_Y;
@@ -41,7 +50,7 @@ public class Generator {
 	 * Metoda pro vygenerování souøadnic hospod (reprezentovanıch objektem Pozice). Hospody jsou rovnomìrnì rozmístìny po celé ploše do, víceménì, møíkové struktury.
 	 * Objekty se souøadnicemi jsou pak uloeny do pole souradniceHospod.
 	 */
-	public static void generujPoziceHospod() {
+	private static void generujPoziceHospod() {
 
 		int x = StaticData.ROZMEZI_HOSPODY_X;
 		int y = StaticData.ROZMEZI_HOSPODY_Y;
@@ -58,7 +67,7 @@ public class Generator {
 		}
 	}
 	
-	public static void generujCestyPivovaru() {
+	private static void generujCestyPivovaru() {
 		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 		for(int i = 0; i < souradniceHospod.length; i++) {
 			cesty.add(new Cesta(0, i, Math.sqrt(Math.pow((double)(souradniceHospod[i].getX() - StaticData.SOURADNICE_PIVOVARU_X), 2.0) + Math.pow((double)(souradniceHospod[i].getY() - StaticData.SOURADNICE_PIVOVARU_Y), 2.0))));
@@ -76,7 +85,7 @@ public class Generator {
 	 * Metoda prohledává postupnì pro všechna pøekladištì souøadnice všech hospod a vypoèítává vzdálenosti, které ukládá do objektù Cesta.
 	 * Tyto objekty jsou pak setøídìny od nejkratší cesty po nejdelší a je vybráno prvních 50 z nich, které se uloí do dvourozmìrného pole cestyPrekladist. 
 	 */
-	public static void generujCestyPrekladist() {
+	private static void generujCestyPrekladist() {
 		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 		for(int i = 0; i < souradnicePrekladist.length; i++) {
 			for(int j = 0; j < souradniceHospod.length; j++) {
@@ -95,7 +104,7 @@ public class Generator {
 	 * Metoda prohledává postupnì pro všechny hospody souøadnice všech ostatních hospod a vypoèítává vzdálenosti, které ukládá do objektù Cesta.
 	 * Tyto objekty jsou pak setøídìny od nejkratší cesty po nejdelší a je vybráno prvních 15 z nich, které se uloí do dvourozmìrného pole cestyHospod. 
 	 */
-	public static void generujCestyHospod() {
+	private static void generujCestyHospod() {
 		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 		for(int i = 0; i < souradniceHospod.length; i++) {
 			for(int j = 0; j < souradniceHospod.length; j++) {

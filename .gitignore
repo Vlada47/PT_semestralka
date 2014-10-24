@@ -1,7 +1,8 @@
 *.pydevproject
 .project
 .metadata
-bin/**
+data/*
+bin/semestralka/*
 tmp/**
 tmp/**/*
 *.tmp
