@@ -9,5 +9,12 @@ public class Main {
 		InputOutput.zapisSouradniceACestyDoSouboru();
 		Matice.vygenerujMatice(true);
 		Matice.nactiMaticiNejkratsichCestZeSouboru();
+
+		//new ScrollPane();
+		Objednavka.generujRozpisObjednavek();
+		
+		Simulace.start();
+		
+		System.out.println(Simulace.objednavky.get(205));
 	}
 }
