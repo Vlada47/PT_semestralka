@@ -2,7 +2,7 @@ package semestralka;
 
 import java.util.ArrayList;
 
-public class Pivovar {
+public class Pivovar extends Budova {
 	
 	private final int DENNI_PRODUKCE = 7000;
 	public final int OBJEM_SUDU = 50;

@@ -5,7 +5,7 @@ package semestralka;
  * @author Vlada47 & Shag0n
  *
  */
-public class Prekladiste {
+public class Prekladiste extends Budova{
 
 	private final int MAX_SUDU = 2000;
 

@@ -27,7 +27,6 @@ public class Platno extends JPanel {
 
 		Graphics2D g2 = platno.createGraphics();
 
-			
 		g2.setColor(Color.RED);
 		g2.fillOval(2500, 2500, 20, 20);
 
@@ -41,7 +40,7 @@ public class Platno extends JPanel {
 
 		Prekladiste[] polePrekladist = InputOutput.nactiPrekladiste();
 		Hospoda[] poleHospod = InputOutput.nactiHospody();
-		
+
 		for (int i = 0; i < Generator.cestyPrekladist.length; i++) {
 			for (int j = 0; j < Generator.cestyPrekladist[i].length; j++) {
 
@@ -63,34 +62,32 @@ public class Platno extends JPanel {
 		}
 
 		g2.setColor(Color.BLACK);
-		int pocet=0;
+		int pocet = 0;
 		for (Pozice pozice : Generator.souradniceHospod) {
 
 			g2.fillOval(pozice.x * 10, pozice.y * 10, 4, 4);
-			napis(pozice.x * 10, pozice.y * 10,""+pocet ,g2);
+			napis(pozice.x * 10, pozice.y * 10, "" + pocet, g2);
 			pocet++;
-		}		
-		
+		}
+
 		g2.drawImage(platno, 0, 0, null);
 		File outputfile = new File("image.png");
-		
+
 		try {
 			ImageIO.write(platno, "png", outputfile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
 	public static void napis(int x, int y, String str, Graphics2D g2) {
 
 		Font fnt = new Font("Arial", Font.ITALIC, 15);
 		g2.setFont(fnt);
-		TextLayout layout = new TextLayout(str, g2.getFont(),
-		g2.getFontRenderContext());
+		TextLayout layout = new TextLayout(str, g2.getFont(), g2.getFontRenderContext());
 		layout.draw(g2, (float) x, (float) y);
 
 	}
-	
+
 }

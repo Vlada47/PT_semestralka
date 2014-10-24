@@ -22,7 +22,7 @@ public class Objednavka {
 	public int getMnozstvi() {
 		return mnozstvi;
 	}
-	
+
 	public int idPrekladiste() {
 		return idPrekladiste;
 	}
@@ -40,7 +40,7 @@ public class Objednavka {
 		for (Hospoda hospoda : Simulace.hospody) {
 
 			int generaceCasu = rnd.nextInt(101);
-			int generaceMnozstvi = rnd.nextInt(6)+1;
+			int generaceMnozstvi = rnd.nextInt(6) + 1;
 			int cas;
 
 			if (generaceCasu < 34)
@@ -61,9 +61,9 @@ public class Objednavka {
 				cas = 15;
 			else
 				cas = 16;
-			
-			hospoda.casObjednani=cas;
-			hospoda.mnozstviObjednat=generaceMnozstvi;
+
+			hospoda.casObjednani = cas;
+			hospoda.mnozstviObjednat = generaceMnozstvi;
 		}
 	}
 
