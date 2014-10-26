@@ -2,11 +2,15 @@ package semestralka;
 
 import java.util.ArrayList;
 
+import javax.swing.Timer;
+
 public class Simulace {
 
 	static Hospoda[] hospody = InputOutput.nactiHospody();
 	static Prekladiste[] prekladiste = InputOutput.nactiPrekladiste();
 	static ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
+	static int i = 0;
+	static Timer timer;
 
 	static private void najdiNejblizsiPrekladiste() {
 		double vzdalenost;
@@ -40,23 +44,10 @@ public class Simulace {
 
 	static public void start() {
 
+		Objednavka.generujRozpisObjednavek();
 		najdiNejblizsiPrekladiste();
 
-		for (int i = 0; i < 24; i++) {
-
-			for (Hospoda hospoda : hospody) {
-
-				if (hospoda.casObjednani == i)
-					objednavky.add(new Objednavka(hospoda.casObjednani, hospoda.ID, hospoda.idPrekladiste,
-							hospoda.mnozstviObjednat));
-
-			}
-
-			// try {
-			// Thread.sleep(3000);
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
-			// }
-		}
+		timer = new Timer(2000, new MyTimerActionListener());
+		timer.start();
 	}
 }

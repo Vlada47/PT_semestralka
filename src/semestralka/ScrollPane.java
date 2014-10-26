@@ -17,8 +17,9 @@ public class ScrollPane extends JFrame {
 		JScrollPane jsp = new JScrollPane(new JLabel(ii));
 		getContentPane().add(jsp);
 		setSize(1000, 1000);
+		setLocationRelativeTo(null);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 	}
 
 }
