@@ -44,8 +44,8 @@ public class Platno extends JPanel {
 		for (int i = 0; i < Generator.cestyPrekladist.length; i++) {
 			for (int j = 0; j < Generator.cestyPrekladist[i].length; j++) {
 
-				g2.draw(new Line2D.Double(polePrekladist[Generator.cestyPrekladist[i][j].getIdFrom()].pozice.x * 10,
-						polePrekladist[Generator.cestyPrekladist[i][j].getIdFrom()].pozice.y * 10,
+				g2.draw(new Line2D.Double(polePrekladist[Generator.cestyPrekladist[i][j].getIdFrom()].getPosition().x * 10,
+						polePrekladist[Generator.cestyPrekladist[i][j].getIdFrom()].getPosition().y * 10,
 						poleHospod[Generator.cestyPrekladist[i][j].getIdTo()].pozice.x * 10,
 						poleHospod[Generator.cestyPrekladist[i][j].getIdTo()].pozice.y * 10));
 			}

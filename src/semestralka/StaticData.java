@@ -19,4 +19,13 @@ public class StaticData {
 	public static final int ROZMEZI_PREKLADISTE_Y = 63;
 	public static final int ROZMEZI_HOSPODY_X = 6;
 	public static final int ROZMEZI_HOSPODY_Y = 5;
+	
+	public static final double HODIN_NA_SUD = 1.0/12.0;
+	public static final double HODIN_NA_HEKTOLITR = 1.0/30.0;
+	
+	public static final int OBJEM_SUDU = 50;
+	
+	public static final int POCET_KAMIONU = 20;
+	public static final int POCET_CISTEREN = 50;
+	public static final int POCET_AUT = 50;
 }

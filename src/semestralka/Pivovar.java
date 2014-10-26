@@ -4,21 +4,35 @@ import java.util.ArrayList;
 
 public class Pivovar extends Budova {
 	
-	private final int DENNI_PRODUKCE = 7000;
-	public final int OBJEM_SUDU = 50;
+	public final int DENNI_PRODUKCE = 7000;
 
 	private Pozice pozice;
 	private int stavPiva;
-	private ArrayList<Vozidlo> dostupnaVozidla;
-	private ArrayList<Vozidlo> vozidlaNaCeste;
+	private ArrayList<Kamion> dostupneKamiony;
+	private ArrayList<Kamion> kamionyNaCeste;
+	private ArrayList<Cisterna> dostupneCisterny;
+	private ArrayList<Cisterna> cisternyNaCeste;
 
 	private static Pivovar instance;
 
 	private Pivovar() {
 		this.stavPiva = this.DENNI_PRODUKCE;
-		this.pozice = new Pozice(250,250);
-		this.dostupnaVozidla = new ArrayList<Vozidlo>();
-		this.vozidlaNaCeste = new ArrayList<Vozidlo>();
+		this.pozice = new Pozice(StaticData.SOURADNICE_PIVOVARU_X,StaticData.SOURADNICE_PIVOVARU_Y);
+		
+		this.stavPiva = 7000;
+		
+		this.dostupneKamiony = new ArrayList<Kamion>();
+		this.kamionyNaCeste = new ArrayList<Kamion>();
+		this.dostupneCisterny = new ArrayList<Cisterna>();
+		this.cisternyNaCeste = new ArrayList<Cisterna>();
+		
+		for(int i = 0; i < StaticData.POCET_KAMIONU; i++) {
+			this.dostupneKamiony.add(new Kamion(i));
+		}
+		
+		for(int i = 0; i < StaticData.POCET_CISTEREN; i++) {
+			this.dostupneCisterny.add(new Cisterna(i));
+		}
 	}
 
 	public static Pivovar getInstance() {
@@ -26,10 +40,6 @@ public class Pivovar extends Budova {
 			instance = new Pivovar();
 		}
 		return instance;
-	}
-	
-	public Pozice getPozice() {
-		return this.pozice;
 	}
 	
 	public int getStavPiva() {
@@ -41,13 +51,14 @@ public class Pivovar extends Budova {
 	}
 	
 	public void odvezSudyDoPrekladiste(int pocetSudu) {
-		int mnozstvi = pocetSudu * this.OBJEM_SUDU;
+		int mnozstvi = pocetSudu * StaticData.OBJEM_SUDU;
 		
 		if(mnozstvi <= this.stavPiva) {
 			this.stavPiva -= mnozstvi;
 		}
 		else {
 			System.out.println("Nedostatek piva v pivovaru!");
+			System.exit(1);
 		}
 	}
 	
@@ -57,6 +68,7 @@ public class Pivovar extends Budova {
 		}
 		else {
 			System.out.println("Nedostatek piva v pivovaru!");
+			System.exit(1);
 		}
 	}
 }

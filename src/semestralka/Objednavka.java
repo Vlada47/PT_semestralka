@@ -11,6 +11,14 @@ public class Objednavka {
 	private final int mnozstvi;
 	private final int idPrekladiste;
 
+	public Objednavka(int casObednani, int idObjednavajiciho, int idPrekladiste, int mnozstvi) {
+		super();
+		this.casObednani = casObednani;
+		this.idObjednavajiciho = idObjednavajiciho;
+		this.idPrekladiste = idPrekladiste;
+		this.mnozstvi = mnozstvi;
+	}
+	
 	public int getCasObednani() {
 		return casObednani;
 	}
@@ -25,14 +33,6 @@ public class Objednavka {
 
 	public int idPrekladiste() {
 		return idPrekladiste;
-	}
-
-	public Objednavka(int casObednani, int idObjednavajiciho, int idPrekladiste, int mnozstvi) {
-		super();
-		this.casObednani = casObednani;
-		this.idObjednavajiciho = idObjednavajiciho;
-		this.idPrekladiste = idPrekladiste;
-		this.mnozstvi = mnozstvi;
 	}
 
 	public static void generujRozpisObjednavek() {

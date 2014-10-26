@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 public class Simulace {
-
+	
+	public static Pivovar pivovar = Pivovar.getInstance();
 	static Hospoda[] hospody = InputOutput.nactiHospody();
 	static Prekladiste[] prekladiste = InputOutput.nactiPrekladiste();
 	static ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
