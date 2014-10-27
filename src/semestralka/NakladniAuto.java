@@ -1,7 +1,5 @@
 package semestralka;
 
-import java.util.ArrayList;
-
 public class NakladniAuto {
 	
 	public final double RYCHLOST = 70;
@@ -26,5 +24,15 @@ public class NakladniAuto {
 	
 	public double getVzdalenost() {
 		return this.vzdalenost;
+	}
+	
+	public boolean nalozPlneSudy(int pocet) {
+		if(this.pocetPlnychSudu+this.pocetPrazdnychSudu+pocet <= 30) {
+			this.pocetPlnychSudu += pocet;
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

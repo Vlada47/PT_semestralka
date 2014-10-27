@@ -1,19 +1,25 @@
 package semestralka;
 
-import java.util.ArrayList;
-
 import javax.swing.Timer;
 
 public class Simulace {
 	
 	public static Pivovar pivovar = Pivovar.getInstance();
-	static Hospoda[] hospody = InputOutput.nactiHospody();
-	static Prekladiste[] prekladiste = InputOutput.nactiPrekladiste();
-	static ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
+	public static Prekladiste[] prekladiste = InputOutput.nactiPrekladiste();
+	public static Hospoda[] hospody = InputOutput.nactiHospody();
 	static int i = 0;
 	static Timer timer;
 
-	static private void najdiNejblizsiPrekladiste() {
+	static public void start() {
+
+		najdiNejblizsiPrekladiste();
+		Objednavka.generujRozpisObjednavek();
+
+		timer = new Timer(2000, new MyTimerActionListener());
+		timer.start();
+	}
+	
+	private static void najdiNejblizsiPrekladiste() {
 		double vzdalenost;
 		double nejblizsi;
 		Pozice poziceHospody;
@@ -41,14 +47,5 @@ public class Simulace {
 				hospoda.idPrekladiste = 8;
 			}
 		}
-	}
-
-	static public void start() {
-
-		Objednavka.generujRozpisObjednavek();
-		najdiNejblizsiPrekladiste();
-
-		timer = new Timer(2000, new MyTimerActionListener());
-		timer.start();
 	}
 }

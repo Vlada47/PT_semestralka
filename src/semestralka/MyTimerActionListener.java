@@ -12,8 +12,12 @@ class MyTimerActionListener implements ActionListener {
 		for (Hospoda hospoda : Simulace.hospody) {
 
 			if (hospoda.casObjednani == Simulace.i) {
-				Simulace.objednavky.add(new Objednavka(hospoda.casObjednani, hospoda.ID, hospoda.idPrekladiste,
-						hospoda.mnozstviObjednat));
+				for(Prekladiste p : Simulace.prekladiste) {
+					if(hospoda.idPrekladiste == p.getID()) {
+						p.pridejObjednavku(new Objednavka(hospoda.casObjednani, hospoda.ID, p.getID(),
+								hospoda.mnozstviObjednat));
+					}
+				}
 				System.out.println("Hospoda" + hospoda.ID + " si objednala " + hospoda.mnozstviObjednat + " litru");
 			}
 		}
