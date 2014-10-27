@@ -17,6 +17,7 @@ public class Simulace {
 
 		timer = new Timer(2000, new MyTimerActionListener());
 		timer.start();
+	
 	}
 	
 	private static void najdiNejblizsiPrekladiste() {

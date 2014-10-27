@@ -17,7 +17,7 @@ public class Prekladiste extends Budova{
 	private int pocetPrazdnychSudu;
 	private ArrayList<NakladniAuto> dostupnaAuta;
 	private ArrayList<NakladniAuto> autaNaCeste;
-	private ArrayList<Objednavka> objednavky;
+	public ArrayList<Objednavka> objednavky;
 
 	public Prekladiste(int ID, Pozice pozice) {
 		this.ID = ID;
@@ -27,6 +27,7 @@ public class Prekladiste extends Budova{
 		
 		this.dostupnaAuta = new ArrayList<NakladniAuto>();
 		this.autaNaCeste = new ArrayList<NakladniAuto>();
+		this.objednavky = new ArrayList<Objednavka>();
 		
 		for(int i = 0; i < StaticData.POCET_AUT; i++) {
 			this.dostupnaAuta.add(new NakladniAuto(i));
