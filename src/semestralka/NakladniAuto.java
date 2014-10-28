@@ -28,7 +28,7 @@ public class NakladniAuto {
 			else this.vzdalenostTam = 0.0;
 			
 			if(zbyvajiciCas > 0) {
-				for(int i = 0; i < h.mnozstviObjednat; i++) {
+				for(int i = 0; i < this.pocetPlnychSudu; i++) {
 					vylozPlnySud();
 					h.pridejPlnySud();
 					zbyvajiciCas -= StaticData.HODIN_NA_SUD;
@@ -60,7 +60,7 @@ public class NakladniAuto {
 			Hospoda h = Simulace.hospody[this.cilovaHospoda];
 			double zbyvajiciCas = 1.0;
 			
-			for(int i = 0; i < h.mnozstviObjednat; i++) {
+			for(int i = 0; i < this.pocetPlnychSudu; i++) {
 				vylozPlnySud();
 				h.pridejPlnySud();
 				zbyvajiciCas -= StaticData.HODIN_NA_SUD;
@@ -120,7 +120,7 @@ public class NakladniAuto {
 	}
 	
 	public boolean nalozPlneSudy(int pocet) {
-		if(this.pocetPlnychSudu+this.pocetPrazdnychSudu+pocet <= 30) {
+		if(this.pocetPlnychSudu+pocet <= 30) {
 			this.pocetPlnychSudu += pocet;
 			return true;
 		}

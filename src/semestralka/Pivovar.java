@@ -8,10 +8,12 @@ public class Pivovar extends Budova {
 
 	private Pozice pozice;
 	private int stavPiva;
-	private ArrayList<Kamion> dostupneKamiony;
-	private ArrayList<Kamion> kamionyNaCeste;
-	private ArrayList<Cisterna> dostupneCisterny;
-	private ArrayList<Cisterna> cisternyNaCeste;
+	public ArrayList<Kamion> dostupneKamiony;
+	public ArrayList<Kamion> kamionyNaCeste;
+	public ArrayList<Cisterna> dostupneCisterny;
+	public ArrayList<Cisterna> cisternyNaCeste;
+	public ArrayList<Objednavka> objednavkyHospod;
+	public ArrayList<Pozadavek> pozadavkyPrekladist;
 
 	private static Pivovar instance;
 
@@ -25,6 +27,9 @@ public class Pivovar extends Budova {
 		this.kamionyNaCeste = new ArrayList<Kamion>();
 		this.dostupneCisterny = new ArrayList<Cisterna>();
 		this.cisternyNaCeste = new ArrayList<Cisterna>();
+		
+		this.objednavkyHospod = new ArrayList<Objednavka>();
+		this.pozadavkyPrekladist = new ArrayList<Pozadavek>();
 		
 		for(int i = 0; i < StaticData.POCET_KAMIONU; i++) {
 			this.dostupneKamiony.add(new Kamion(i));
@@ -50,16 +55,33 @@ public class Pivovar extends Budova {
 		this.stavPiva += this.DENNI_PRODUKCE;
 	}
 	
-	public void odvezSudyDoPrekladiste(int pocetSudu) {
-		int mnozstvi = pocetSudu * StaticData.OBJEM_SUDU;
-		
-		if(mnozstvi <= this.stavPiva) {
-			this.stavPiva -= mnozstvi;
+	public void odvezSudyDoPrekladiste() {
+		Pozadavek p = this.pozadavkyPrekladist.get(0);
+		if(!(this.dostupneKamiony.isEmpty()) && (p.getPocetSudu() <= (this.stavPiva*2))) {
+			if(nalozSudyDoKamionu(p.getPocetSudu())) {
+				odesliKamionSeSudy(p.getPrekladiste());
+			}
+			System.out.println("Kamion se sudy z pivovaru vyjel do prekladiste "+p.getPrekladiste()+" odeslana.");
 		}
-		else {
-			System.out.println("Nedostatek piva v pivovaru!");
-			System.exit(1);
+	}
+	
+	private boolean nalozSudyDoKamionu(int pocet) {
+		Kamion k = this.dostupneKamiony.get(0);
+		if(k.nalozPlneSudy(pocet)) {
+			this.stavPiva -= (pocet*0.5);
+			return true;
 		}
+		return false;
+	}
+	
+	private void odesliKamionSeSudy(int prekladiste) {
+		Kamion k = this.dostupneKamiony.get(0);
+		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, prekladiste+StaticData.POCET_HOSPOD);
+		double v = Matice.getDelkaNejkratsiCesty(cesta);
+		k.setVzdalenost(v);
+		k.setCil(prekladiste);
+		this.kamionyNaCeste.add(k);
+		this.dostupneKamiony.remove(0);
 	}
 	
 	public void odvezPivoDoHospody(int pocetHektolitru) {

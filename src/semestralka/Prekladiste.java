@@ -15,6 +15,7 @@ public class Prekladiste extends Budova{
 	private Pozice pozice;
 	private int pocetPlnychSudu;
 	private int pocetPrazdnychSudu;
+	private int citacOdeslanychSudu;
 	public ArrayList<NakladniAuto> dostupnaAuta;
 	public ArrayList<NakladniAuto> autaNaCeste;
 	public ArrayList<Objednavka> objednavky;
@@ -24,6 +25,7 @@ public class Prekladiste extends Budova{
 		this.pozice = pozice;
 		this.pocetPlnychSudu = 2000;
 		this.pocetPrazdnychSudu = 0;
+		this.citacOdeslanychSudu = 0;
 		
 		this.dostupnaAuta = new ArrayList<NakladniAuto>();
 		this.autaNaCeste = new ArrayList<NakladniAuto>();
@@ -53,9 +55,19 @@ public class Prekladiste extends Budova{
 		NakladniAuto a = this.dostupnaAuta.get(0);
 		if(a.nalozPlneSudy(o.getMnozstvi())) {
 			this.pocetPlnychSudu -= o.getMnozstvi();
+			this.citacOdeslanychSudu += o.getMnozstvi();
+			if(this.citacOdeslanychSudu >= 100) {
+				posliPozadavekDoPivovaru(100);
+				this.citacOdeslanychSudu = 0;
+			}
 			return true;
 		}
 		else return false;
+	}
+	
+	private void posliPozadavekDoPivovaru(int pocet) {
+		Pozadavek p = new Pozadavek(this.ID, pocet);
+		Simulace.pivovar.pozadavkyPrekladist.add(p);
 	}
 	
 	private void posliObjednavku(Objednavka o) {
@@ -72,6 +84,14 @@ public class Prekladiste extends Budova{
 		this.pocetPrazdnychSudu += pocet;
 	}
 	
+	public void odeberPrazdnySud() {
+		this.pocetPrazdnychSudu--;
+	}
+	
+	public void pridejPlnySud() {
+		this.pocetPlnychSudu++;
+	}
+	
 	public int getID() {
 		return this.ID;
 	}
@@ -80,11 +100,11 @@ public class Prekladiste extends Budova{
 		return pozice;
 	}
 	
-	public int getPlneSudy() {
+	public int getPocetPlnychSudu() {
 		return this.pocetPlnychSudu;
 	}
 	
-	public int getPrazdneSudy() {
+	public int getPocetPrazdnychSudu() {
 		return this.pocetPrazdnychSudu;
 	}
 

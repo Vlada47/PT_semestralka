@@ -12,8 +12,9 @@ class MyTimerActionListener implements ActionListener {
 		provedObjednavky();
 		rozesliObjednavky();
 		rozvozObjednavek();
-		
-		
+		//rozesliPozadavkyDoPrekladist();
+		//rozvozDoPrekladist();
+	
 		Simulace.i++;
 		if (Simulace.i == 24) {
 			Simulace.timer.stop();
@@ -30,7 +31,7 @@ class MyTimerActionListener implements ActionListener {
 								hospoda.mnozstviObjednat));
 					}
 				}
-				System.out.println(Simulace.i + ":00 - Hospoda" + hospoda.ID + " si objednala " + hospoda.mnozstviObjednat + " litru");
+				System.out.println("Hospoda" + hospoda.ID + " si objednala " + hospoda.mnozstviObjednat + " litru");
 			}
 		}
 	}
@@ -48,6 +49,21 @@ class MyTimerActionListener implements ActionListener {
 			for(int i = 0; i < p.autaNaCeste.size(); i++) {
 				p.autaNaCeste.get(i).vykonejCestu();
 			}
+		}
+	}
+	
+	private void rozesliPozadavkyDoPrekladist() {
+		Pivovar p = Simulace.pivovar;
+		while(!(p.pozadavkyPrekladist.isEmpty())) {
+			p.odvezSudyDoPrekladiste();
+		}
+	}
+	
+	private void rozvozDoPrekladist() {
+		Pivovar p = Simulace.pivovar;
+		
+		for(int i = 0; i < p.kamionyNaCeste.size(); i++) {
+			p.kamionyNaCeste.get(i).vykonejCestu();
 		}
 	}
 }

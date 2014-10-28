@@ -25,7 +25,7 @@ public class StaticData {
 	
 	public static final int OBJEM_SUDU = 50;
 	
-	public static final int POCET_KAMIONU = 10;
+	public static final int POCET_KAMIONU = 150;
 	public static final int POCET_CISTEREN = 200;
 	public static final int POCET_AUT = 500;
 }
