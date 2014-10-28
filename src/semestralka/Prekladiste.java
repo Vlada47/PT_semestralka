@@ -15,8 +15,8 @@ public class Prekladiste extends Budova{
 	private Pozice pozice;
 	private int pocetPlnychSudu;
 	private int pocetPrazdnychSudu;
-	private ArrayList<NakladniAuto> dostupnaAuta;
-	private ArrayList<NakladniAuto> autaNaCeste;
+	public ArrayList<NakladniAuto> dostupnaAuta;
+	public ArrayList<NakladniAuto> autaNaCeste;
 	public ArrayList<Objednavka> objednavky;
 
 	public Prekladiste(int ID, Pozice pozice) {
@@ -41,22 +41,19 @@ public class Prekladiste extends Budova{
 	public void vyridObjednavku() {
 		Objednavka o = this.objednavky.get(0);
 		if(!(this.dostupnaAuta.isEmpty()) && (o.getMnozstvi() <= this.pocetPlnychSudu)) {
-			
-			boolean provedeno = nalozObjednavku(o);
-			
-			if(provedeno) {
+			if(nalozObjednavku(o)) {
 				posliObjednavku(o);
 			}
+			System.out.println("Objednavka z prekladiste "+this.ID+" do hospody "+o.getIdObjednavajiciho()+" odeslana.");
 			this.objednavky.remove(0);
 		}
 	}
 	
 	private boolean nalozObjednavku(Objednavka o) {
-		if(!(this.dostupnaAuta.isEmpty())) {
-			NakladniAuto a = this.dostupnaAuta.get(0);
-			boolean provedeno = a.nalozPlneSudy(o.getMnozstvi());
-			if(provedeno) return true;
-			else return false;
+		NakladniAuto a = this.dostupnaAuta.get(0);
+		if(a.nalozPlneSudy(o.getMnozstvi())) {
+			this.pocetPlnychSudu -= o.getMnozstvi();
+			return true;
 		}
 		else return false;
 	}
@@ -66,8 +63,13 @@ public class Prekladiste extends Budova{
 		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(this.ID+StaticData.POCET_HOSPOD, o.getIdObjednavajiciho());
 		double v = Matice.getDelkaNejkratsiCesty(cesta);
 		a.setVzdalenost(v);
+		a.setStartCil(o.idPrekladiste(), o.getIdObjednavajiciho());
 		this.autaNaCeste.add(a);
 		this.dostupnaAuta.remove(0);
+	}
+	
+	public void prijmiPrazdneSudy(int pocet) {
+		this.pocetPrazdnychSudu += pocet;
 	}
 	
 	public int getID() {
@@ -76,6 +78,14 @@ public class Prekladiste extends Budova{
 
 	public Pozice getPosition() {
 		return pozice;
+	}
+	
+	public int getPlneSudy() {
+		return this.pocetPlnychSudu;
+	}
+	
+	public int getPrazdneSudy() {
+		return this.pocetPrazdnychSudu;
 	}
 
 }
