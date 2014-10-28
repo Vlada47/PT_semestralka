@@ -12,7 +12,7 @@ public class Matice {
 	public static double[][] maticeSousednosti = new double[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
 	public static int[][] maticeNejkratsichCest = new int[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
 	
-	public static void vygenerujMatice(boolean generujMaticiNejkratsichCest) {
+	public static void vygenerujMatice() {
 		cestyPivovaru = InputOutput.nactiCestyPivovaru();
 		cestyPrekladist = InputOutput.nactiCestyPrekladiste();
 		cestyHospod = InputOutput.nactiCestyHospod();
@@ -20,14 +20,6 @@ public class Matice {
 		
 		vytvorMaticiSousednosti();
 		System.out.println("Vytvorena matice sousednosti...");
-		
-		if(generujMaticiNejkratsichCest) {
-			vytvorNejkratsiCesty();
-			System.out.println("Vytvorena matice nejkratsich cest...");
-			
-			InputOutput.zapisMaticeNejkratsichCest(maticeNejkratsichCest);
-			System.out.println("Matice nejkratsich cest zapsana do souboru...");
-		}
 	}
 	
 	private static void vytvorMaticiSousednosti() {	
@@ -68,7 +60,7 @@ public class Matice {
 		}
 	}
 	
-	private static void vytvorNejkratsiCesty() {
+	public static void vytvorNejkratsiCesty() {
 		int[][] maticePredchudcu = vytvorMaticiPredchudcu(maticeSousednosti);
 		for (int k = 0; k < maticeSousednosti.length; k++) {
 			//System.out.println("Matice nejkratsich cest: "+((double)k / maticeSousednosti.length)*100+"%");

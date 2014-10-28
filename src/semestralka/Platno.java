@@ -26,15 +26,7 @@ public class Platno extends JPanel {
 		platno = new BufferedImage(5000, 5000, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g2 = platno.createGraphics();
-
-		g2.setColor(Color.RED);
-		g2.fillOval(2500, 2500, 20, 20);
-
-		g2.setColor(Color.BLUE);
-		for (Pozice pozice : Generator.souradnicePrekladist) {
-			g2.fillOval(pozice.x * 10, pozice.y * 10, 15, 15);
-		}
-
+		
 		g2.setStroke(new BasicStroke((float) 1));
 		g2.setColor(Color.GREEN);
 
@@ -44,7 +36,8 @@ public class Platno extends JPanel {
 		for (int i = 0; i < Generator.cestyPrekladist.length; i++) {
 			for (int j = 0; j < Generator.cestyPrekladist[i].length; j++) {
 
-				g2.draw(new Line2D.Double(polePrekladist[Generator.cestyPrekladist[i][j].getIdFrom()].getPosition().x * 10,
+				g2.draw(new Line2D.Double(
+						polePrekladist[Generator.cestyPrekladist[i][j].getIdFrom()].getPosition().x * 10,
 						polePrekladist[Generator.cestyPrekladist[i][j].getIdFrom()].getPosition().y * 10,
 						poleHospod[Generator.cestyPrekladist[i][j].getIdTo()].pozice.x * 10,
 						poleHospod[Generator.cestyPrekladist[i][j].getIdTo()].pozice.y * 10));
@@ -61,6 +54,11 @@ public class Platno extends JPanel {
 			}
 		}
 
+		for (int i = 0; i < Generator.cestyPivovaru.length; i++) {
+			g2.draw(new Line2D.Double(2500, 2500, poleHospod[Generator.cestyPivovaru[i].getIdTo()].pozice.x * 10,
+					poleHospod[Generator.cestyPivovaru[i].getIdTo()].pozice.y * 10));
+		}
+
 		g2.setColor(Color.BLACK);
 		int pocet = 0;
 		for (Pozice pozice : Generator.souradniceHospod) {
@@ -68,6 +66,14 @@ public class Platno extends JPanel {
 			g2.fillOval(pozice.x * 10, pozice.y * 10, 4, 4);
 			napis(pozice.x * 10, pozice.y * 10, "" + pocet, g2);
 			pocet++;
+		}
+		
+		g2.setColor(Color.RED);
+		g2.fillOval(2500-10, 2500-10, 20, 20);
+		
+		g2.setColor(Color.BLUE);
+		for (Pozice pozice : Generator.souradnicePrekladist) {
+			g2.fillOval(pozice.x * 10-7, pozice.y * 10-7, 15, 15);
 		}
 
 		g2.drawImage(platno, 0, 0, null);

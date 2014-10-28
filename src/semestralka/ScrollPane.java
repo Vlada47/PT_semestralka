@@ -12,7 +12,6 @@ public class ScrollPane extends JFrame {
 	public ScrollPane() {
 		super("Mapa");
 
-		// Platno.kresli();
 		ImageIcon ii = new ImageIcon("image.png");
 		JScrollPane jsp = new JScrollPane(new JLabel(ii));
 		getContentPane().add(jsp);

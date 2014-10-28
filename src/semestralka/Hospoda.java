@@ -26,6 +26,11 @@ public class Hospoda {
 		this.mnozstviObjednat--;
 	}
 	
+	public void spotrebuj(int mnozstvi){
+		this.pocetPlnychSudu-=mnozstvi;
+		this.pocetPrazdnychSudu+=mnozstvi;	
+	}
+	
 	public int getPocetPrazdnychSudu() {
 		return this.pocetPrazdnychSudu;
 	}

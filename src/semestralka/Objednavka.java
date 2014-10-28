@@ -40,7 +40,8 @@ public class Objednavka {
 		for (Hospoda hospoda : Simulace.hospody) {
 
 			int generaceCasu = rnd.nextInt(101);
-			int generaceMnozstvi = rnd.nextInt(6) + 1;
+			int generaceMnozstvi = rnd.nextInt(101);
+			int mnozstvi;
 			int cas;
 
 			if (generaceCasu < 34)
@@ -61,9 +62,24 @@ public class Objednavka {
 				cas = 15;
 			else
 				cas = 16;
-
+			
+			if (generaceMnozstvi < 25)
+				mnozstvi = 1;
+			else if (generaceMnozstvi < 50)
+				mnozstvi = 2;
+			else if (generaceMnozstvi < 71)
+				mnozstvi = 3;
+			else if (generaceMnozstvi < 86)
+				mnozstvi = 4;
+			else if (generaceMnozstvi < 96)
+				mnozstvi = 5;
+			else
+				mnozstvi = 6;
+			
 			hospoda.casObjednani = cas;
-			hospoda.mnozstviObjednat = generaceMnozstvi;
+			hospoda.spotrebuj(mnozstvi);
+			hospoda.mnozstviObjednat = mnozstvi;
+			
 		}
 	}
 

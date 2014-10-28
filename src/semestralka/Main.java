@@ -10,7 +10,7 @@ public class Main {
 
 		Generator.generujSouradniceACesty();
 		InputOutput.zapisSouradniceACestyDoSouboru();
-		Matice.vygenerujMatice(false);
+		Matice.vygenerujMatice();
 		Matice.nactiMaticiNejkratsichCestZeSouboru();
 		System.out.println("Pripraveno...");
 
