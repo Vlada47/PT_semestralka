@@ -23,7 +23,7 @@ public class Prekladiste extends Budova{
 	public Prekladiste(int ID, Pozice pozice) {
 		this.ID = ID;
 		this.pozice = pozice;
-		this.pocetPlnychSudu = 2000;
+		this.pocetPlnychSudu = 10000;
 		this.pocetPrazdnychSudu = 0;
 		this.citacOdeslanychSudu = 0;
 		

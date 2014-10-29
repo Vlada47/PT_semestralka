@@ -15,7 +15,7 @@ public class Simulace {
 		najdiNejblizsiPrekladiste();
 		Objednavka.generujRozpisObjednavek();
 
-		timer = new Timer(2000, new MyTimerActionListener());
+		timer = new Timer(3000, new MyTimerActionListener());
 		timer.start();
 	
 	}

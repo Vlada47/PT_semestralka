@@ -73,9 +73,10 @@ public class Window extends JFrame {
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 				for (Hospoda hospoda : Simulace.hospody) {
+					if (hospoda.idPrekladiste!=8) {
 					System.out.println("Hospoda" + hospoda.ID + " ma " + hospoda.getPocetPlnychSudu() + " plnych a "
-							+ hospoda.getPocetPrazdnychSudu() + " prazdnych sudu");
-				}
+							+ hospoda.getPocetPrazdnychSudu() + " prazdnych sudu"+hospoda.idPrekladiste);
+				}}
 			}
 		});
 

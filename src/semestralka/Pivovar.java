@@ -62,6 +62,7 @@ public class Pivovar extends Budova {
 				odesliKamionSeSudy(p.getPrekladiste());
 			}
 			System.out.println("Kamion se sudy z pivovaru vyjel do prekladiste "+p.getPrekladiste()+" odeslana.");
+			this.pozadavkyPrekladist.remove(0);
 		}
 	}
 	
