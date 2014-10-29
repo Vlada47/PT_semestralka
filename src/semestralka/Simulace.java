@@ -12,6 +12,7 @@ public class Simulace {
 
 	static public void start() {
 
+		Window.textArea.setText(null);
 		najdiNejblizsiPrekladiste();
 		Objednavka.generujRozpisObjednavek();
 

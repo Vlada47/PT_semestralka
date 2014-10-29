@@ -10,7 +10,8 @@ public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;
-
+	public static JTextArea textArea;
+	
 	public static void startOkno() {
 
 		// okno
@@ -21,7 +22,7 @@ public class Window extends JFrame {
 		initOutputWindow();
 		ImageIcon logo = new ImageIcon("pils-copy.jpg");
 		frame.add(new JLabel(logo), BorderLayout.NORTH);
-		frame.setSize(675, 550);
+		frame.setSize(850, 700);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
@@ -72,11 +73,17 @@ public class Window extends JFrame {
 
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
+				textArea.setText(null);
 				for (Hospoda hospoda : Simulace.hospody) {
-					if (hospoda.idPrekladiste!=8) {
-					System.out.println("Hospoda" + hospoda.ID + " ma " + hospoda.getPocetPlnychSudu() + " plnych a "
-							+ hospoda.getPocetPrazdnychSudu() + " prazdnych sudu"+hospoda.idPrekladiste);
-				}}
+					if (hospoda.idPrekladiste != 8) {
+						System.out.println("Hospoda" + hospoda.ID + " ma " + hospoda.getPocetPlnychSudu()
+								+ " plnych a " + hospoda.getPocetPrazdnychSudu() + " prazdnych sudu");
+					}
+				}
+				for (Prekladiste prekladiste : Simulace.prekladiste) {
+					System.out.println("Prekladiste" + prekladiste.getID() + " ma " + prekladiste.getPocetPlnychSudu() + " plnych a "
+							+ prekladiste.getPocetPrazdnychSudu() + " prazdnych sudu");
+				}
 			}
 		});
 
@@ -88,9 +95,7 @@ public class Window extends JFrame {
 	}
 
 	public static void initOutputWindow() {
-
-		JTextArea textArea;
-
+			
 		textArea = new JTextArea(15, 40);
 		textArea.setEditable(false);
 		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));

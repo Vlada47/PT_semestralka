@@ -21,7 +21,8 @@ public class InputOutput {
 	public static final String CESTY_PREKLADIST_SOUBOR = "data\\cestyPrekladist.txt";
 	public static final String CESTY_HOSPOD_SOUBOR = "data\\cestyHospod.txt";
 	public static final String MATICE_CEST_SOUBOR = "data\\maticeCest.txt";
-	
+	public static final String LOG_SOUBOR = "data\\log.txt";
+
 	public static void zapisSouradniceACestyDoSouboru() {
 		InputOutput.zapisSouradnicPrekladiste(Generator.souradnicePrekladist);
 		InputOutput.zapisSouradnicHospod(Generator.souradniceHospod);
@@ -68,20 +69,20 @@ public class InputOutput {
 			System.out.println("I/O error in: " + SOURADNICE_HOSPOD_SOUBOR + "\n" + e.getMessage());
 		}
 	}
-	
+
 	private static void zapisCestPivovaru(Cesta[] cestyPivovaru) {
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(CESTY_PIVOVARU_SOUBOR));
 			for (int i = 0; i < cestyPivovaru.length; i++) {
-			bwFile.write(cestyPivovaru[i].toString());
-			bwFile.newLine();
+				bwFile.write(cestyPivovaru[i].toString());
+				bwFile.newLine();
 			}
 			bwFile.close();
 		} catch (IOException e) {
 			System.out.println("I/O error in: " + CESTY_PIVOVARU_SOUBOR + "\n" + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Metoda zapisující údaje o cestách mezi pøekladišti a hospodami.
 	 * 
@@ -124,44 +125,43 @@ public class InputOutput {
 			System.out.println("I/O error in: " + CESTY_HOSPOD_SOUBOR + "\n" + e.getMessage());
 		}
 	}
-	
+
 	public static void zapisMaticeNejkratsichCest(int[][] maticeNejkratsichCest) {
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(MATICE_CEST_SOUBOR));
-			for(int i = 0; i < maticeNejkratsichCest.length; i++) {
-				for(int j = 0; j <maticeNejkratsichCest[i].length; j++) {
-					bwFile.write(Integer.toString(maticeNejkratsichCest[i][j])+" ");
+			for (int i = 0; i < maticeNejkratsichCest.length; i++) {
+				for (int j = 0; j < maticeNejkratsichCest[i].length; j++) {
+					bwFile.write(Integer.toString(maticeNejkratsichCest[i][j]) + " ");
 				}
 				bwFile.newLine();
 			}
 			bwFile.close();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			System.out.println("I/O error in: " + MATICE_CEST_SOUBOR + "\n" + e.getMessage());
 		}
 	}
-	
+
 	public static int[][] nactiMaticiNejkratsichCest() {
 		String radka;
-		int[][] maticeNejkratsichCest = new int[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
-		
-		try{
+		int[][] maticeNejkratsichCest = new int[StaticData.POCET_HOSPOD + StaticData.POCET_PREKLADIST + 1][StaticData.POCET_HOSPOD
+				+ StaticData.POCET_PREKLADIST + 1];
+
+		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(MATICE_CEST_SOUBOR));
-			
-			for(int i = 0; i < maticeNejkratsichCest.length; i++) {
+
+			for (int i = 0; i < maticeNejkratsichCest.length; i++) {
 				radka = bfr.readLine();
 				String[] hodnoty = radka.split(" ");
-				for(int j = 0; j < maticeNejkratsichCest[i].length; j++) {
-					maticeNejkratsichCest[i][j] = Integer.parseInt(hodnoty[j]); 
+				for (int j = 0; j < maticeNejkratsichCest[i].length; j++) {
+					maticeNejkratsichCest[i][j] = Integer.parseInt(hodnoty[j]);
 				}
 			}
-			
+
 			bfr.close();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			System.out.println("I/O error in: " + MATICE_CEST_SOUBOR + "\n" + e.getMessage());
 		}
-		
+
 		return maticeNejkratsichCest;
 	}
 
@@ -211,30 +211,30 @@ public class InputOutput {
 		}
 		return prekladiste;
 	}
-	
+
 	/**
 	 * Metoda pro naètení cest pivovaru ze souboru.
+	 * 
 	 * @return
 	 */
 	public static Cesta[] nactiCestyPivovaru() {
 		String radka;
 		Cesta[] cestyPivovaru = new Cesta[StaticData.POCET_CEST_PIVOVARU];
-		
-		try{
+
+		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(CESTY_PIVOVARU_SOUBOR));
-			
-			for(int i = 0; i < StaticData.POCET_CEST_PIVOVARU; i++) {
+
+			for (int i = 0; i < StaticData.POCET_CEST_PIVOVARU; i++) {
 				radka = bfr.readLine();
 				cestyPivovaru[i] = vytvorCestu(radka);
 			}
-			
+
 			bfr.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
+
 		return cestyPivovaru;
 	}
 
@@ -249,7 +249,6 @@ public class InputOutput {
 		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(CESTY_PREKLADIST_SOUBOR));
 
-			
 			for (int j = 0; j < StaticData.POCET_PREKLADIST; j++) {
 				for (int i = 0; i < StaticData.POCET_CEST_PREKLADISTE; i++) {
 					radka = bfr.readLine();
@@ -257,7 +256,7 @@ public class InputOutput {
 				}
 			}
 			bfr.close();
-				
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -324,6 +323,22 @@ public class InputOutput {
 		Cesta cesta = new Cesta(Integer.parseInt(podRetezce[0]), Integer.parseInt(podRetezce[1]),
 				Double.parseDouble(podRetezce[2]));
 		return cesta;
+	}
+
+	public static void zapisVysledek() {
+
+		try {
+			BufferedWriter bwFile = new BufferedWriter(new FileWriter(LOG_SOUBOR));
+
+			bwFile.write(Window.textArea.getText());
+
+			bwFile.close();
+		} catch (IOException e) {
+			System.out.println("I/O error in: " + MATICE_CEST_SOUBOR + "\n" + e.getMessage());
+		}
+
+		
+
 	}
 
 }

@@ -17,6 +17,7 @@ class MyTimerActionListener implements ActionListener {
 
 		Simulace.i++;
 		if (Simulace.i == 24) {
+			InputOutput.zapisVysledek();
 			Simulace.timer.stop();
 		}
 	}
