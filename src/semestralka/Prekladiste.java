@@ -75,7 +75,7 @@ public class Prekladiste extends Budova{
 		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(this.ID+StaticData.POCET_HOSPOD, o.getIdObjednavajiciho());
 		double v = Matice.getDelkaNejkratsiCesty(cesta);
 		a.setVzdalenost(v);
-		a.setStartCil(o.idPrekladiste(), o.getIdObjednavajiciho());
+		a.setStartCil(o.idPrekladiste(), o.getIdObjednavajiciho(), o.getIndexObjednavajiciho());
 		this.autaNaCeste.add(a);
 		this.dostupnaAuta.remove(0);
 	}

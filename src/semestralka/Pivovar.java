@@ -55,6 +55,41 @@ public class Pivovar extends Budova {
 		this.stavPiva += this.DENNI_PRODUKCE;
 	}
 	
+	public void pridejObjednavku(Objednavka o) {
+		this.objednavkyHospod.add(o);
+	}
+	
+	public void vyridObjednavku() {
+		Objednavka o = this.objednavkyHospod.get(0);
+		if(!(this.dostupneCisterny.isEmpty()) && o.getMnozstvi() <= this.stavPiva) {
+			if(nalozObjednavku(o)) {
+				posliObjednavku(o);
+			}
+			System.out.println("Objednavka z pivovaru do hospody "+o.getIdObjednavajiciho()+" odeslana.");
+			this.objednavkyHospod.remove(0);
+		}
+	}
+	
+	private boolean nalozObjednavku(Objednavka o) {
+		Cisterna c = this.dostupneCisterny.get(0);
+		
+		if(c.nacerpejPivo(o.getMnozstvi())) {
+			this.stavPiva -= o.getMnozstvi();
+			return true;
+		}
+		else return false;		
+	}
+	
+	private void posliObjednavku(Objednavka o) {
+		Cisterna c = this.dostupneCisterny.get(0);
+		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, o.getIdObjednavajiciho());
+		double v = Matice.getDelkaNejkratsiCesty(cesta);
+		c.setVzdalenost(v);
+		c.setCil(o.getIdObjednavajiciho(), o.getIndexObjednavajiciho());
+		this.cisternyNaCeste.add(c);
+		this.dostupneCisterny.remove(0);
+	}
+	
 	public void odvezSudyDoPrekladiste() {
 		Pozadavek p = this.pozadavkyPrekladist.get(0);
 		if(!(this.dostupneKamiony.isEmpty()) && (p.getPocetSudu() <= (this.stavPiva*2))) {

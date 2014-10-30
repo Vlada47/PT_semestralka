@@ -74,7 +74,7 @@ public class Window extends JFrame {
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 				textArea.setText(null);
-				for (Hospoda hospoda : Simulace.hospody) {
+				for (HospodaSudova hospoda : Simulace.sudoveHospody) {
 					if (hospoda.idPrekladiste != 8) {
 						System.out.println("Hospoda" + hospoda.ID + " ma " + hospoda.getPocetPlnychSudu()
 								+ " plnych a " + hospoda.getPocetPrazdnychSudu() + " prazdnych sudu");

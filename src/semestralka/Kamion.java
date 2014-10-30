@@ -31,6 +31,7 @@ public class Kamion {
 					vylozPlnySud();
 					p.pridejPlnySud();
 					zbyvajiciCas -= StaticData.HODIN_NA_SUD;
+					if(this.pocetPlnychSudu <= 0) System.out.println("Kamion "+this.ID+" dovezl naklad sudu do prekladiste "+this.cilovePrekladiste+".");
 					if(zbyvajiciCas <= 0) break;
 				}
 			}
@@ -62,6 +63,7 @@ public class Kamion {
 				vylozPlnySud();
 				p.pridejPlnySud();
 				zbyvajiciCas -= StaticData.HODIN_NA_SUD;
+				if(this.pocetPlnychSudu <= 0) System.out.println("Kamion "+this.ID+" dovezl naklad sudu do prekladiste "+this.cilovePrekladiste+".");
 				if(zbyvajiciCas <= 0) break;
 			}
 			

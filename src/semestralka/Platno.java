@@ -31,7 +31,7 @@ public class Platno extends JPanel {
 		g2.setColor(Color.GREEN);
 
 		Prekladiste[] polePrekladist = InputOutput.nactiPrekladiste();
-		Hospoda[] poleHospod = InputOutput.nactiHospody();
+		HospodaSudova[] poleHospod = InputOutput.nactiSudoveHospody();
 
 		for (int i = 0; i < Generator.cestyPrekladist.length; i++) {
 			for (int j = 0; j < Generator.cestyPrekladist[i].length; j++) {

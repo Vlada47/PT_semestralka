@@ -169,17 +169,44 @@ public class InputOutput {
 	 * Metoda pro naètení souøadnic hospod ze souboru.
 	 */
 
-	public static Hospoda[] nactiHospody() {
+	public static HospodaSudova[] nactiSudoveHospody() {
 
 		String radka;
-		Hospoda[] hospody = new Hospoda[StaticData.POCET_HOSPOD];
+		HospodaSudova[] hospody = new HospodaSudova[StaticData.POCET_HOSPOD - (StaticData.POCET_HOSPOD / StaticData.POMER_HOSPOD)];
 
 		try {
 			BufferedReader bfr = new BufferedReader(new FileReader(SOURADNICE_HOSPOD_SOUBOR));
+			
+			int index = 0;
 
 			for (int i = 0; i < StaticData.POCET_HOSPOD; i++) {
 				radka = bfr.readLine();
-				hospody[i] = vytvorHospodu(radka);
+				if(i % StaticData.POMER_HOSPOD == 0) continue;
+				hospody[index] = vytvorSudovouHospodu(radka);
+				index++;
+			}
+			bfr.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return hospody;
+	}
+	
+	public static HospodaTankova[] nactiTankoveHospody() {
+		String radka;
+		HospodaTankova[] hospody = new HospodaTankova[StaticData.POCET_HOSPOD / StaticData.POMER_HOSPOD];
+
+		try {
+			BufferedReader bfr = new BufferedReader(new FileReader(SOURADNICE_HOSPOD_SOUBOR));
+			
+			int index = 0;
+
+			for (int i = 0; i < StaticData.POCET_HOSPOD; i++) {
+				radka = bfr.readLine();
+				if(i % StaticData.POMER_HOSPOD != 0) continue;
+				hospody[index] = vytvorTankovouHospodu(radka);
+				index++;
 			}
 			bfr.close();
 		} catch (IOException e) {
@@ -294,9 +321,16 @@ public class InputOutput {
 	 * 
 	 * * @param cvsRadek - String s naètenými hodotami.
 	 */
-	public static Hospoda vytvorHospodu(String cvsRadek) {
+	public static HospodaSudova vytvorSudovouHospodu(String cvsRadek) {
 		String[] podRetezce = cvsRadek.split(" ");
-		Hospoda hospoda = new Hospoda(Integer.parseInt(podRetezce[0]), new Pozice(Integer.parseInt(podRetezce[1]),
+		HospodaSudova hospoda = new HospodaSudova(Integer.parseInt(podRetezce[0]), new Pozice(Integer.parseInt(podRetezce[1]),
+				Integer.parseInt(podRetezce[2])));
+		return hospoda;
+	}
+	
+	public static HospodaTankova vytvorTankovouHospodu(String cvsRadek) {
+		String[] podRetezce = cvsRadek.split(" ");
+		HospodaTankova hospoda = new HospodaTankova(Integer.parseInt(podRetezce[0]), new Pozice(Integer.parseInt(podRetezce[1]),
 				Integer.parseInt(podRetezce[2])));
 		return hospoda;
 	}
@@ -334,7 +368,7 @@ public class InputOutput {
 
 			bwFile.close();
 		} catch (IOException e) {
-			System.out.println("I/O error in: " + MATICE_CEST_SOUBOR + "\n" + e.getMessage());
+			System.out.println("I/O error in: " + LOG_SOUBOR + "\n" + e.getMessage());
 		}
 
 		

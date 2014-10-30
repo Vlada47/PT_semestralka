@@ -1,6 +1,6 @@
 package semestralka;
 
-public class Hospoda {
+public class HospodaSudova extends Budova {
 
 	Pozice pozice;
 	int ID;
@@ -10,7 +10,7 @@ public class Hospoda {
 	public int casObjednani;
 	public int mnozstviObjednat;
 
-	public Hospoda(int ID, Pozice pozice) {
+	public HospodaSudova(int ID, Pozice pozice) {
 		this.ID = ID;
 		this.pozice = pozice;
 		this.pocetPlnychSudu = 6;

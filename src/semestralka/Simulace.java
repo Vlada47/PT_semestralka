@@ -6,7 +6,9 @@ public class Simulace {
 	
 	public static Pivovar pivovar = Pivovar.getInstance();
 	public static Prekladiste[] prekladiste = InputOutput.nactiPrekladiste();
-	public static Hospoda[] hospody = InputOutput.nactiHospody();
+	public static HospodaSudova[] sudoveHospody = InputOutput.nactiSudoveHospody();
+	public static HospodaTankova[] tankoveHospody = InputOutput.nactiTankoveHospody();
+	
 	static int i = 0;
 	static Timer timer;
 
@@ -16,9 +18,8 @@ public class Simulace {
 		najdiNejblizsiPrekladiste();
 		Objednavka.generujRozpisObjednavek();
 
-		timer = new Timer(3000, new MyTimerActionListener());
+		timer = new Timer(StaticData.SIMULACE_MILIS, new MyTimerActionListener());
 		timer.start();
-	
 	}
 	
 	private static void najdiNejblizsiPrekladiste() {
@@ -26,27 +27,21 @@ public class Simulace {
 		double nejblizsi;
 		Pozice poziceHospody;
 		Pozice pozicePrekladiste;
-		for (Hospoda hospoda : hospody) {
+		for (HospodaSudova hospoda : sudoveHospody) {
 
-			if (hospoda.ID % 20 != 0) {
+			poziceHospody = hospoda.getPosition();
+			nejblizsi = Double.MAX_VALUE;
 
-				poziceHospody = hospoda.getPosition();
-				nejblizsi = 999999;
+			for (int i = 0; i < prekladiste.length; i++) {
+				pozicePrekladiste = prekladiste[i].getPosition();
 
-				for (int i = 0; i < prekladiste.length; i++) {
+				vzdalenost = Math.sqrt(Math.pow((double) (poziceHospody.x - pozicePrekladiste.x), 2.0)
+						+ Math.pow((double) (poziceHospody.y - pozicePrekladiste.y), 2.0));
 
-					pozicePrekladiste = prekladiste[i].getPosition();
-
-					vzdalenost = Math.sqrt(Math.pow((double) (poziceHospody.x - pozicePrekladiste.x), 2.0)
-							+ Math.pow((double) (poziceHospody.y - pozicePrekladiste.y), 2.0));
-
-					if (vzdalenost < nejblizsi) {
-						nejblizsi = vzdalenost;
-						hospoda.idPrekladiste = i;
-					}
+				if (vzdalenost < nejblizsi) {
+					nejblizsi = vzdalenost;
+					hospoda.idPrekladiste = i;
 				}
-			} else {
-				hospoda.idPrekladiste = 8;
 			}
 		}
 	}

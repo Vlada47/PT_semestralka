@@ -12,6 +12,7 @@ public class NakladniAuto {
 	private double vzdalenostZpet;
 	private int startovniPrekladiste;
 	private int cilovaHospoda;
+	private int indexCiloveHospody;
 	
 	public NakladniAuto(int ID) {
 		this.ID = ID;
@@ -21,7 +22,7 @@ public class NakladniAuto {
 	
 	public void vykonejCestu() {
 		if(this.vzdalenostTam > 0) {
-			Hospoda h = Simulace.hospody[this.cilovaHospoda];
+			HospodaSudova h = Simulace.sudoveHospody[this.indexCiloveHospody];
 			double zbyvajiciCas = 1.0 - (this.vzdalenostTam / this.RYCHLOST);
 			
 			if(zbyvajiciCas <= 0) this.vzdalenostTam -= this.RYCHLOST;
@@ -32,6 +33,7 @@ public class NakladniAuto {
 					vylozPlnySud();
 					h.pridejPlnySud();
 					zbyvajiciCas -= StaticData.HODIN_NA_SUD;
+					if(this.pocetPlnychSudu <= 0) System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo objednavku do hospody "+this.cilovaHospoda+".");
 					if(zbyvajiciCas <= 0) break;
 				}
 			}
@@ -57,13 +59,14 @@ public class NakladniAuto {
 			}
 		}
 		else {
-			Hospoda h = Simulace.hospody[this.cilovaHospoda];
+			HospodaSudova h = Simulace.sudoveHospody[this.indexCiloveHospody];
 			double zbyvajiciCas = 1.0;
 			
 			for(int i = 0; i < this.pocetPlnychSudu; i++) {
 				vylozPlnySud();
 				h.pridejPlnySud();
 				zbyvajiciCas -= StaticData.HODIN_NA_SUD;
+				if(this.pocetPlnychSudu <= 0) System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo objednavku do hospody "+this.cilovaHospoda+".");
 				if(zbyvajiciCas <= 0) break;
 			}
 			
@@ -106,9 +109,10 @@ public class NakladniAuto {
 		return this.vzdalenostZpet;
 	}
 	
-	public void setStartCil(int IDPrekladiste, int IDHospoda) {
+	public void setStartCil(int IDPrekladiste, int IDHospoda, int indexHospody) {
 		this.startovniPrekladiste = IDPrekladiste;
 		this.cilovaHospoda = IDHospoda;
+		this.indexCiloveHospody = indexHospody;
 	}
 	
 	public int getCilovaHospoda() {

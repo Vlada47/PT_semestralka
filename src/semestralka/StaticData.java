@@ -28,4 +28,8 @@ public class StaticData {
 	public static final int POCET_KAMIONU = 150;
 	public static final int POCET_CISTEREN = 200;
 	public static final int POCET_AUT = 500;
+	
+	public static final int POMER_HOSPOD = 20;
+	
+	public static final int SIMULACE_MILIS = 1000;
 }

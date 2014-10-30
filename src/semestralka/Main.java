@@ -13,7 +13,5 @@ public class Main {
 		Matice.vygenerujMatice();
 		Matice.nactiMaticiNejkratsichCestZeSouboru();
 		System.out.println("Pripraveno...");
-
-		// System.out.println(Simulace.objednavky.get(3580));
 	}
 }
