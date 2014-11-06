@@ -46,29 +46,12 @@ public class Objednavka {
 		for(int i = 0; i < Simulace.tankoveHospody.length; i++) {
 			HospodaTankova hospoda = Simulace.tankoveHospody[i];
 			
-			int generaceCasu = rnd.nextInt(101);
 			int generaceMnozstvi = rnd.nextInt(101);
 			int mnozstvi;
-			int cas;
-
-			if (generaceCasu < 34)
-				cas = 10;
-			else if (generaceCasu < 53)
-				cas = 9;
-			else if (generaceCasu < 71)
-				cas = 11;
-			else if (generaceCasu < 83)
-				cas = 8;
-			else if (generaceCasu < 93)
-				cas = 12;
-			else if (generaceCasu < 96)
-				cas = 13;
-			else if (generaceCasu < 98)
-				cas = 14;
-			else if (generaceCasu < 100)
-				cas = 15;
-			else
-				cas = 16;
+			
+			double cas = rnd.nextGaussian()*StaticData.GAUSS_ROZSAH + StaticData.HODINA_OBJEDNAVEK;
+			if(cas < 8) cas = 8.0;
+			if(cas > 16) cas = 16.0;
 			
 			if (generaceMnozstvi < 25)
 				mnozstvi = 1;
@@ -83,7 +66,7 @@ public class Objednavka {
 			else
 				mnozstvi = 6;
 			
-			hospoda.casObjednani = cas;
+			hospoda.casObjednani = (int) Math.round(cas);
 			hospoda.spotrebuj(mnozstvi);
 			hospoda.mnozstviObjednat = mnozstvi;
 		}
@@ -91,29 +74,12 @@ public class Objednavka {
 		for(int i = 0; i < Simulace.sudoveHospody.length; i++) {
 			HospodaSudova hospoda = Simulace.sudoveHospody[i];
 			
-			int generaceCasu = rnd.nextInt(101);
 			int generaceMnozstvi = rnd.nextInt(101);
 			int mnozstvi;
-			int cas;
 
-			if (generaceCasu < 34)
-				cas = 10;
-			else if (generaceCasu < 53)
-				cas = 9;
-			else if (generaceCasu < 71)
-				cas = 11;
-			else if (generaceCasu < 83)
-				cas = 8;
-			else if (generaceCasu < 93)
-				cas = 12;
-			else if (generaceCasu < 96)
-				cas = 13;
-			else if (generaceCasu < 98)
-				cas = 14;
-			else if (generaceCasu < 100)
-				cas = 15;
-			else
-				cas = 16;
+			double cas = rnd.nextGaussian()*StaticData.GAUSS_ROZSAH + StaticData.HODINA_OBJEDNAVEK;
+			if(cas < 8) cas = 8.0;
+			if(cas > 16) cas = 16.0;
 			
 			if (generaceMnozstvi < 25)
 				mnozstvi = 1;
@@ -128,7 +94,7 @@ public class Objednavka {
 			else
 				mnozstvi = 6;
 			
-			hospoda.casObjednani = cas;
+			hospoda.casObjednani = (int) Math.round(cas);
 			hospoda.spotrebuj(mnozstvi);
 			hospoda.mnozstviObjednat = mnozstvi;
 		}

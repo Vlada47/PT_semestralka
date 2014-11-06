@@ -32,4 +32,7 @@ public class StaticData {
 	public static final int POMER_HOSPOD = 20;
 	
 	public static final int SIMULACE_MILIS = 1000;
+	
+	public static final int HODINA_OBJEDNAVEK = 10;
+	public static final double GAUSS_ROZSAH = 1.6;
 }
