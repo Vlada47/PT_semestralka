@@ -8,8 +8,8 @@ import objekty_ostatni.Pozice;
 import semestralka.StaticData;
 
 /**
- * Tøída objektu obsahující struktury pro ukládání generovanıch dat o hospodách/pøekladištích a cestách mezi nimi.
- * Generování probíhá v metodách objektu.
+ * Trida obsahujici struktury pro ukladani generovanych dat o hospodach/prekladistich a cestach mezi nimi.
+ * Generovana probihá v metodach objektu.
  * @author Vlada47 & Shag0n
  *
  */
@@ -21,6 +21,9 @@ public class Generator {
 	public static Cesta[][] cestyPrekladist = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
 	public static Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
 	
+	/**
+	 * Metoda postupne provadi generovaci metody pro vytvoreni souradnic a cest jednotlivych budov.
+	 */
 	public static void generujSouradniceACesty() {
 		generujPozicePrekladist();
 		generujPoziceHospod();
@@ -31,8 +34,8 @@ public class Generator {
 	}
 	
 	/**
-	 * Metoda pro vygenerování souøadnic pøekladiš (reprezentovanıch objektem Pozice). Pøekladištì jsou rozmístìna tak, aby se nacházela vdy ve støedu jedné z osmi obdélníkovıch oblastí.
-	 * Objekty se souøadnicemi jsou pak uloeny do pole souradnicePrekladist.
+	 * Metoda pro vygenerovani souradnic prekladist (reprezentovanych objektem Pozice). Prekladiste jsou rozmistena tak, aby se nachazela vzdy ve stredu jedne z osmi obdelnikovych oblasti.
+	 * Objekty se souradnicemi jsou pak ulozeny do pole souradnicePrekladist.
 	 */
 	private static void generujPozicePrekladist() {
 
@@ -51,8 +54,8 @@ public class Generator {
 	}
 	
 	/**
-	 * Metoda pro vygenerování souøadnic hospod (reprezentovanıch objektem Pozice). Hospody jsou rovnomìrnì rozmístìny po celé ploše do, víceménì, møíkové struktury.
-	 * Objekty se souøadnicemi jsou pak uloeny do pole souradniceHospod.
+	 * Metoda pro vygenerovani souradnic hospod (reprezentovanych objektem Pozice). Hospody jsou rovnomerne rozmisteny po cele plose do, vicemene, mrizkove struktury.
+	 * Objekty se souradnicemi jsou pak ulozeny do pole souradniceHospod.
 	 */
 	private static void generujPoziceHospod() {
 
@@ -71,6 +74,10 @@ public class Generator {
 		}
 	}
 	
+	/**
+	 * Metoda provygenerovani cest z pivovaru do nejblizsich hospod (reprezentovanych objektem Cesta).
+	 * Metoda prohleda vsechny souradnice vsech hospod, vypocita vzdalenosti, ktere si ulozi do ArrayListu, ktery seradi a vybere z nej 50 nejkratsich cest.
+	 */
 	private static void generujCestyPivovaru() {
 		ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 		for(int i = 0; i < souradniceHospod.length; i++) {
@@ -85,8 +92,8 @@ public class Generator {
 	
 	
 	/**
-	 * Metoda pro vygenerování cest mezi pøekladišti a nejblišími hospodami (reprezentovanıch objektem Cesta).
-	 * Metoda prohledává postupnì pro všechna pøekladištì souøadnice všech hospod a vypoèítává vzdálenosti, které ukládá do objektù Cesta.
+	 * Metoda pro vygenerovani cest mezi prekladisti a nejblizsimi hospodami (reprezentovanych objektem Cesta).
+	 * Metoda prohledava postupne pro vsechna prekladiste souradnice vsech hospod a vypocitava vzdalenosti, které ukládá do objektù Cesta.
 	 * Tyto objekty jsou pak setøídìny od nejkratší cesty po nejdelší a je vybráno prvních 50 z nich, které se uloí do dvourozmìrného pole cestyPrekladist. 
 	 */
 	private static void generujCestyPrekladist() {

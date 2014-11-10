@@ -66,7 +66,7 @@ public class Window extends JFrame {
 
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
-				Platno.kresli();
+				//Platno.kresli();
 
 				Matice.vytvorNejkratsiCesty();
 				System.out.println("Vytvorena matice nejkratsich cest...");
