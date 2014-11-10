@@ -1,4 +1,9 @@
-package semestralka;
+package objekty_vozidla;
+
+import objekty_budovy.Pivovar;
+import objekty_budovy.Prekladiste;
+import semestralka.StaticData;
+import simulace.Simulace;
 
 public class Kamion {
 	

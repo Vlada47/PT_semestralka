@@ -1,4 +1,4 @@
-package semestralka;
+package objekty_ostatni;
 
 public class Pozadavek {
 	

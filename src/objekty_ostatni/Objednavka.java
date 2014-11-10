@@ -1,6 +1,11 @@
-package semestralka;
+package objekty_ostatni;
 
 import java.util.Random;
+
+import objekty_budovy.HospodaSudova;
+import objekty_budovy.HospodaTankova;
+import semestralka.StaticData;
+import simulace.Simulace;
 
 public class Objednavka {
 

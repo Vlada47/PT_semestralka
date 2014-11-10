@@ -1,7 +1,12 @@
-package semestralka;
+package generovani_dat;
+
+import io.InputOutput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import objekty_ostatni.Cesta;
+import semestralka.StaticData;
 
 public class Matice {
 	

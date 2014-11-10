@@ -1,7 +1,11 @@
-package semestralka;
+package generovani_dat;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import objekty_ostatni.Cesta;
+import objekty_ostatni.Pozice;
+import semestralka.StaticData;
 
 /**
  * Tøída objektu obsahující struktury pro ukládání generovaných dat o hospodách/pøekladištích a cestách mezi nimi.
@@ -11,11 +15,11 @@ import java.util.Collections;
  */
 public class Generator {
 
-	static Pozice[] souradnicePrekladist = new Pozice[StaticData.POCET_PREKLADIST];
-	static Pozice[] souradniceHospod = new Pozice[StaticData.POCET_HOSPOD];
-	static Cesta[] cestyPivovaru = new Cesta[StaticData.POCET_CEST_PIVOVARU];
-	static Cesta[][] cestyPrekladist = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
-	static Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
+	public static Pozice[] souradnicePrekladist = new Pozice[StaticData.POCET_PREKLADIST];
+	public static Pozice[] souradniceHospod = new Pozice[StaticData.POCET_HOSPOD];
+	public static Cesta[] cestyPivovaru = new Cesta[StaticData.POCET_CEST_PIVOVARU];
+	public static Cesta[][] cestyPrekladist = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
+	public static Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
 	
 	public static void generujSouradniceACesty() {
 		generujPozicePrekladist();

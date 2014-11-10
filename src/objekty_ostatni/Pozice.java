@@ -1,4 +1,4 @@
-package semestralka;
+package objekty_ostatni;
 
 /**
  * Tøída pro vytváøení objektù uchovávajících souøadnice nìjakého místa v oblasti (hospoda / pøekladištì / pivovar).
@@ -7,8 +7,8 @@ package semestralka;
  */
 public class Pozice {
 
-	int x;
-	int y;
+	public int x;
+	public int y;
 	
 	/**
 	 * Kontruktor objektu.

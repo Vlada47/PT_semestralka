@@ -1,5 +1,10 @@
 package semestralka;
 
+import io.InputOutput;
+import generovani_dat.Generator;
+import generovani_dat.Matice;
+import gui.Window;
+
 //import java.util.Random;
 
 public class Main {

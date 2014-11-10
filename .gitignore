@@ -2,7 +2,7 @@
 .project
 .metadata
 data/*
-bin/semestralka/*
+bin/*
 tmp/**
 tmp/**/*
 *.tmp

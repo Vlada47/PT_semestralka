@@ -1,9 +1,11 @@
-package semestralka;
+package objekty_budovy;
+
+import objekty_ostatni.Pozice;
 
 public class HospodaTankova extends Budova {
 	
 	Pozice pozice;
-	int ID;
+	public int ID;
 	private int stavPiva;
 	public int casObjednani;
 	public int mnozstviObjednat;

@@ -1,4 +1,4 @@
-package semestralka;
+package objekty_ostatni;
 
 /**
  * Tøída pro uložení údajù o cestì mezi dvìma body (hospodami, pøekladišti...).

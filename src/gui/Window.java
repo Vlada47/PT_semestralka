@@ -1,10 +1,18 @@
-package semestralka;
+package gui;
+
+import generovani_dat.Matice;
+import io.CustomOutputStream;
+import io.InputOutput;
 
 import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.PrintStream;
 
 import javax.swing.*;
+
+import objekty_budovy.HospodaSudova;
+import objekty_budovy.Prekladiste;
+import simulace.Simulace;
 
 public class Window extends JFrame {
 

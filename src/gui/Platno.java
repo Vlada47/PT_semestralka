@@ -1,4 +1,7 @@
-package semestralka;
+package gui;
+
+import generovani_dat.Generator;
+import io.InputOutput;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -12,6 +15,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import objekty_budovy.HospodaSudova;
+import objekty_budovy.Prekladiste;
+import objekty_ostatni.Pozice;
 
 public class Platno extends JPanel {
 	public static final long serialVersionUID = 1L;

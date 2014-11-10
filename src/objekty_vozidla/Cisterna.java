@@ -1,4 +1,8 @@
-package semestralka;
+package objekty_vozidla;
+
+import objekty_budovy.HospodaTankova;
+import semestralka.StaticData;
+import simulace.Simulace;
 
 public class Cisterna {
 	

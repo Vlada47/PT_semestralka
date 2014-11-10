@@ -1,10 +1,20 @@
-package semestralka;
+package io;
+
+import generovani_dat.Generator;
+import gui.Window;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import objekty_budovy.HospodaSudova;
+import objekty_budovy.HospodaTankova;
+import objekty_budovy.Prekladiste;
+import objekty_ostatni.Cesta;
+import objekty_ostatni.Pozice;
+import semestralka.StaticData;
 
 /**
  * Tøída obsahující statické metody pro zápis generovaných dat do souboru a
