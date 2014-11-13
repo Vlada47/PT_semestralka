@@ -11,7 +11,12 @@ import java.io.PrintStream;
 import javax.swing.*;
 
 import objekty_budovy.HospodaSudova;
+import objekty_budovy.HospodaTankova;
+import objekty_budovy.Pivovar;
 import objekty_budovy.Prekladiste;
+import objekty_vozidla.Cisterna;
+import objekty_vozidla.Kamion;
+import objekty_vozidla.NakladniAuto;
 import simulace.Simulace;
 
 public class Window extends JFrame {
@@ -44,7 +49,8 @@ public class Window extends JFrame {
 		JButton aktualizace = new JButton("Aktualizuj data");
 		JButton mapa = new JButton("Vykresli rozmÌstÏnÌ");
 		JButton zacni = new JButton("Spusù simulaci");
-		JButton stav = new JButton("Stav hospod");
+		JButton stavBudov = new JButton("Stav budov");
+		JButton stavVozidel = new JButton("Stav vozidel");
 
 		mapa.addActionListener(new ActionListener() {
 
@@ -77,20 +83,76 @@ public class Window extends JFrame {
 			}
 		});
 
-		stav.addActionListener(new ActionListener() {
+		stavBudov.addActionListener(new ActionListener() {
 
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 				textArea.setText(null);
 				for (HospodaSudova hospoda : Simulace.sudoveHospody) {
-					if (hospoda.idPrekladiste != 8) {
-						System.out.println("Hospoda" + hospoda.ID + " ma " + hospoda.getPocetPlnychSudu()
-								+ " plnych a " + hospoda.getPocetPrazdnychSudu() + " prazdnych sudu");
-					}
+					System.out.println("Hospoda" + hospoda.ID + " (sudova) ma " + hospoda.getPocetPlnychSudu()
+							+ " plnych a " + hospoda.getPocetPrazdnychSudu() + " prazdnych sudu.");
 				}
+				
+				for (HospodaTankova hospoda : Simulace.tankoveHospody) {
+					System.out.println("Hospoda" + hospoda.ID + " (tankova) ma " + hospoda.getStavPiva() + " hektolitru piva k dispozici.");
+				}
+				
 				for (Prekladiste prekladiste : Simulace.prekladiste) {
 					System.out.println("Prekladiste" + prekladiste.getID() + " ma " + prekladiste.getPocetPlnychSudu() + " plnych a "
-							+ prekladiste.getPocetPrazdnychSudu() + " prazdnych sudu");
+							+ prekladiste.getPocetPrazdnychSudu() + " prazdnych sudu. "
+									+ "Pocet aut na ceste je "+prekladiste.autaNaCeste.size()+" a pocet dostupnych aut "+prekladiste.dostupnaAuta.size()+".");
+				}
+				
+				System.out.println("Pivovar ma " + Simulace.pivovar.getStavPiva() + " hektolitru piva k dispozici. "
+						+ "Pocet kamionu na ceste je "+Simulace.pivovar.kamionyNaCeste.size()+" a pocet dostupnych kamionu "+Simulace.pivovar.dostupneKamiony.size()+". "
+								+ "Pocet cisteren na ceste je "+Simulace.pivovar.cisternyNaCeste.size()+" a pocet dostupnych cisteren "+Simulace.pivovar.dostupneCisterny.size()+".");
+			}
+		});
+		
+		stavVozidel.addActionListener(new ActionListener() {
+			// @Override
+			public void actionPerformed(ActionEvent arg0) {
+				textArea.setText(null);
+					
+				for (Prekladiste p : Simulace.prekladiste) {
+					for(NakladniAuto a : p.autaNaCeste) {
+						
+						String kamJede = "";
+						if(a.getVzdalenostTam() <= 0) kamJede = "zpet do prekladiste";
+						else kamJede = "do hospody "+a.getCilovaHospoda();
+			
+						System.out.println("Nakladni auto "+a.getID()+" z prekladiste "+p.getID()+" je momentalne na ceste "+kamJede+" a ma nalozeno "
+								+a.getPocetPlnychSudu()+" plnych sudu a "+a.getPocetPrazdnychSudu()+" prazdnych sudu.");
+					}
+					for(NakladniAuto a : p.dostupnaAuta) {
+						System.out.println("Nakladni auto "+a.getID()+" z prekladiste "+p.getID()+" je momentalne v prekladisti a ma nalozeno "
+								+a.getPocetPlnychSudu()+" plnych sudu a "+a.getPocetPrazdnychSudu()+" prazdnych sudu.");
+					}
+				}
+				
+				Pivovar p = Simulace.pivovar;
+				
+				for(Kamion k : p.kamionyNaCeste) {
+					String kamJede = "";
+					if(k.getVzdalenostTam() <= 0) kamJede = "zpet do pivovaru";
+					else kamJede = "do prekladiste "+k.getCilovePrekladiste();
+					
+					System.out.println("Kamion "+k.getID()+" je momentalne na ceste "+kamJede+" a ma nalozeno "
+							+k.getPocetPlnychSudu()+" plnych sudu a "+k.getPocetPrazdnychSudu()+" prazdnych sudu.");
+				}
+				for(Kamion k : p.dostupneKamiony) {
+					System.out.println("Kamion "+k.getID()+" je momentalne v pivovaru a ma nalozeno "
+							+k.getPocetPlnychSudu()+" plnych sudu a "+k.getPocetPrazdnychSudu()+" prazdnych sudu.");
+				}
+				for(Cisterna c : p.cisternyNaCeste) {
+					String kamJede = "";
+					if(c.getVzdalenostTam() <= 0) kamJede = "zpet do pivovaru";
+					else kamJede = "do hospody "+c.getCilovaHospoda();
+					
+					System.out.println("Cisterna "+c.getID()+" je momentalne na ceste "+kamJede+" a ma naklad "+c.getNaklad()+" hektolitru piva.");
+				}
+				for(Cisterna c : p.dostupneCisterny) {
+					System.out.println("Cisterna "+c.getID()+" je momentalne v pivovaru a ma naklad "+c.getNaklad()+" hektolitru piva.");
 				}
 			}
 		});
@@ -98,7 +160,8 @@ public class Window extends JFrame {
 		buttonPanel.add(aktualizace);
 		buttonPanel.add(mapa);
 		buttonPanel.add(zacni);
-		buttonPanel.add(stav);
+		buttonPanel.add(stavBudov);
+		buttonPanel.add(stavVozidel);
 		frame.add(buttonPanel, BorderLayout.PAGE_END);
 	}
 

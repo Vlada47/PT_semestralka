@@ -25,13 +25,13 @@ public class StaticData {
 	
 	public static final int OBJEM_SUDU = 50;
 	
-	public static final int POCET_KAMIONU = 150;
+	public static final int POCET_KAMIONU = 250;
 	public static final int POCET_CISTEREN = 200;
 	public static final int POCET_AUT = 500;
 	
 	public static final int POMER_HOSPOD = 20;
 	
-	public static final int SIMULACE_MILIS = 1000;
+	public static final int SIMULACE_MILIS = 100;
 	
 	public static final int HODINA_OBJEDNAVEK = 10;
 	public static final double GAUSS_ROZSAH = 1.6;

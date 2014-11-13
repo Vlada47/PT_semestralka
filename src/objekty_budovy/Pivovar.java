@@ -27,10 +27,8 @@ public class Pivovar extends Budova {
 	private static Pivovar instance;
 
 	private Pivovar() {
-		this.stavPiva = this.DENNI_PRODUKCE;
+		this.stavPiva = 0;
 		this.pozice = new Pozice(StaticData.SOURADNICE_PIVOVARU_X,StaticData.SOURADNICE_PIVOVARU_Y);
-		
-		this.stavPiva = 7000;
 		
 		this.dostupneKamiony = new ArrayList<Kamion>();
 		this.kamionyNaCeste = new ArrayList<Kamion>();
@@ -70,7 +68,7 @@ public class Pivovar extends Budova {
 	
 	public void vyridObjednavku() {
 		Objednavka o = this.objednavkyHospod.get(0);
-		if(!(this.dostupneCisterny.isEmpty()) && o.getMnozstvi() <= this.stavPiva) {
+		if(!(this.dostupneCisterny.isEmpty()) && (o.getMnozstvi() <= this.stavPiva)) {
 			if(nalozObjednavku(o)) {
 				posliObjednavku(o);
 			}

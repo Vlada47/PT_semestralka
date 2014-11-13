@@ -85,15 +85,7 @@ public class Matice {
 	 */
 	public static void vytvorNejkratsiCesty() {
 		int[][] maticePredchudcu = vytvorMaticiPredchudcu(maticeSousednosti);
-		int perc = 0;
 		for (int k = 0; k < maticeSousednosti.length; k++) {
-			
-			double val = ((double)k / maticeSousednosti.length)*100;
-			if(val >= perc) {
-				System.out.println("Status vytvareni matice nejkratsich cest: "+perc+"%");
-				perc += 10;
-			}
-			
 	        for (int i = 0; i < maticeSousednosti.length; i++) {
 	            for (int j = 0; j < maticeSousednosti.length; j++) {
 	                if (maticeSousednosti[i][k] == Double.MAX_VALUE || maticeSousednosti[k][j] == Double.MAX_VALUE) {

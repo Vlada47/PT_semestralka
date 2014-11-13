@@ -151,4 +151,12 @@ public class NakladniAuto {
 		this.pocetPlnychSudu = 0;
 		return plneSudy;
 	}
+	
+	public int getPocetPlnychSudu() {
+		return this.pocetPlnychSudu;
+	}
+	
+	public int getPocetPrazdnychSudu() {
+		return this.pocetPrazdnychSudu;
+	}
 }

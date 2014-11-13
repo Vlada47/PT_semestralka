@@ -9,7 +9,6 @@ import objekty_budovy.HospodaSudova;
 import objekty_budovy.HospodaTankova;
 import objekty_budovy.Pivovar;
 import objekty_budovy.Prekladiste;
-import objekty_ostatni.Objednavka;
 import objekty_ostatni.Pozice;
 import semestralka.StaticData;
 
@@ -20,14 +19,14 @@ public class Simulace {
 	public static HospodaSudova[] sudoveHospody = InputOutput.nactiSudoveHospody();
 	public static HospodaTankova[] tankoveHospody = InputOutput.nactiTankoveHospody();
 	
-	static int i = 0;
+	static int den = 0;
+	static int hodina = 24;
 	static Timer timer;
 
 	static public void start() {
 
 		Window.textArea.setText(null);
 		najdiNejblizsiPrekladiste();
-		Objednavka.generujRozpisObjednavek();
 
 		timer = new Timer(StaticData.SIMULACE_MILIS, new MyTimerActionListener());
 		timer.start();

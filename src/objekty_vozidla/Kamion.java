@@ -135,4 +135,12 @@ public class Kamion {
 	private void vylozPlnySud() {
 		this.pocetPlnychSudu--;
 	}
+	
+	public int getPocetPlnychSudu() {
+		return this.pocetPlnychSudu;
+	}
+	
+	public int getPocetPrazdnychSudu() {
+		return this.pocetPrazdnychSudu;
+	}
 }

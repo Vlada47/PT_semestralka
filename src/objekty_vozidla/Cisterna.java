@@ -93,6 +93,8 @@ public class Cisterna {
 		this.indexCiloveHospody = indexHospody;
 	}
 	
+	
+	
 	public int getCilovaHospoda() {
 		return this.cilovaHospoda;
 	}
@@ -109,5 +111,9 @@ public class Cisterna {
 	
 	private void odcerpejHektolitr() {
 		this.naklad--;
+	}
+	
+	public int getNaklad() {
+		return this.naklad;
 	}
 }
