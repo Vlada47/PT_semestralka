@@ -122,13 +122,12 @@ public class Window extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				textArea.setText(null);
 				for (HospodaSudova hospoda : Simulace.sudoveHospody) {
-					System.out.println("Hospoda" + hospoda.ID + " (sudova) ma " + hospoda.getPocetPlnychSudu()
+					System.out.println("Hospoda" + hospoda.getID() + " (sudova) ma " + hospoda.getPocetPlnychSudu()
 							+ " plnych a " + hospoda.getPocetPrazdnychSudu() + " prazdnych sudu.");
 				}
 
 				for (HospodaTankova hospoda : Simulace.tankoveHospody) {
-					System.out.println("Hospoda" + hospoda.ID + " (tankova) ma " + hospoda.getStavPiva()
-							+ " hektolitru piva k dispozici.");
+					System.out.println("Hospoda" + hospoda.getID() + " (tankova) ma " + hospoda.getStavPiva() + " hektolitru piva k dispozici.");
 				}
 
 				for (Prekladiste prekladiste : Simulace.prekladiste) {
@@ -145,8 +144,9 @@ public class Window extends JFrame {
 						+ " a pocet dostupnych cisteren " + Simulace.pivovar.dostupneCisterny.size() + ".");
 			}
 		});
-
-		stavVozidel.addActionListener(new ActionListener() {
+		
+		/*stavVozidel.addActionListener(new ActionListener() {
+>>>>>>> zmeny v objednavani a rozesilani kamionu a cisteren
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 				textArea.setText(null);
@@ -204,7 +204,7 @@ public class Window extends JFrame {
 							+ c.getNaklad() + " hektolitru piva.");
 				}
 			}
-		});
+		});*/
 
 		buttonPanel.add(aktualizace);
 		buttonPanel.add(mapa);

@@ -1,6 +1,7 @@
 package simulace;
 
 import io.InputOutput;
+import generovani_dat.Generator;
 import gui.Window;
 
 import javax.swing.Timer;
@@ -19,14 +20,16 @@ public class Simulace {
 	public static HospodaSudova[] sudoveHospody = InputOutput.nactiSudoveHospody();
 	public static HospodaTankova[] tankoveHospody = InputOutput.nactiTankoveHospody();
 	
-	static int den = 0;
-	static int hodina = 24;
+
+	public static int den = 0;
+	public static int hodina = 24;
 	public static Timer timer;
 
 	static public void start() {
 
 		Window.textArea.setText(null);
 		najdiNejblizsiPrekladiste();
+		Generator.generujObjednavky();
 
 		timer = new Timer(StaticData.SIMULACE_MILIS, new MyTimerActionListener());
 		timer.start();
@@ -50,7 +53,7 @@ public class Simulace {
 
 				if (vzdalenost < nejblizsi) {
 					nejblizsi = vzdalenost;
-					hospoda.idPrekladiste = i;
+					hospoda.setIdPrekladiste(i);
 				}
 			}
 		}

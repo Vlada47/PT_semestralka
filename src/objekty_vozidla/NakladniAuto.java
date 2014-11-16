@@ -7,17 +7,18 @@ import simulace.Simulace;
 
 public class NakladniAuto {
 	
-	public final double RYCHLOST = 70;
-	public final int KAPACITA = 30;
+	public static final double RYCHLOST = 70;
+	public static final int KAPACITA = 30;
 	
-	private int ID;
+	private final int ID;
 	private int pocetPlnychSudu;
 	private int pocetPrazdnychSudu;
-	private double vzdalenostTam;
-	private double vzdalenostZpet;
-	private int startovniPrekladiste;
 	private int cilovaHospoda;
-	private int indexCiloveHospody;
+	private int startovniPrekladiste;
+	private int denDorazeniDoHospody;
+	private int hodinaDorazeniDoHospody;
+	private int denNavratuDoPrekladiste;
+	private int hodinaNavratuDoPrekladiste;
 	
 	public NakladniAuto(int ID) {
 		this.ID = ID;
@@ -25,131 +26,22 @@ public class NakladniAuto {
 		this.pocetPlnychSudu = 0;
 	}
 	
-	public void vykonejCestu() {
-		if(this.vzdalenostTam > 0) {
-			HospodaSudova h = Simulace.sudoveHospody[this.indexCiloveHospody];
-			double zbyvajiciCas = 1.0 - (this.vzdalenostTam / this.RYCHLOST);
-			
-			if(zbyvajiciCas <= 0) this.vzdalenostTam -= this.RYCHLOST;
-			else this.vzdalenostTam = 0.0;
-			
-			if(zbyvajiciCas > 0) {
-				for(int i = 0; i < this.pocetPlnychSudu; i++) {
-					vylozPlnySud();
-					h.pridejPlnySud();
-					zbyvajiciCas -= StaticData.HODIN_NA_SUD;
-					if(this.pocetPlnychSudu <= 0) System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo objednavku do hospody "+this.cilovaHospoda+".");
-					if(zbyvajiciCas <= 0) break;
-				}
-			}
-			
-			if(zbyvajiciCas > 0) {
-				for(int i = 0; i < h.getPocetPrazdnychSudu(); i++) {
-					h.odeberPrazdnySud();
-					nalozPrazdnySud();
-					zbyvajiciCas -= StaticData.HODIN_NA_SUD;
-					if(zbyvajiciCas <= 0) break;
-				}
-			}
-			
-			if(zbyvajiciCas > 0) {
-				this.vzdalenostZpet -= (this.RYCHLOST*zbyvajiciCas);
-			}
-			
-			if(zbyvajiciCas > 0) {
-				Prekladiste p = Simulace.prekladiste[this.startovniPrekladiste];
-				p.prijmiPrazdneSudy(vylozPrazdneSudy());
-				p.dostupnaAuta.add(this);
-				p.autaNaCeste.remove(this);
-			}
+	public void provedAkci() {
+		if((this.hodinaDorazeniDoHospody == Simulace.hodina) && (this.denDorazeniDoHospody == Simulace.den)) {
+			System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo "+this.pocetPlnychSudu+" sudu do hospody "+this.cilovaHospoda+".");
+			vylozPlneSudy();
+			nalozPrazdneSudy();
 		}
-		else {
-			HospodaSudova h = Simulace.sudoveHospody[this.indexCiloveHospody];
-			double zbyvajiciCas = 1.0;
-			
-			for(int i = 0; i < this.pocetPlnychSudu; i++) {
-				vylozPlnySud();
-				h.pridejPlnySud();
-				zbyvajiciCas -= StaticData.HODIN_NA_SUD;
-				if(this.pocetPlnychSudu <= 0) System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo objednavku do hospody "+this.cilovaHospoda+".");
-				if(zbyvajiciCas <= 0) break;
-			}
-			
-			if(zbyvajiciCas > 0) {
-				for(int i = 0; i < h.getPocetPrazdnychSudu(); i++) {
-					h.odeberPrazdnySud();
-					nalozPrazdnySud();
-					zbyvajiciCas -= StaticData.HODIN_NA_SUD;
-					if(zbyvajiciCas <= 0) break;
-				}
-			}
-			
-			if(zbyvajiciCas > 0) {
-				this.vzdalenostZpet -= (this.RYCHLOST*zbyvajiciCas);
-			}
-			
-			if(zbyvajiciCas > 0) {
-				Prekladiste p = Simulace.prekladiste[this.startovniPrekladiste];
-				p.prijmiPrazdneSudy(vylozPrazdneSudy());
-				p.dostupnaAuta.add(this);
-				p.autaNaCeste.remove(this);
-			}
+		if((this.hodinaNavratuDoPrekladiste == Simulace.hodina) && (this.denNavratuDoPrekladiste == Simulace.den)) {
+			System.out.println("Nakladni auto "+this.ID+" se vratilo do prekladiste "+this.startovniPrekladiste+".");
+			vylozPrazdneSudy();
+			Simulace.prekladiste[this.startovniPrekladiste].dostupnaAuta.add(this);
+			Simulace.prekladiste[this.startovniPrekladiste].autaNaCeste.remove(this);
 		}
 	}
 	
 	public int getID() {
 		return this.ID;
-	}
-	
-	public void setVzdalenost(double vzdalenost) {
-		this.vzdalenostTam = vzdalenost;
-		this.vzdalenostZpet = vzdalenost;
-	}
-	
-	public double getVzdalenostTam() {
-		return this.vzdalenostTam;
-	}
-	
-	public double vzdalenostZpet() {
-		return this.vzdalenostZpet;
-	}
-	
-	public void setStartCil(int IDPrekladiste, int IDHospoda, int indexHospody) {
-		this.startovniPrekladiste = IDPrekladiste;
-		this.cilovaHospoda = IDHospoda;
-		this.indexCiloveHospody = indexHospody;
-	}
-	
-	public int getCilovaHospoda() {
-		return this.cilovaHospoda;
-	}
-	
-	public int getStartovniPrekladiste() {
-		return this.startovniPrekladiste;
-	}
-	
-	public boolean nalozPlneSudy(int pocet) {
-		if(this.pocetPlnychSudu+pocet <= 30) {
-			this.pocetPlnychSudu += pocet;
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	private void nalozPrazdnySud() {
-		this.pocetPrazdnychSudu++;
-	}
-	
-	private void vylozPlnySud() {
-		this.pocetPlnychSudu--;
-	}
-	
-	private int vylozPrazdneSudy() {
-		int plneSudy = this.pocetPlnychSudu;
-		this.pocetPlnychSudu = 0;
-		return plneSudy;
 	}
 	
 	public int getPocetPlnychSudu() {
@@ -158,5 +50,87 @@ public class NakladniAuto {
 	
 	public int getPocetPrazdnychSudu() {
 		return this.pocetPrazdnychSudu;
+	}
+	
+	public void setCilovaHospoda(int cilovaHospoda) {
+		this.cilovaHospoda = cilovaHospoda;
+	}
+	
+	public int getCilovaHospoda() {
+		return this.cilovaHospoda;
+	}
+	
+	public void setStartovniPrekladiste(int startovniPrekladiste) {
+		this.startovniPrekladiste = startovniPrekladiste;
+	}
+	
+	public int getStartovniPrekladiste() {
+		return this.startovniPrekladiste;
+	}
+
+	public int getDenDorazeniDoHospody() {
+		return this.denDorazeniDoHospody;
+	}
+
+	public void setDenDorazeniDoHospody(int denDorazeniDoHospody) {
+		this.denDorazeniDoHospody = denDorazeniDoHospody;
+	}
+
+	public int getHodinaDorazeniDoHospody() {
+		return this.hodinaDorazeniDoHospody;
+	}
+
+	public void setHodinaDorazeniDoHospody(int hodinaDorazeniDoHospody) {
+		this.hodinaDorazeniDoHospody = hodinaDorazeniDoHospody;
+	}
+
+	public int getDenNavratuDoPrekladiste() {
+		return this.denNavratuDoPrekladiste;
+	}
+
+	public void setDenNavratuDoPrekladiste(int denNavratuDoPrekladiste) {
+		this.denNavratuDoPrekladiste = denNavratuDoPrekladiste;
+	}
+
+	public int getHodinaNavratuDoPrekladiste() {
+		return this.hodinaNavratuDoPrekladiste;
+	}
+
+	public void setHodinaNavratuDoPrekladiste(int hodinaNavratuDoPrekladiste) {
+		this.hodinaNavratuDoPrekladiste = hodinaNavratuDoPrekladiste;
+	}
+	
+	public void nalozPlneSudy(int pocet) {
+		this.pocetPlnychSudu += pocet;
+	}
+	
+	private void nalozPrazdneSudy() {
+		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody()];
+		int pocet = h.odeberPrazdneSudy();
+		this.pocetPrazdnychSudu += pocet;
+	}
+	
+	private void vylozPlneSudy() {
+		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody()];
+		h.pridejPlneSudy(this.pocetPlnychSudu);
+		this.pocetPlnychSudu = 0;
+	}
+	
+	private void vylozPrazdneSudy() {
+		Prekladiste p = Simulace.prekladiste[this.startovniPrekladiste];
+		p.prijmiPrazdneSudy(this.pocetPrazdnychSudu);
+		this.pocetPrazdnychSudu = 0;
+	}
+	
+	private int spocitejIndexHospody() {
+		int index = this.cilovaHospoda - 1;
+		int id = this.cilovaHospoda;
+		
+		while(id > StaticData.POMER_HOSPOD) {
+			index--;
+			id -= StaticData.POMER_HOSPOD;
+		}
+		
+		return index;
 	}
 }

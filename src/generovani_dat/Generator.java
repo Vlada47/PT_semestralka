@@ -2,10 +2,15 @@ package generovani_dat;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
+import objekty_budovy.HospodaSudova;
+import objekty_budovy.HospodaTankova;
 import objekty_ostatni.Cesta;
+import objekty_ostatni.Objednavka;
 import objekty_ostatni.Pozice;
 import semestralka.StaticData;
+import simulace.Simulace;
 
 /**
  * Trida obsahujici struktury pro ukladani generovanych dat o hospodach/prekladistich a cestach mezi nimi.
@@ -130,5 +135,55 @@ public class Generator {
 			}
 			cesty.clear();
 		}
-	}	
+	}
+	
+	public static void generujObjednavky() {
+		for(HospodaTankova h : Simulace.tankoveHospody) {
+			for(int i = 1; i <= 7; i++) {
+				int mnozstvi = vyberMnozstvi();
+				h.addDenniSpotreba(mnozstvi);
+				Objednavka o = new Objednavka(i, vyberCas(), h.getID(), 8, mnozstvi);
+				Simulace.pivovar.pridejObjednavku(o);
+			}
+		}
+		
+		for(HospodaSudova h : Simulace.sudoveHospody) {
+			for(int i = 1; i <= 7; i++) {
+				int mnozstvi = vyberMnozstvi();
+				h.addDenniSpotreba(mnozstvi);
+				Objednavka o = new Objednavka(i, vyberCas(), h.getID(), h.getIdPrekladiste(), mnozstvi);
+				Simulace.prekladiste[h.getIdPrekladiste()].pridejObjednavku(o);
+			}
+		}
+	}
+	
+	private static int vyberMnozstvi() {
+		Random r = new Random();
+		int generaceMnozstvi = r.nextInt(101);
+		int mnozstvi;
+		
+		if (generaceMnozstvi < 25)
+			mnozstvi = 1;
+		else if (generaceMnozstvi < 50)
+			mnozstvi = 2;
+		else if (generaceMnozstvi < 71)
+			mnozstvi = 3;
+		else if (generaceMnozstvi < 86)
+			mnozstvi = 4;
+		else if (generaceMnozstvi < 96)
+			mnozstvi = 5;
+		else
+			mnozstvi = 6;
+		
+		return mnozstvi;
+	}
+	
+	private static int vyberCas() {
+		Random r = new Random();
+		double cas = r.nextGaussian()*StaticData.GAUSS_ROZSAH + StaticData.HODINA_OBJEDNAVEK;
+		if(cas < 8) cas = 8.0;
+		if(cas > 16) cas = 16.0;
+		
+		return (int) Math.round(cas);
+	}
 }

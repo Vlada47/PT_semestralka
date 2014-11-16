@@ -1,28 +1,36 @@
 package objekty_budovy;
 
+import java.util.ArrayList;
+
 import objekty_ostatni.Pozice;
 
 public class HospodaTankova extends Budova {
 	
-	Pozice pozice;
-	public int ID;
+	private final Pozice pozice;
+	private final int ID;
 	private int stavPiva;
-	public int casObjednani;
-	public int mnozstviObjednat;
+	private ArrayList<Integer> denniSpotreba;
 	
 	public HospodaTankova(int ID, Pozice pozice) {
 		this.ID = ID;
 		this.pozice = pozice;
 		this.stavPiva = 6;
+		this.denniSpotreba = new ArrayList<Integer>();
 	}
 	
-	public void pridejHektolitr() {
-		this.stavPiva++;
-		this.mnozstviObjednat--;
+	public void spotrebujPivo(){
+		if(this.stavPiva < this.denniSpotreba.get(0)) {
+			System.err.println("Tankova hospoda "+this.ID+" nema dostatek piva!");
+			System.exit(1);
+		}
+		else {
+			this.stavPiva -= this.denniSpotreba.get(0);
+			this.denniSpotreba.remove(0);
+		}	
 	}
 	
-	public void spotrebuj(int mnozstvi){
-		this.stavPiva-=mnozstvi;	
+	public int getID() {
+		return this.getID();
 	}
 	
 	public int getStavPiva() {
@@ -32,10 +40,12 @@ public class HospodaTankova extends Budova {
 	public Pozice getPosition() {
 		return pozice;
 	}
-
-	@Override
-	public String toString() {
-		return "Hospoda [pozice=" + pozice + ", ID=" + ID + "]";
+	
+	public void addDenniSpotreba(int mnozstvi) {
+		this.denniSpotreba.add(mnozstvi);
 	}
-
+	
+	public void nacerpejPivo(int mnozstvi) {
+		this.stavPiva += mnozstvi;
+	}
 }
