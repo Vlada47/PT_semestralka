@@ -21,7 +21,7 @@ public class Simulace {
 	
 	static int den = 0;
 	static int hodina = 24;
-	static Timer timer;
+	public static Timer timer;
 
 	static public void start() {
 
