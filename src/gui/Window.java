@@ -51,8 +51,10 @@ public class Window extends JFrame {
 		JButton mapa = new JButton("Vykresli rozmÌstÏnÌ");
 		JButton zacni = new JButton("Spusù simulaci");
 		final JButton pozastav = new JButton("Pozastavit");
+		JButton objednej = new JButton("Objednej");
 		JButton stavBudov = new JButton("Stav budov");
 		JButton stavVozidel = new JButton("Stav vozidel");
+		
 
 		mapa.addActionListener(new ActionListener() {
 
@@ -104,6 +106,16 @@ public class Window extends JFrame {
 			}
 		});
 
+		objednej.addActionListener(new ActionListener() {
+
+			// @Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				new OknoObjednavky();
+
+			}
+		});
+		
 		stavBudov.addActionListener(new ActionListener() {
 
 			// @Override
@@ -198,6 +210,7 @@ public class Window extends JFrame {
 		buttonPanel.add(mapa);
 		buttonPanel.add(zacni);
 		buttonPanel.add(pozastav);
+		buttonPanel.add(objednej);
 		buttonPanel.add(stavBudov);
 		buttonPanel.add(stavVozidel);
 		frame.add(buttonPanel, BorderLayout.PAGE_END);
