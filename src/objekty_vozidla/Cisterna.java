@@ -19,6 +19,8 @@ public class Cisterna {
 	private int cilovaHospoda;
 	private int denDorazeniDoHospody;
 	private int hodinaDorazeniDoHospody;
+	private int denPrecerpaniPiva;
+	private int hodinaPrecerpaniPiva;
 	private int denNavratuDoPivovaru;
 	private int hodinaNavratuDoPivovaru;
 	
@@ -37,6 +39,8 @@ public class Cisterna {
 	public void provedAkci() {
 		if((this.hodinaDorazeniDoHospody == Simulace.hodina) && (this.denDorazeniDoHospody == Simulace.den)) {
 			System.out.println("Cisterna "+this.ID+" dovezla "+this.naklad+" hl piva do hospody "+this.cilovaHospoda+".");
+		}
+		if((this.hodinaPrecerpaniPiva == Simulace.hodina) && (this.denPrecerpaniPiva == Simulace.den)) {
 			odcerpejPivo();
 		}
 		if((this.hodinaNavratuDoPivovaru == Simulace.hodina) && (this.denNavratuDoPivovaru == Simulace.den)) {
@@ -78,11 +82,11 @@ public class Cisterna {
 		this.hodinaNavratuDoPivovaru = hodinaNavratuDoPivovaru;
 	}
 	
-	public int getDenDorazeniDoPrekladiste() {
+	public int getDenDorazeniDoHospody() {
 		return this.denDorazeniDoHospody;
 	}
 	
-	public int getHodinaDorazeniDoCile() {
+	public int getHodinaDorazeniDoHospody() {
 		return this.hodinaDorazeniDoHospody;
 	}
 	
@@ -92,6 +96,22 @@ public class Cisterna {
 	
 	public int getHodinaNavratuDoPivovaru() {
 		return this.hodinaNavratuDoPivovaru;
+	}
+	
+	public int getDenPrecerpaniPiva() {
+		return this.denPrecerpaniPiva;
+	}
+
+	public void setDenPrecerpaniPiva(int denPrecerpaniPiva) {
+		this.denPrecerpaniPiva = denPrecerpaniPiva;
+	}
+
+	public int getHodinaPrecerpaniPiva() {
+		return this.hodinaPrecerpaniPiva;
+	}
+
+	public void setHodinaPrecerpaniPiva(int hodinaPrecerpaniPiva) {
+		this.hodinaPrecerpaniPiva = hodinaPrecerpaniPiva;
 	}
 	
 	public void nacerpejPivo(int pocet) {

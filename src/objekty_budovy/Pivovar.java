@@ -98,7 +98,11 @@ public class Pivovar extends Budova {
 	 * @param p - objekt prekladiste, do ktereho se kamiony maji poslat
 	 */
 	private void odvozDoPrekladiste(Prekladiste p) {
-		for (int i = 0; i < StaticData.KAMIONY_K_VYSLANI; i++) {
+		
+		int pocetKamionuKVyslani = p.getPocetPozadovanychSudu() / Kamion.KAPACITA;
+		p.setPocetPozadovanychSudu(p.getPocetPozadovanychSudu() - (pocetKamionuKVyslani * Kamion.KAPACITA));
+
+		for (int i = 0; i < pocetKamionuKVyslani; i++) {
 			if(!(this.dostupneKamiony.isEmpty()) && ((Kamion.KAPACITA/2) <= (this.stavPiva))) {
 				this.stavPiva -= Kamion.KAPACITA/2;
 				Kamion k = this.dostupneKamiony.get(0);
@@ -114,6 +118,24 @@ public class Pivovar extends Budova {
 				System.exit(1);
 			}
 		}
+		
+		if(p.getPocetPozadovanychSudu() > 0) {
+			if(!(this.dostupneKamiony.isEmpty()) && ((Kamion.KAPACITA/2) <= (this.stavPiva))) {
+				this.stavPiva -= Kamion.KAPACITA/2;
+				Kamion k = this.dostupneKamiony.get(0);
+				k.nalozPlneSudy(p.getPocetPozadovanychSudu());
+				p.setPocetPozadovanychSudu(0);
+				
+				odesliKamionDoPrekladiste(k, p);
+				
+				this.dostupneKamiony.remove(0);
+				this.kamionyNaCeste.add(k);
+			}
+			else {
+				System.err.println("Nelze odeslat kamion se sudy do prekladiste "+p.getID()+" (nedostatek piva nebo dostupnych kamionu)!");
+				System.exit(1);
+			}
+		}	
 	}
 	
 	/**
@@ -125,25 +147,37 @@ public class Pivovar extends Budova {
 	private void odesliKamionDoPrekladiste(Kamion k, Prekladiste p) {
 		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, StaticData.POCET_HOSPOD+p.getID());
 		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
-		int dobaCesty = (int) Math.round(vzdalenost / Kamion.RYCHLOST);
+		double dobaCesty = vzdalenost / Kamion.RYCHLOST;
 		
 		int denDorazeniDoPrekladiste = Simulace.den;
-		int hodinaDorazeniDoPrekladiste = Simulace.hodina + dobaCesty;
-		while(hodinaDorazeniDoPrekladiste > 23) {
-			hodinaDorazeniDoPrekladiste -= 24;
+		double hodinaDorazeniDoPrekladisteD = Simulace.hodina + dobaCesty;
+		while(hodinaDorazeniDoPrekladisteD > 23) {
+			hodinaDorazeniDoPrekladisteD -= 24;
 			denDorazeniDoPrekladiste++;
 		}
+		int hodinaDorazeniDoPrekladiste = (int)Math.round(hodinaDorazeniDoPrekladisteD);
 		
-		int denNavratuDoPivovaru = denDorazeniDoPrekladiste;
-		int hodinaNavratuDoPivovaru = hodinaDorazeniDoPrekladiste + dobaCesty;
-		while(hodinaNavratuDoPivovaru > 23) {
-			hodinaNavratuDoPivovaru -= 24;
+		int denPrelozeniSudu = denDorazeniDoPrekladiste;
+		double hodinaPrelozeniSuduD = hodinaDorazeniDoPrekladisteD + (k.getPocetPlnychSudu()*StaticData.SUD_CAS);
+		while(hodinaPrelozeniSuduD > 23) {
+			hodinaPrelozeniSuduD -= 24;
+			denPrelozeniSudu++;
+		}
+		int hodinaPrelozeniSudu = (int)Math.round(hodinaDorazeniDoPrekladisteD);
+		
+		int denNavratuDoPivovaru = denPrelozeniSudu;
+		double hodinaNavratuDoPivovaruD = hodinaPrelozeniSuduD + dobaCesty;
+		while(hodinaNavratuDoPivovaruD > 23) {
+			hodinaNavratuDoPivovaruD -= 24;
 			denNavratuDoPivovaru++;
 		}
+		int hodinaNavratuDoPivovaru = (int)Math.round(hodinaNavratuDoPivovaruD);
 		
 		k.setCilovePrekladiste(p.getID());
 		k.setDenDorazeniDoPrekladiste(denDorazeniDoPrekladiste);
 		k.setHodinaDorazeniDoPrekladiste(hodinaDorazeniDoPrekladiste);
+		k.setDenPrelozeniSudu(denPrelozeniSudu);
+		k.setHodinaPrelozeniSudu(hodinaPrelozeniSudu);
 		k.setDenNavratuDoPivovaru(denNavratuDoPivovaru);
 		k.setHodinaNavratuDoPivovaru(hodinaNavratuDoPivovaru);
 	}
@@ -186,7 +220,7 @@ public class Pivovar extends Budova {
 	private void pripravObjednavku(Objednavka o) {
 		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, o.getIdObjednavajiciho());
 		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
-		int dobaCesty = (int) Math.round(vzdalenost / Cisterna.RYCHLOST);
+		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;
 		
 		if(((Simulace.hodina + dobaCesty) > StaticData.MAX_HODINA_OBJEDNANI) && (dobaCesty <= (StaticData.MAX_HODINA_OBJEDNANI - StaticData.MIN_HODINA_OBJEDNANI))) {
 			zmenDobuObjednani(o, Simulace.den+1, StaticData.MIN_HODINA_OBJEDNANI);
@@ -209,20 +243,29 @@ public class Pivovar extends Budova {
 	 * @param c - cisterna, do ktere se casy ukladaji
 	 * @param dobaCesty - doba cesty v hodinach
 	 */
-	private void vysliCisternuDoHospody(Cisterna c, int dobaCesty) {
+	private void vysliCisternuDoHospody(Cisterna c, double dobaCesty) {
 		
 		int denDorazeniDoHospody = Simulace.den;
-		int hodinaDorazeniDoHospody = Simulace.hodina + dobaCesty;
+		double hodinaDorazeniDoHospodyD = Simulace.hodina + dobaCesty;
+		int hodinaDorazeniDoHospody = (int)Math.round(hodinaDorazeniDoHospodyD);
+		
+		int denPrecerpaniPiva = denDorazeniDoHospody;
+		double hodinaPrecerpaniPivaD = hodinaDorazeniDoHospodyD + (c.getNaklad()*StaticData.HEKTOLITR_CAS);
+		int hodinaPrecerpaniPiva = (int)Math.round(hodinaPrecerpaniPivaD);
 		
 		int denNavratuDoPivovaru = denDorazeniDoHospody;
-		int hodinaNavratuDoPivovaru = hodinaDorazeniDoHospody + dobaCesty;
-		while(hodinaNavratuDoPivovaru > 23) {
-			hodinaNavratuDoPivovaru -= 24;
+		double hodinaNavratuDoPivovaruD = hodinaPrecerpaniPivaD + dobaCesty;
+		
+		while(hodinaNavratuDoPivovaruD > 23) {
+			hodinaNavratuDoPivovaruD -= 24;
 			denNavratuDoPivovaru++;
 		}
+		int hodinaNavratuDoPivovaru = (int)Math.round(hodinaNavratuDoPivovaruD);
 		
 		c.setDenDorazeniDoHospody(denDorazeniDoHospody);
 		c.setHodinaDorazeniDoHospody(hodinaDorazeniDoHospody);
+		c.setDenPrecerpaniPiva(denPrecerpaniPiva);
+		c.setHodinaPrecerpaniPiva(hodinaPrecerpaniPiva);
 		c.setDenNavratuDoPivovaru(denNavratuDoPivovaru);
 		c.setHodinaNavratuDoPivovaru(hodinaNavratuDoPivovaru);
 		

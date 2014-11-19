@@ -17,6 +17,8 @@ public class NakladniAuto {
 	private int startovniPrekladiste;
 	private int denDorazeniDoHospody;
 	private int hodinaDorazeniDoHospody;
+	private int denPrelozeniSudu;
+	private int hodinaPrelozeniSudu;
 	private int denNavratuDoPrekladiste;
 	private int hodinaNavratuDoPrekladiste;
 	
@@ -29,6 +31,8 @@ public class NakladniAuto {
 	public void provedAkci() {
 		if((this.hodinaDorazeniDoHospody == Simulace.hodina) && (this.denDorazeniDoHospody == Simulace.den)) {
 			System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo "+this.pocetPlnychSudu+" sudu do hospody "+this.cilovaHospoda+".");
+		}
+		if((this.hodinaPrelozeniSudu == Simulace.hodina) && (this.denPrelozeniSudu == Simulace.den)) {
 			vylozPlneSudy();
 			nalozPrazdneSudy();
 		}
@@ -82,6 +86,22 @@ public class NakladniAuto {
 
 	public void setHodinaDorazeniDoHospody(int hodinaDorazeniDoHospody) {
 		this.hodinaDorazeniDoHospody = hodinaDorazeniDoHospody;
+	}
+	
+	public int getDenPrelozeniSudu() {
+		return this.denPrelozeniSudu;
+	}
+
+	public void setDenPrelozeniSudu(int denPrelozeniSudu) {
+		this.denPrelozeniSudu = denPrelozeniSudu;
+	}
+
+	public int getHodinaPrelozeniSudu() {
+		return this.hodinaPrelozeniSudu;
+	}
+
+	public void setHodinaPrelozeniSudu(int hodinaPrelozeniSudu) {
+		this.hodinaPrelozeniSudu = hodinaPrelozeniSudu;
 	}
 
 	public int getDenNavratuDoPrekladiste() {

@@ -20,11 +20,7 @@ public class StaticData {
 	public static final int ROZMEZI_HOSPODY_X = 6; //vzdalenost mezi hospodami na ose x
 	public static final int ROZMEZI_HOSPODY_Y = 5; // vzdalenost mezi hospodami na ose y
 	
-	//public static final double HODIN_NA_SUD = 1.0/12.0;
-	//public static final double HODIN_NA_HEKTOLITR = 1.0/30.0;
-	
-	public static final int KAMIONY_K_VYSLANI = 15; //pocet kamionu, ktere se vyslou k jednomu prekladisti v urceny cas
-	public static final int POCET_KAMIONU = KAMIONY_K_VYSLANI*POCET_PREKLADIST*2; //
+	public static final int POCET_KAMIONU = 250; //pocet kamionu pivovaru
 	public static final int POCET_CISTEREN = 200; //pocet cisteren pivovaru
 	public static final int POCET_AUT = 475; //pocet aut pro jedno prekladiste
 	
@@ -37,4 +33,7 @@ public class StaticData {
 	
 	public static final int MAX_HODINA_OBJEDNANI = 16; //hodina, do ktere mohou byt vyrizovany objednavky
 	public static final int MIN_HODINA_OBJEDNANI = 8; //hodina, od ktere mohou byt vyrizovany objednavky
+	
+	public static final double SUD_CAS = 1.0 / 12.0; //cast hodiny, kterou zabere vylozeni nebo nalozeni jednoho sudu
+	public static final double HEKTOLITR_CAS = 1.0 / 30.0; //cast hodiny, kterou zabere precerpani jednoho hektolitru
 }

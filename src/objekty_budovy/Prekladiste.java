@@ -28,6 +28,7 @@ public class Prekladiste extends Budova{
 	public ArrayList<NakladniAuto> dostupnaAuta;
 	public ArrayList<NakladniAuto> autaNaCeste;
 	public ArrayList<Objednavka> objednavky;
+	private int pocetPozadovanychSudu;
 
 	public Prekladiste(int ID, Pozice pozice) {
 		this.ID = ID;
@@ -42,6 +43,8 @@ public class Prekladiste extends Budova{
 		for(int i = 0; i < StaticData.POCET_AUT; i++) {
 			this.dostupnaAuta.add(new NakladniAuto(i));
 		}
+		
+		this.setPocetPozadovanychSudu(0);
 	}
 	
 	public int getID() {
@@ -62,6 +65,14 @@ public class Prekladiste extends Budova{
 	
 	public void pridejObjednavku(Objednavka o) {
 		this.objednavky.add(o);
+	}
+	
+	public int getPocetPozadovanychSudu() {
+		return this.pocetPozadovanychSudu;
+	}
+
+	public void setPocetPozadovanychSudu(int pocetPozadovanychSudu) {
+		this.pocetPozadovanychSudu = pocetPozadovanychSudu;
 	}
 	
 	/**
@@ -102,13 +113,14 @@ public class Prekladiste extends Budova{
 	private void pripravObjednavku(Objednavka o) {
 		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+this.ID, o.getIdObjednavajiciho());
 		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
-		int dobaCesty = (int) Math.round(vzdalenost / Cisterna.RYCHLOST);
+		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;
 		
 		if(((Simulace.hodina + dobaCesty) > StaticData.MAX_HODINA_OBJEDNANI) && (dobaCesty <= (StaticData.MAX_HODINA_OBJEDNANI - StaticData.MIN_HODINA_OBJEDNANI))) {
 			zmenDobuObjednani(o, Simulace.den+1, StaticData.MIN_HODINA_OBJEDNANI);
 		}
 		else {
 			this.pocetPlnychSudu -= o.getMnozstvi();
+			this.pocetPozadovanychSudu += o.getMnozstvi();
 			NakladniAuto a = this.dostupnaAuta.get(0);
 			
 			a.nalozPlneSudy(o.getMnozstvi());
@@ -125,20 +137,30 @@ public class Prekladiste extends Budova{
 	 * @param a - auto, do ktere se casy ukladaji
 	 * @param dobaCesty - doba cesty v hodinach
 	 */
-	private void vysliAutoDoHospody(NakladniAuto a, int dobaCesty) {
+	private void vysliAutoDoHospody(NakladniAuto a, double dobaCesty) {
 		
 		int denDorazeniDoHospody = Simulace.den;
-		int hodinaDorazeniDoHospody = Simulace.hodina + dobaCesty;
+		double hodinaDorazeniDoHospodyD = Simulace.hodina + dobaCesty;
+		int hodinaDorazeniDoHospody = (int)Math.round(hodinaDorazeniDoHospodyD);
+		
+		int denPrelozeniSudu = denDorazeniDoHospody;
+		double hodinaPrelozeniSuduD = hodinaDorazeniDoHospodyD + (a.getPocetPlnychSudu()*StaticData.SUD_CAS);
+		int hodinaPrelozeniSudu = (int)Math.round(hodinaPrelozeniSuduD);
+		
 		
 		int denNavratuDoPrekladiste = denDorazeniDoHospody;
-		int hodinaNavratuDoPrekladiste = hodinaDorazeniDoHospody + dobaCesty;
-		while(hodinaNavratuDoPrekladiste > 23) {
-			hodinaNavratuDoPrekladiste -= 24;
+		double hodinaNavratuDoPrekladisteD = hodinaPrelozeniSuduD + dobaCesty;
+		
+		while(hodinaNavratuDoPrekladisteD > 23) {
+			hodinaNavratuDoPrekladisteD -= 24;
 			denNavratuDoPrekladiste++;
 		}
+		int hodinaNavratuDoPrekladiste = (int)Math.round(hodinaNavratuDoPrekladisteD);
 		
 		a.setDenDorazeniDoHospody(denDorazeniDoHospody);
 		a.setHodinaDorazeniDoHospody(hodinaDorazeniDoHospody);
+		a.setDenPrelozeniSudu(denPrelozeniSudu);
+		a.setHodinaPrelozeniSudu(hodinaPrelozeniSudu);
 		a.setDenNavratuDoPrekladiste(denNavratuDoPrekladiste);
 		a.setHodinaNavratuDoPrekladiste(hodinaNavratuDoPrekladiste);
 		

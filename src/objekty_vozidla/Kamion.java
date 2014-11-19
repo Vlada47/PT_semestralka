@@ -19,6 +19,8 @@ public class Kamion {
 	private int cilovePrekladiste;
 	private int denDorazeniDoPrekladiste;
 	private int hodinaDorazeniDoPrekladiste;
+	private int denPrelozeniSudu;
+	private int hodinaPrelozeniSudu;
 	private int denNavratuDoPivovaru;
 	private int hodinaNavratuDoPivovaru;
 	
@@ -38,6 +40,8 @@ public class Kamion {
 	public void provedAkci() {
 		if((this.hodinaDorazeniDoPrekladiste == Simulace.hodina) && (this.denDorazeniDoPrekladiste == Simulace.den)) {
 			System.out.println("Kamion "+this.ID+" dovezl svuj naklad sudu do prekladiste "+this.cilovePrekladiste+".");
+		}
+		if((this.hodinaPrelozeniSudu == Simulace.hodina) && (this.denPrelozeniSudu == Simulace.den)) {
 			vylozPlneSudy();
 			nalozPrazdneSudy();
 		}
@@ -99,6 +103,22 @@ public class Kamion {
 	
 	public int getHodinaNavratuDoPivovaru() {
 		return this.hodinaNavratuDoPivovaru;
+	}
+	
+	public int getDenPrelozeniSudu() {
+		return denPrelozeniSudu;
+	}
+
+	public void setDenPrelozeniSudu(int denPrelozeniSudu) {
+		this.denPrelozeniSudu = denPrelozeniSudu;
+	}
+
+	public int getHodinaPrelozeniSudu() {
+		return hodinaPrelozeniSudu;
+	}
+
+	public void setHodinaPrelozeniSudu(int hodinaPrelozeniSudu) {
+		this.hodinaPrelozeniSudu = hodinaPrelozeniSudu;
 	}
 	
 	public void nalozPlneSudy(int pocet) {
