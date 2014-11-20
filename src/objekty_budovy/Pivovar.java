@@ -19,11 +19,11 @@ public class Pivovar extends Budova {
 	public static final int DENNI_PRODUKCE = 7000;
 
 	private int stavPiva;
-	public ArrayList<Kamion> dostupneKamiony;
-	public ArrayList<Kamion> kamionyNaCeste;
-	public ArrayList<Cisterna> dostupneCisterny;
-	public ArrayList<Cisterna> cisternyNaCeste;
+	public ArrayList<Kamion> kamiony;
+	public ArrayList<Cisterna> cisterny;
 	public ArrayList<Objednavka> objednavkyHospod;
+	private int pocetKamionuNaCeste;
+	private int pocetCisterenNaCeste;
 
 	private static Pivovar instance;
 	
@@ -32,19 +32,20 @@ public class Pivovar extends Budova {
 	 */
 	private Pivovar() {
 		this.stavPiva = 0;
-		this.dostupneKamiony = new ArrayList<Kamion>();
-		this.kamionyNaCeste = new ArrayList<Kamion>();
-		this.dostupneCisterny = new ArrayList<Cisterna>();
-		this.cisternyNaCeste = new ArrayList<Cisterna>();
+		this.kamiony = new ArrayList<Kamion>();
+		this.cisterny = new ArrayList<Cisterna>();
 		this.objednavkyHospod = new ArrayList<Objednavka>();
 		
 		for(int i = 0; i < StaticData.POCET_KAMIONU; i++) {
-			this.dostupneKamiony.add(new Kamion(i));
+			this.kamiony.add(new Kamion(i));
 		}
 		
 		for(int i = 0; i < StaticData.POCET_CISTEREN; i++) {
-			this.dostupneCisterny.add(new Cisterna(i));
+			this.cisterny.add(new Cisterna(i));
 		}
+		
+		this.setPocetKamionuNaCeste(0);
+		this.setPocetCisterenNaCeste(0);
 	}
 	
 	/**
@@ -64,6 +65,22 @@ public class Pivovar extends Budova {
 	 */
 	public int getStavPiva() {
 		return this.stavPiva;
+	}
+	
+	public int getPocetKamionuNaCeste() {
+		return this.pocetKamionuNaCeste;
+	}
+
+	public void setPocetKamionuNaCeste(int pocetKamionuNaCeste) {
+		this.pocetKamionuNaCeste = pocetKamionuNaCeste;
+	}
+
+	public int getPocetCisterenNaCeste() {
+		return this.pocetCisterenNaCeste;
+	}
+
+	public void setPocetCisterenNaCeste(int pocetCisterenNaCeste) {
+		this.pocetCisterenNaCeste = pocetCisterenNaCeste;
 	}
 	
 	/**
@@ -103,15 +120,16 @@ public class Pivovar extends Budova {
 		p.setPocetPozadovanychSudu(p.getPocetPozadovanychSudu() - (pocetKamionuKVyslani * Kamion.KAPACITA));
 
 		for (int i = 0; i < pocetKamionuKVyslani; i++) {
-			if(!(this.dostupneKamiony.isEmpty()) && ((Kamion.KAPACITA/2) <= (this.stavPiva))) {
+			if(((this.kamiony.size()-this.pocetKamionuNaCeste) > 0) && ((Kamion.KAPACITA/2) <= (this.stavPiva))) {
 				this.stavPiva -= Kamion.KAPACITA/2;
-				Kamion k = this.dostupneKamiony.get(0);
+				Kamion k = this.kamiony.get(0);
+				for(int j = 0; j < this.kamiony.size(); j++) {
+					k = this.kamiony.get(j);
+					if(!(k.isNaCeste())) break;
+				}
 				k.nalozPlneSudy(Kamion.KAPACITA);
 				
 				odesliKamionDoPrekladiste(k, p);
-				
-				this.dostupneKamiony.remove(0);
-				this.kamionyNaCeste.add(k);
 			}
 			else {
 				System.err.println("Nelze odeslat kamion se sudy do prekladiste "+p.getID()+" (nedostatek piva nebo dostupnych kamionu)!");
@@ -120,16 +138,17 @@ public class Pivovar extends Budova {
 		}
 		
 		if(p.getPocetPozadovanychSudu() > 0) {
-			if(!(this.dostupneKamiony.isEmpty()) && ((Kamion.KAPACITA/2) <= (this.stavPiva))) {
+			if(((this.kamiony.size()-this.pocetKamionuNaCeste) > 0) && ((Kamion.KAPACITA/2) <= (this.stavPiva))) {
 				this.stavPiva -= Kamion.KAPACITA/2;
-				Kamion k = this.dostupneKamiony.get(0);
+				Kamion k = this.kamiony.get(0);
+				for(int j = 0; j < this.kamiony.size(); j++) {
+					k = this.kamiony.get(j);
+					if(!(k.isNaCeste())) break;
+				}
 				k.nalozPlneSudy(p.getPocetPozadovanychSudu());
 				p.setPocetPozadovanychSudu(0);
 				
 				odesliKamionDoPrekladiste(k, p);
-				
-				this.dostupneKamiony.remove(0);
-				this.kamionyNaCeste.add(k);
 			}
 			else {
 				System.err.println("Nelze odeslat kamion se sudy do prekladiste "+p.getID()+" (nedostatek piva nebo dostupnych kamionu)!");
@@ -180,6 +199,9 @@ public class Pivovar extends Budova {
 		k.setHodinaPrelozeniSudu(hodinaPrelozeniSudu);
 		k.setDenNavratuDoPivovaru(denNavratuDoPivovaru);
 		k.setHodinaNavratuDoPivovaru(hodinaNavratuDoPivovaru);
+		
+		k.setNaCeste(true);
+		this.pocetKamionuNaCeste++;
 	}
 	
 	/**
@@ -188,10 +210,10 @@ public class Pivovar extends Budova {
 	 * V opacnem pripade se objednavce nastavi novy cas - inkrementuje se o jednu hodinu... v pripade, ze prekroci maximalni povolenou mez (16 hodin),
 	 * je jako hodina nastavena minimalni mez (8 hodin) a inkrementuje se den. Metoda pak pokracuje dalsi objednavkou.
 	 */
-	public void zpracujObjednavky() {
+	public void zpracujObjednavky() {	
 		for(Objednavka o : this.objednavkyHospod) {
-			if((o.getCasObednani() == Simulace.hodina) && (o.getDenObednani() == Simulace.den)) {
-				if(!(this.dostupneCisterny.isEmpty()) && (o.getMnozstvi() <= this.stavPiva)) {
+			if((o.getCasObednani() == Simulace.hodina) && (o.getDenObednani() == Simulace.den) && !(o.isVyrizena())) {
+				if(((this.cisterny.size()-this.pocetCisterenNaCeste) > 0) && (o.getMnozstvi() <= this.stavPiva)) {
 					pripravObjednavku(o);
 				}
 				else {
@@ -227,11 +249,15 @@ public class Pivovar extends Budova {
 		}
 		else {
 			this.stavPiva -= o.getMnozstvi();
-			Cisterna c = this.dostupneCisterny.get(0);
-			
+			Cisterna c = this.cisterny.get(0);
+			for(int i = 0; i < this.cisterny.size(); i++) {
+				c = this.cisterny.get(i);
+				if(!(c.isNaCeste())) break;
+			}
 			c.nacerpejPivo(o.getMnozstvi());
 			c.setCilovaHospoda(o.getIdObjednavajiciho());
-			this.objednavkyHospod.remove(o);
+			//this.objednavkyHospod.remove(o);
+			o.setVyrizena(true);
 			
 			vysliCisternuDoHospody(c, dobaCesty);
 		}
@@ -269,8 +295,8 @@ public class Pivovar extends Budova {
 		c.setDenNavratuDoPivovaru(denNavratuDoPivovaru);
 		c.setHodinaNavratuDoPivovaru(hodinaNavratuDoPivovaru);
 		
-		this.dostupneCisterny.remove(c);
-		this.cisternyNaCeste.add(c);
+		c.setNaCeste(true);
+		this.pocetCisterenNaCeste++;
 	}
 	
 	/**

@@ -21,11 +21,13 @@ public class NakladniAuto {
 	private int hodinaPrelozeniSudu;
 	private int denNavratuDoPrekladiste;
 	private int hodinaNavratuDoPrekladiste;
+	private boolean naCeste;
 	
 	public NakladniAuto(int ID) {
 		this.ID = ID;
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
+		this.setNaCeste(false);
 	}
 	
 	public void provedAkci() {
@@ -39,8 +41,10 @@ public class NakladniAuto {
 		if((this.hodinaNavratuDoPrekladiste == Simulace.hodina) && (this.denNavratuDoPrekladiste == Simulace.den)) {
 			System.out.println("Nakladni auto "+this.ID+" se vratilo do prekladiste "+this.startovniPrekladiste+".");
 			vylozPrazdneSudy();
-			Simulace.prekladiste[this.startovniPrekladiste].dostupnaAuta.add(this);
-			Simulace.prekladiste[this.startovniPrekladiste].autaNaCeste.remove(this);
+			this.setNaCeste(false);
+			
+			Prekladiste p = Simulace.prekladiste[this.startovniPrekladiste];
+			p.setPocetAutNaCeste(p.getPocetAutNaCeste()-1);
 		}
 	}
 	
@@ -54,6 +58,14 @@ public class NakladniAuto {
 	
 	public int getPocetPrazdnychSudu() {
 		return this.pocetPrazdnychSudu;
+	}
+	
+	public boolean isNaCeste() {
+		return this.naCeste;
+	}
+
+	public void setNaCeste(boolean naCeste) {
+		this.naCeste = naCeste;
 	}
 	
 	public void setCilovaHospoda(int cilovaHospoda) {

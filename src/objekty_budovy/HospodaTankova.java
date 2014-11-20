@@ -1,5 +1,7 @@
 package objekty_budovy;
 
+import io.InputOutput;
+
 import java.util.ArrayList;
 
 import objekty_ostatni.Pozice;
@@ -21,6 +23,7 @@ public class HospodaTankova extends Budova {
 	public void spotrebujPivo(){
 		if(this.stavPiva < this.denniSpotreba.get(0)) {
 			System.err.println("Tankova hospoda "+this.ID+" nema dostatek piva!");
+			InputOutput.zapisVysledek();
 			System.exit(1);
 		}
 		else {
@@ -30,7 +33,7 @@ public class HospodaTankova extends Budova {
 	}
 	
 	public int getID() {
-		return this.getID();
+		return this.ID;
 	}
 	
 	public int getStavPiva() {

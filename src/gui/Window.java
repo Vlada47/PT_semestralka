@@ -133,15 +133,15 @@ public class Window extends JFrame {
 				for (Prekladiste prekladiste : Simulace.prekladiste) {
 					System.out.println("Prekladiste" + prekladiste.getID() + " ma " + prekladiste.getPocetPlnychSudu()
 							+ " plnych a " + prekladiste.getPocetPrazdnychSudu() + " prazdnych sudu. "
-							+ "Pocet aut na ceste je " + prekladiste.autaNaCeste.size() + " a pocet dostupnych aut "
-							+ prekladiste.dostupnaAuta.size() + ".");
+							+ "Pocet aut na ceste je " + prekladiste.nakladniAuta.size() + " a pocet dostupnych aut "
+							+ prekladiste.nakladniAuta.size() + ".");
 				}
 
 				System.out.println("Pivovar ma " + Simulace.pivovar.getStavPiva() + " hektolitru piva k dispozici. "
-						+ "Pocet kamionu na ceste je " + Simulace.pivovar.kamionyNaCeste.size()
-						+ " a pocet dostupnych kamionu " + Simulace.pivovar.dostupneKamiony.size() + ". "
-						+ "Pocet cisteren na ceste je " + Simulace.pivovar.cisternyNaCeste.size()
-						+ " a pocet dostupnych cisteren " + Simulace.pivovar.dostupneCisterny.size() + ".");
+						+ "Pocet kamionu na ceste je " + Simulace.pivovar.kamiony.size()
+						+ " a pocet dostupnych kamionu " + Simulace.pivovar.kamiony.size() + ". "
+						+ "Pocet cisteren na ceste je " + Simulace.pivovar.cisterny.size()
+						+ " a pocet dostupnych cisteren " + Simulace.pivovar.kamiony.size() + ".");
 			}
 		});
 		

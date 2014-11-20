@@ -1,5 +1,7 @@
 package objekty_budovy;
 
+import io.InputOutput;
+
 import java.util.ArrayList;
 
 import objekty_ostatni.Pozice;
@@ -24,6 +26,7 @@ public class HospodaSudova extends Budova {
 	public void spotrebujPivo(){
 		if(this.pocetPlnychSudu < this.denniSpotreba.get(0)) {
 			System.err.println("Sudova hospoda "+this.ID+" nema dostatek piva!");
+			InputOutput.zapisVysledek();
 			System.exit(1);
 		}
 		else {

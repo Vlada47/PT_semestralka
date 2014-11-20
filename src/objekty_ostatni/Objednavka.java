@@ -12,6 +12,7 @@ public class Objednavka {
 	private final int idObjednavajiciho;
 	private final int mnozstvi;
 	private final int idPrekladiste;
+	private boolean vyrizena;
 	
 	/**
 	 * Konstruktor objektu Objednavka. Dochazi zde k vlozeni potrebnych atributu. 
@@ -28,6 +29,7 @@ public class Objednavka {
 		this.idObjednavajiciho = idObjednavajiciho;
 		this.idPrekladiste = idPrekladiste;
 		this.mnozstvi = mnozstvi;
+		this.vyrizena = false;
 	}
 	
 	public void setDenObednani(int den) {
@@ -56,5 +58,13 @@ public class Objednavka {
 
 	public int getIdPrekladiste() {
 		return idPrekladiste;
+	}
+
+	public boolean isVyrizena() {
+		return this.vyrizena;
+	}
+
+	public void setVyrizena(boolean vyrizena) {
+		this.vyrizena = vyrizena;
 	}
 }

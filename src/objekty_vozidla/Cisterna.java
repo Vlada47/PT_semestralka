@@ -1,6 +1,7 @@
 package objekty_vozidla;
 
 import objekty_budovy.HospodaTankova;
+import objekty_budovy.Pivovar;
 import semestralka.StaticData;
 import simulace.Simulace;
 
@@ -23,6 +24,7 @@ public class Cisterna {
 	private int hodinaPrecerpaniPiva;
 	private int denNavratuDoPivovaru;
 	private int hodinaNavratuDoPivovaru;
+	private boolean naCeste;
 	
 	/**
 	 * Konstruktor objektu Cisterna - nastavuje se zde ID podle vstupu a mnozstvi piva na 0.
@@ -31,6 +33,7 @@ public class Cisterna {
 	public Cisterna(int ID) {
 		this.ID = ID;
 		this.naklad = 0;
+		this.setNaCeste(false);
 	}
 	
 	/**
@@ -45,8 +48,10 @@ public class Cisterna {
 		}
 		if((this.hodinaNavratuDoPivovaru == Simulace.hodina) && (this.denNavratuDoPivovaru == Simulace.den)) {
 			System.out.println("Cisterna "+this.ID+" se vratila do pivovaru.");
-			Simulace.pivovar.dostupneCisterny.add(this);
-			Simulace.pivovar.cisternyNaCeste.remove(this);
+			this.setNaCeste(false);
+			
+			Pivovar p = Simulace.pivovar;
+			p.setPocetCisterenNaCeste(p.getPocetCisterenNaCeste()-1);
 		}
 	}
 	
@@ -56,6 +61,14 @@ public class Cisterna {
 	
 	public int getNaklad() {
 		return this.naklad;
+	}
+	
+	public boolean isNaCeste() {
+		return this.naCeste;
+	}
+
+	public void setNaCeste(boolean naCeste) {
+		this.naCeste = naCeste;
 	}
 	
 	public void setCilovaHospoda(int IDHospoda) {
@@ -119,7 +132,7 @@ public class Cisterna {
 	}
 	
 	private void odcerpejPivo() {
-		int index = this.cilovaHospoda % StaticData.POMER_HOSPOD;
+		int index = this.cilovaHospoda / StaticData.POMER_HOSPOD;
 		HospodaTankova h = Simulace.tankoveHospody[index];
 		h.nacerpejPivo(this.naklad);
 		this.naklad = 0;

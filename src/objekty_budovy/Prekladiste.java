@@ -25,10 +25,10 @@ public class Prekladiste extends Budova{
 	private final Pozice pozice;
 	private int pocetPlnychSudu;
 	private int pocetPrazdnychSudu;
-	public ArrayList<NakladniAuto> dostupnaAuta;
-	public ArrayList<NakladniAuto> autaNaCeste;
+	public ArrayList<NakladniAuto> nakladniAuta;
 	public ArrayList<Objednavka> objednavky;
 	private int pocetPozadovanychSudu;
+	private int pocetAutNaCeste;
 
 	public Prekladiste(int ID, Pozice pozice) {
 		this.ID = ID;
@@ -36,15 +36,15 @@ public class Prekladiste extends Budova{
 		this.pocetPlnychSudu = KAPACITA;
 		this.pocetPrazdnychSudu = 0;
 		
-		this.dostupnaAuta = new ArrayList<NakladniAuto>();
-		this.autaNaCeste = new ArrayList<NakladniAuto>();
+		this.nakladniAuta = new ArrayList<NakladniAuto>();
 		this.objednavky = new ArrayList<Objednavka>();
 		
 		for(int i = 0; i < StaticData.POCET_AUT; i++) {
-			this.dostupnaAuta.add(new NakladniAuto(i));
+			this.nakladniAuta.add(new NakladniAuto(i));
 		}
 		
 		this.setPocetPozadovanychSudu(0);
+		this.setPocetAutNaCeste(0);
 	}
 	
 	public int getID() {
@@ -53,6 +53,14 @@ public class Prekladiste extends Budova{
 
 	public Pozice getPosition() {
 		return pozice;
+	}
+	
+	public int getPocetAutNaCeste() {
+		return this.pocetAutNaCeste;
+	}
+
+	public void setPocetAutNaCeste(int pocetAutNaCeste) {
+		this.pocetAutNaCeste = pocetAutNaCeste;
 	}
 	
 	public int getPocetPlnychSudu() {
@@ -83,8 +91,8 @@ public class Prekladiste extends Budova{
 	 */
 	public void zpracujObjednavky() {
 		for(Objednavka o : this.objednavky) {
-			if((o.getCasObednani() == Simulace.hodina) && (o.getDenObednani() == Simulace.den)) {
-				if(!(this.dostupnaAuta.isEmpty()) && (o.getMnozstvi() <= this.pocetPlnychSudu)) {
+			if((o.getCasObednani() == Simulace.hodina) && (o.getDenObednani() == Simulace.den) && !(o.isVyrizena())) {
+				if(!(this.nakladniAuta.isEmpty()) && (o.getMnozstvi() <= this.pocetPlnychSudu)) {
 					pripravObjednavku(o);
 				}
 				else {
@@ -121,11 +129,15 @@ public class Prekladiste extends Budova{
 		else {
 			this.pocetPlnychSudu -= o.getMnozstvi();
 			this.pocetPozadovanychSudu += o.getMnozstvi();
-			NakladniAuto a = this.dostupnaAuta.get(0);
-			
+			NakladniAuto a = this.nakladniAuta.get(0);
+			for(int i = 0; i < nakladniAuta.size(); i++) {
+				a = this.nakladniAuta.get(i);
+				if(!(a.isNaCeste())) break;
+			}
 			a.nalozPlneSudy(o.getMnozstvi());
 			a.setCilovaHospoda(o.getIdObjednavajiciho());
-			this.objednavky.remove(o);
+			//this.objednavky.remove(o);
+			o.setVyrizena(true);
 			
 			vysliAutoDoHospody(a, dobaCesty);
 		}
@@ -164,8 +176,8 @@ public class Prekladiste extends Budova{
 		a.setDenNavratuDoPrekladiste(denNavratuDoPrekladiste);
 		a.setHodinaNavratuDoPrekladiste(hodinaNavratuDoPrekladiste);
 		
-		this.dostupnaAuta.remove(a);
-		this.autaNaCeste.add(a);
+		a.setNaCeste(true);
+		this.pocetAutNaCeste++;
 	}
 	
 	

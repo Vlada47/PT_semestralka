@@ -1,5 +1,6 @@
 package objekty_vozidla;
 
+import objekty_budovy.Pivovar;
 import objekty_budovy.Prekladiste;
 import simulace.Simulace;
 
@@ -23,6 +24,7 @@ public class Kamion {
 	private int hodinaPrelozeniSudu;
 	private int denNavratuDoPivovaru;
 	private int hodinaNavratuDoPivovaru;
+	private boolean naCeste;
 	
 	/**
 	 * Konstruktor objektu Kamion - nastavuje se zde ID podle vstupu a pocty plnych i prazdnych sudu na 0.
@@ -32,6 +34,7 @@ public class Kamion {
 		this.ID = ID;
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
+		this.setNaCeste(false);
 	}
 	
 	/**
@@ -44,12 +47,15 @@ public class Kamion {
 		if((this.hodinaPrelozeniSudu == Simulace.hodina) && (this.denPrelozeniSudu == Simulace.den)) {
 			vylozPlneSudy();
 			nalozPrazdneSudy();
+			System.out.println("Kamion "+this.ID+" prelozil sudy v prekladisti "+this.cilovePrekladiste+".");
 		}
 		if((this.hodinaNavratuDoPivovaru == Simulace.hodina) && (this.denNavratuDoPivovaru == Simulace.den)) {
 			System.out.println("Kamion "+this.ID+" se vratil do pivovaru");
 			vylozPrazdneSudy();
-			Simulace.pivovar.dostupneKamiony.add(this);
-			Simulace.pivovar.kamionyNaCeste.remove(this);
+			this.setNaCeste(false);
+			
+			Pivovar p = Simulace.pivovar;
+			p.setPocetKamionuNaCeste(p.getPocetKamionuNaCeste()-1);
 		}
 	}
 	
@@ -63,7 +69,15 @@ public class Kamion {
 	
 	public int getPocetPrazdnychSudu() {
 		return this.pocetPrazdnychSudu;
-	}	
+	}
+	
+	public boolean isNaCeste() {
+		return this.naCeste;
+	}
+
+	public void setNaCeste(boolean naCeste) {
+		this.naCeste = naCeste;
+	}
 	
 	public void setCilovePrekladiste(int IDPrekladiste) {
 		this.cilovePrekladiste = IDPrekladiste;

@@ -11,6 +11,7 @@ import objekty_budovy.Prekladiste;
 import objekty_vozidla.Cisterna;
 import objekty_vozidla.Kamion;
 import objekty_vozidla.NakladniAuto;
+import semestralka.StaticData;
 
 class MyTimerActionListener implements ActionListener {
 
@@ -30,9 +31,10 @@ class MyTimerActionListener implements ActionListener {
 		System.out.println("Je "+ Simulace.den +". den " + Simulace.hodina + ":00");
 		System.out.println("");
 		
-		if(Simulace.hodina == 16) spotrebujPivo();
-		provedObjenavky();
+		
+		provedObjednavky();
 		provedAkciVozidel();
+		if(Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI) spotrebujPivo();
 		
 		tiskniStav();
 		
@@ -40,36 +42,54 @@ class MyTimerActionListener implements ActionListener {
 	}
 	
 	private void spotrebujPivo() {
-		for(HospodaSudova h : Simulace.sudoveHospody) h.spotrebujPivo();
-		for(HospodaTankova h : Simulace.tankoveHospody) h.spotrebujPivo();
+		for(HospodaSudova h : Simulace.sudoveHospody) {
+			h.spotrebujPivo();
+		}
+		
+		for(HospodaTankova h : Simulace.tankoveHospody){
+			h.spotrebujPivo();
+		}
 	}
 
-	private void provedObjenavky() {
+	private void provedObjednavky() {
 		Simulace.pivovar.zpracujObjednavky();
-		for(Prekladiste p : Simulace.prekladiste) p.zpracujObjednavky();
+		
+		for(Prekladiste p : Simulace.prekladiste) {
+			p.zpracujObjednavky();
+		}
 		
 		if(Simulace.hodina == 16) {
+			System.out.println("Zahajen rozvoz sudu do prekladist.");
 			Simulace.pivovar.rozvozDoPrekladist();
 		}
 	}
 	
 	private void provedAkciVozidel() {
-		for(Kamion k : Simulace.pivovar.kamionyNaCeste) k.provedAkci();
-		for(Cisterna c : Simulace.pivovar.cisternyNaCeste) c.provedAkci();
-		for(Prekladiste p : Simulace.prekladiste) for(NakladniAuto a : p.autaNaCeste) a.provedAkci();
+		for(Kamion k : Simulace.pivovar.kamiony) {
+			if(k.isNaCeste()) {
+				k.provedAkci();
+			}
+		}
+		for(Cisterna c : Simulace.pivovar.cisterny) {
+			if(c.isNaCeste()) {
+				c.provedAkci();
+			}
+		}
+		
+		for(Prekladiste p : Simulace.prekladiste) {
+			for(NakladniAuto a : p.nakladniAuta) {
+				if(a.isNaCeste()) {
+					a.provedAkci();
+				}
+			}
+		}
 	}
 	
 	private void tiskniStav() {
 		System.out.println("");
 		System.out.println("Mnozstvi piva v pivovaru: "+Simulace.pivovar.getStavPiva()+" hektolitru.");
-		System.out.println("Pocet kamionu na ceste: "+Simulace.pivovar.kamionyNaCeste.size()+".");
-		System.out.println("Pocet dostupnych kamionu: "+Simulace.pivovar.dostupneKamiony.size()+".");
-		System.out.println("Pocet cisteren na ceste: "+Simulace.pivovar.cisternyNaCeste.size()+".");
-		System.out.println("Pocet dostupnych cisteren: "+Simulace.pivovar.dostupneCisterny.size()+".");
 		for(Prekladiste p : Simulace.prekladiste) {
 			System.out.println("Mnozstvi plnych sudu v prekladisti "+p.getID()+": "+p.getPocetPlnychSudu()+". Mnozstvi prazdnych sudu: "+p.getPocetPrazdnychSudu()+".");
-			System.out.println("Pocet nakladnich aut z prekladiste "+p.getID()+" na ceste: "+p.autaNaCeste.size()+".");
-			System.out.println("Pocet dostupnych nakladnich aut z prekladiste "+p.getID()+": "+p.dostupnaAuta.size()+".");
 		}
 		System.out.println("");
 	}
