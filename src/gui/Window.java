@@ -133,78 +133,55 @@ public class Window extends JFrame {
 				for (Prekladiste prekladiste : Simulace.prekladiste) {
 					System.out.println("Prekladiste" + prekladiste.getID() + " ma " + prekladiste.getPocetPlnychSudu()
 							+ " plnych a " + prekladiste.getPocetPrazdnychSudu() + " prazdnych sudu. "
-							+ "Pocet aut na ceste je " + prekladiste.nakladniAuta.size() + " a pocet dostupnych aut "
-							+ prekladiste.nakladniAuta.size() + ".");
+							+ "Pocet aut na ceste je " + prekladiste.getPocetAutNaCeste() + " a pocet dostupnych aut "
+							+ (prekladiste.nakladniAuta.size() - prekladiste.getPocetAutNaCeste()) + ".");
 				}
 
 				System.out.println("Pivovar ma " + Simulace.pivovar.getStavPiva() + " hektolitru piva k dispozici. "
-						+ "Pocet kamionu na ceste je " + Simulace.pivovar.kamiony.size()
-						+ " a pocet dostupnych kamionu " + Simulace.pivovar.kamiony.size() + ". "
-						+ "Pocet cisteren na ceste je " + Simulace.pivovar.cisterny.size()
-						+ " a pocet dostupnych cisteren " + Simulace.pivovar.kamiony.size() + ".");
+						+ "Pocet kamionu na ceste je " + Simulace.pivovar.getPocetKamionuNaCeste()
+						+ " a pocet dostupnych kamionu " + (Simulace.pivovar.kamiony.size() - Simulace.pivovar.getPocetKamionuNaCeste()) + ". "
+						+ "Pocet cisteren na ceste je " + Simulace.pivovar.getPocetCisterenNaCeste()
+						+ " a pocet dostupnych cisteren " + (Simulace.pivovar.kamiony.size() - Simulace.pivovar.getPocetCisterenNaCeste()) + ".");
 			}
 		});
 		
-		/*stavVozidel.addActionListener(new ActionListener() {
->>>>>>> zmeny v objednavani a rozesilani kamionu a cisteren
+		stavVozidel.addActionListener(new ActionListener() {
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 				textArea.setText(null);
 
 				for (Prekladiste p : Simulace.prekladiste) {
-					for (NakladniAuto a : p.autaNaCeste) {
-
-						String kamJede = "";
-						if (a.getVzdalenostTam() <= 0)
-							kamJede = "zpet do prekladiste";
-						else
-							kamJede = "do hospody " + a.getCilovaHospoda();
-
-						System.out.println("Nakladni auto " + a.getID() + " z prekladiste " + p.getID()
-								+ " je momentalne na ceste " + kamJede + " a ma nalozeno " + a.getPocetPlnychSudu()
-								+ " plnych sudu a " + a.getPocetPrazdnychSudu() + " prazdnych sudu.");
-					}
-					for (NakladniAuto a : p.dostupnaAuta) {
-						System.out.println("Nakladni auto " + a.getID() + " z prekladiste " + p.getID()
-								+ " je momentalne v prekladisti a ma nalozeno " + a.getPocetPlnychSudu()
-								+ " plnych sudu a " + a.getPocetPrazdnychSudu() + " prazdnych sudu.");
+					for (NakladniAuto a : p.nakladniAuta) {
+						if(a.isNaCeste()) {
+							System.out.println("Nakladni auto "+a.getID()+" z prekladiste "+a.getStartovniPrekladiste()+" je na ceste a veze "+a.getPocetPlnychSudu()+" plnych sudu a "+a.getPocetPrazdnychSudu()+" prazdnych sudu.");
+						}
+						else {
+							System.out.println("Nakladni auto "+a.getID()+" je k dispozici v prekladisti "+p.getID()+".");
+						}
 					}
 				}
 
 				Pivovar p = Simulace.pivovar;
 
-				for (Kamion k : p.kamionyNaCeste) {
-					String kamJede = "";
-					if (k.getVzdalenostTam() <= 0)
-						kamJede = "zpet do pivovaru";
-					else
-						kamJede = "do prekladiste " + k.getCilovePrekladiste();
-
-					System.out.println("Kamion " + k.getID() + " je momentalne na ceste " + kamJede + " a ma nalozeno "
-							+ k.getPocetPlnychSudu() + " plnych sudu a " + k.getPocetPrazdnychSudu()
-							+ " prazdnych sudu.");
+				for (Kamion k : p.kamiony) {
+					if(k.isNaCeste()) {
+						System.out.println("Kamion "+k.getID()+" je na ceste a veze "+k.getPocetPlnychSudu()+" plnych sudu a "+k.getPocetPrazdnychSudu()+" prazdnych sudu.");
+					}
+					else {
+						System.out.println("Kamion "+k.getID()+" je k dispozici v pivovaru.");
+					}
 				}
-				for (Kamion k : p.dostupneKamiony) {
-					System.out.println("Kamion " + k.getID() + " je momentalne v pivovaru a ma nalozeno "
-							+ k.getPocetPlnychSudu() + " plnych sudu a " + k.getPocetPrazdnychSudu()
-							+ " prazdnych sudu.");
-				}
-				for (Cisterna c : p.cisternyNaCeste) {
-					String kamJede = "";
-					if (c.getVzdalenostTam() <= 0)
-						kamJede = "zpet do pivovaru";
-					else
-						kamJede = "do hospody " + c.getCilovaHospoda();
-
-					System.out.println("Cisterna " + c.getID() + " je momentalne na ceste " + kamJede + " a ma naklad "
-							+ c.getNaklad() + " hektolitru piva.");
-				}
-				for (Cisterna c : p.dostupneCisterny) {
-					System.out.println("Cisterna " + c.getID() + " je momentalne v pivovaru a ma naklad "
-							+ c.getNaklad() + " hektolitru piva.");
+					
+				for (Cisterna c : p.cisterny) {
+					if(c.isNaCeste()) {
+						System.out.println("Cisterna "+c.getID()+" je na ceste a veze "+c.getNaklad()+" hektolitru piva.");
+					}
+					else {
+						System.out.println("Cisterna "+c.getID()+" je k dispozici v pivovaru.");
+					}	
 				}
 			}
-		});*/
+		});
 
 		buttonPanel.add(aktualizace);
 		buttonPanel.add(mapa);

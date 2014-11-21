@@ -182,7 +182,7 @@ public class Pivovar extends Budova {
 			hodinaPrelozeniSuduD -= 24;
 			denPrelozeniSudu++;
 		}
-		int hodinaPrelozeniSudu = (int)Math.round(hodinaDorazeniDoPrekladisteD);
+		int hodinaPrelozeniSudu = (int)Math.round(hodinaPrelozeniSuduD);
 		
 		int denNavratuDoPivovaru = denPrelozeniSudu;
 		double hodinaNavratuDoPivovaruD = hodinaPrelozeniSuduD + dobaCesty;
@@ -202,6 +202,7 @@ public class Pivovar extends Budova {
 		
 		k.setNaCeste(true);
 		this.pocetKamionuNaCeste++;
+		System.out.println("Kamion "+k.getID()+" vyrazil do prekladiste "+k.getCilovePrekladiste()+".");
 	}
 	
 	/**
@@ -256,7 +257,6 @@ public class Pivovar extends Budova {
 			}
 			c.nacerpejPivo(o.getMnozstvi());
 			c.setCilovaHospoda(o.getIdObjednavajiciho());
-			//this.objednavkyHospod.remove(o);
 			o.setVyrizena(true);
 			
 			vysliCisternuDoHospody(c, dobaCesty);
@@ -297,6 +297,7 @@ public class Pivovar extends Budova {
 		
 		c.setNaCeste(true);
 		this.pocetCisterenNaCeste++;
+		System.out.println("Cisterna "+c.getID()+" vyrazila do hospody "+c.getCilovaHospoda()+".");
 	}
 	
 	/**

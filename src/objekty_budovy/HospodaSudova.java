@@ -31,6 +31,7 @@ public class HospodaSudova extends Budova {
 		}
 		else {
 			this.pocetPlnychSudu -= this.denniSpotreba.get(0);
+			this.pocetPrazdnychSudu += this.denniSpotreba.get(0);
 			this.denniSpotreba.remove(0);
 		}	
 	}

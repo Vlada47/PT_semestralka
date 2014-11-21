@@ -92,7 +92,7 @@ public class Prekladiste extends Budova{
 	public void zpracujObjednavky() {
 		for(Objednavka o : this.objednavky) {
 			if((o.getCasObednani() == Simulace.hodina) && (o.getDenObednani() == Simulace.den) && !(o.isVyrizena())) {
-				if(!(this.nakladniAuta.isEmpty()) && (o.getMnozstvi() <= this.pocetPlnychSudu)) {
+				if(((this.nakladniAuta.size()-this.pocetAutNaCeste) > 0) && (o.getMnozstvi() <= this.pocetPlnychSudu)) {
 					pripravObjednavku(o);
 				}
 				else {
@@ -135,8 +135,8 @@ public class Prekladiste extends Budova{
 				if(!(a.isNaCeste())) break;
 			}
 			a.nalozPlneSudy(o.getMnozstvi());
+			a.setStartovniPrekladiste(this.ID);
 			a.setCilovaHospoda(o.getIdObjednavajiciho());
-			//this.objednavky.remove(o);
 			o.setVyrizena(true);
 			
 			vysliAutoDoHospody(a, dobaCesty);
@@ -178,6 +178,7 @@ public class Prekladiste extends Budova{
 		
 		a.setNaCeste(true);
 		this.pocetAutNaCeste++;
+		System.out.println("Nakladni auto "+a.getID()+" vyrazilo z prekladiste "+a.getStartovniPrekladiste()+" do hospody "+a.getCilovaHospoda()+".");
 	}
 	
 	

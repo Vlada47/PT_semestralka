@@ -21,6 +21,13 @@ class MyTimerActionListener implements ActionListener {
 			if(Simulace.den == 7) {
 				InputOutput.zapisVysledek();
 				Simulace.timer.stop();
+				
+				System.out.println("Maximalni pocet cisteren na ceste: "+Simulace.maxCisteren+".");
+				System.out.println("Maximalni pocet kamionu na ceste: "+Simulace.maxKamionu+".");
+				
+				for(int i = 0; i < Simulace.maxAut.length; i++) {
+					System.out.println("Maximalni pocet aut z prekladiste "+i+" na ceste: "+Simulace.maxAut[i]+".");
+				}
 			}
 			Simulace.hodina = 0;
 			Simulace.den++;
@@ -37,6 +44,7 @@ class MyTimerActionListener implements ActionListener {
 		if(Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI) spotrebujPivo();
 		
 		tiskniStav();
+		zjistiMaximumVyuzitychVozidel();
 		
 		Simulace.hodina++;
 	}
@@ -92,5 +100,18 @@ class MyTimerActionListener implements ActionListener {
 			System.out.println("Mnozstvi plnych sudu v prekladisti "+p.getID()+": "+p.getPocetPlnychSudu()+". Mnozstvi prazdnych sudu: "+p.getPocetPrazdnychSudu()+".");
 		}
 		System.out.println("");
+	}
+	
+	private void zjistiMaximumVyuzitychVozidel() {
+		for(Prekladiste p : Simulace.prekladiste) {
+			int a = p.getPocetAutNaCeste();
+			if(a > Simulace.maxAut[p.getID()]) Simulace.maxAut[p.getID()] = a;
+		}
+		
+		int k = Simulace.pivovar.getPocetKamionuNaCeste();
+		if(k > Simulace.maxKamionu) Simulace.maxKamionu = k;
+		
+		int c = Simulace.pivovar.getPocetCisterenNaCeste();
+		if(c > Simulace.maxCisteren) Simulace.maxCisteren = c;
 	}
 }
