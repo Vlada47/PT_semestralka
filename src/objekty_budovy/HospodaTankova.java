@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import objekty_ostatni.Pozice;
 
-public class HospodaTankova extends Budova {
+public class HospodaTankova {
 	
 	private final Pozice pozice;
 	private final int ID;
@@ -35,10 +35,6 @@ public class HospodaTankova extends Budova {
 	public int getID() {
 		return this.ID;
 	}
-	
-	public int getStavPiva() {
-		return this.stavPiva;
-	}
 
 	public Pozice getPosition() {
 		return pozice;
@@ -50,5 +46,9 @@ public class HospodaTankova extends Budova {
 	
 	public void nacerpejPivo(int mnozstvi) {
 		this.stavPiva += mnozstvi;
+	}
+	
+	public String getVypis() {
+		return "Tankova hospoda "+this.ID+" ma "+this.stavPiva+"hl piva.";
 	}
 }

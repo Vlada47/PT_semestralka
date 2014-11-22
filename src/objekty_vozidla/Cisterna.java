@@ -45,6 +45,7 @@ public class Cisterna {
 		}
 		if((this.hodinaPrecerpaniPiva == Simulace.hodina) && (this.denPrecerpaniPiva == Simulace.den)) {
 			odcerpejPivo();
+			System.out.println("Cisterna "+this.ID+" cisterna precerpala svuj naklad v hospode "+this.cilovaHospoda+".");
 		}
 		if((this.hodinaNavratuDoPivovaru == Simulace.hodina) && (this.denNavratuDoPivovaru == Simulace.den)) {
 			System.out.println("Cisterna "+this.ID+" se vratila do pivovaru.");
@@ -94,33 +95,9 @@ public class Cisterna {
 	public void setHodinaNavratuDoPivovaru(int hodinaNavratuDoPivovaru) {
 		this.hodinaNavratuDoPivovaru = hodinaNavratuDoPivovaru;
 	}
-	
-	public int getDenDorazeniDoHospody() {
-		return this.denDorazeniDoHospody;
-	}
-	
-	public int getHodinaDorazeniDoHospody() {
-		return this.hodinaDorazeniDoHospody;
-	}
-	
-	public int getDenNavratuDoPivovaru() {
-		return this.denNavratuDoPivovaru;
-	}
-	
-	public int getHodinaNavratuDoPivovaru() {
-		return this.hodinaNavratuDoPivovaru;
-	}
-	
-	public int getDenPrecerpaniPiva() {
-		return this.denPrecerpaniPiva;
-	}
 
 	public void setDenPrecerpaniPiva(int denPrecerpaniPiva) {
 		this.denPrecerpaniPiva = denPrecerpaniPiva;
-	}
-
-	public int getHodinaPrecerpaniPiva() {
-		return this.hodinaPrecerpaniPiva;
 	}
 
 	public void setHodinaPrecerpaniPiva(int hodinaPrecerpaniPiva) {
@@ -136,5 +113,14 @@ public class Cisterna {
 		HospodaTankova h = Simulace.tankoveHospody[index];
 		h.nacerpejPivo(this.naklad);
 		this.naklad = 0;
+	}
+	
+	public String getVypis() {
+		if(naCeste) {
+			return "Cisterna "+this.ID+" je na ceste a veze "+this.naklad+"hl piva.";
+		}
+		else {
+			return "Cisterna "+this.ID+" je k dispozici v pivovaru.";
+		}
 	}
 }

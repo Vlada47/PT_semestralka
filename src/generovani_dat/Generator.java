@@ -139,7 +139,7 @@ public class Generator {
 	
 	public static void generujObjednavky() {
 		for(HospodaTankova h : Simulace.tankoveHospody) {
-			for(int i = 1; i <= 7; i++) {
+			for(int i = 1; i <= StaticData.POCET_DNU; i++) {
 				int mnozstvi = vyberMnozstvi();
 				h.addDenniSpotreba(mnozstvi);
 				Objednavka o = new Objednavka(i, vyberCas(), h.getID(), 8, mnozstvi);
@@ -148,7 +148,7 @@ public class Generator {
 		}
 		
 		for(HospodaSudova h : Simulace.sudoveHospody) {
-			for(int i = 1; i <= 7; i++) {
+			for(int i = 1; i <= StaticData.POCET_DNU; i++) {
 				int mnozstvi = vyberMnozstvi();
 				h.addDenniSpotreba(mnozstvi);
 				Objednavka o = new Objednavka(i, vyberCas(), h.getID(), h.getIdPrekladiste(), mnozstvi);

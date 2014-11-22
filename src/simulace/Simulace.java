@@ -24,9 +24,6 @@ public class Simulace {
 	public static int den = 0;
 	public static int hodina = 24;
 	public static Timer timer;
-	public static int[] maxAut = new int[prekladiste.length];
-	public static int maxKamionu = 0;
-	public static int maxCisteren = 0;
 
 	static public void start() {
 

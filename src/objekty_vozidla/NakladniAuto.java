@@ -84,48 +84,24 @@ public class NakladniAuto {
 		return this.startovniPrekladiste;
 	}
 
-	public int getDenDorazeniDoHospody() {
-		return this.denDorazeniDoHospody;
-	}
-
 	public void setDenDorazeniDoHospody(int denDorazeniDoHospody) {
 		this.denDorazeniDoHospody = denDorazeniDoHospody;
 	}
 
-	public int getHodinaDorazeniDoHospody() {
-		return this.hodinaDorazeniDoHospody;
-	}
-
 	public void setHodinaDorazeniDoHospody(int hodinaDorazeniDoHospody) {
 		this.hodinaDorazeniDoHospody = hodinaDorazeniDoHospody;
-	}
-	
-	public int getDenPrelozeniSudu() {
-		return this.denPrelozeniSudu;
 	}
 
 	public void setDenPrelozeniSudu(int denPrelozeniSudu) {
 		this.denPrelozeniSudu = denPrelozeniSudu;
 	}
 
-	public int getHodinaPrelozeniSudu() {
-		return this.hodinaPrelozeniSudu;
-	}
-
 	public void setHodinaPrelozeniSudu(int hodinaPrelozeniSudu) {
 		this.hodinaPrelozeniSudu = hodinaPrelozeniSudu;
 	}
 
-	public int getDenNavratuDoPrekladiste() {
-		return this.denNavratuDoPrekladiste;
-	}
-
 	public void setDenNavratuDoPrekladiste(int denNavratuDoPrekladiste) {
 		this.denNavratuDoPrekladiste = denNavratuDoPrekladiste;
-	}
-
-	public int getHodinaNavratuDoPrekladiste() {
-		return this.hodinaNavratuDoPrekladiste;
 	}
 
 	public void setHodinaNavratuDoPrekladiste(int hodinaNavratuDoPrekladiste) {
@@ -164,5 +140,14 @@ public class NakladniAuto {
 		}
 		
 		return index;
+	}
+	
+	public String getVypis() {
+		if(naCeste) {
+			return "Nakladni auto "+this.ID+" je na ceste a veze "+this.pocetPlnychSudu+" plnych a "+this.pocetPrazdnychSudu+" prazdnych sudu.";
+		}
+		else {
+			return "Nakladni "+this.ID+" je k dispozici v prekladisti.";
+		}
 	}
 }

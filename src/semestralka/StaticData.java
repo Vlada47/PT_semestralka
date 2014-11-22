@@ -22,11 +22,12 @@ public class StaticData {
 	
 	public static final int POCET_KAMIONU = 120; //pocet kamionu pivovaru
 	public static final int POCET_CISTEREN = 200; //pocet cisteren pivovaru
-	public static final int POCET_AUT = 320; //pocet aut pro jedno prekladiste
+	public static final int POCET_AUT = 250; //pocet aut pro jedno prekladiste
 	
 	public static final int POMER_HOSPOD = 20; //kolikrat vic je sudovych hospod nez tankovych
 	
 	public static final int SIMULACE_MILIS = 100; //doba cekani mezi kroky simulace 
+	public static final int POCET_DNU = 7; //pro kolik dnu ma simulace probihat
 	
 	public static final int HODINA_OBJEDNAVEK = 10; //hodina, ve ktere chodi nejvice objednavek - vrchol Gaussovy krivky
 	public static final double GAUSS_ROZSAH = 1.6; //parametr pro zmenu sirky Gaussovy krivky

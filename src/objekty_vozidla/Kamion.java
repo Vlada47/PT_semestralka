@@ -102,33 +102,9 @@ public class Kamion {
 	public void setHodinaNavratuDoPivovaru(int hodinaNavratuDoPivovaru) {
 		this.hodinaNavratuDoPivovaru = hodinaNavratuDoPivovaru;
 	}
-	
-	public int getDenDorazeniDoPrekladiste() {
-		return this.denDorazeniDoPrekladiste;
-	}
-	
-	public int getHodinaDorazeniDoCile() {
-		return this.hodinaDorazeniDoPrekladiste;
-	}
-	
-	public int getDenNavratuDoPivovaru() {
-		return this.denNavratuDoPivovaru;
-	}
-	
-	public int getHodinaNavratuDoPivovaru() {
-		return this.hodinaNavratuDoPivovaru;
-	}
-	
-	public int getDenPrelozeniSudu() {
-		return denPrelozeniSudu;
-	}
 
 	public void setDenPrelozeniSudu(int denPrelozeniSudu) {
 		this.denPrelozeniSudu = denPrelozeniSudu;
-	}
-
-	public int getHodinaPrelozeniSudu() {
-		return hodinaPrelozeniSudu;
 	}
 
 	public void setHodinaPrelozeniSudu(int hodinaPrelozeniSudu) {
@@ -153,5 +129,14 @@ public class Kamion {
 	
 	private void vylozPrazdneSudy() {
 		this.pocetPrazdnychSudu = 0;
+	}
+	
+	public String getVypis() {
+		if(naCeste) {
+			return "Kamion "+this.ID+" je na ceste a veze "+this.pocetPlnychSudu+" plnych a "+this.pocetPrazdnychSudu+" prazdnych sudu.";
+		}
+		else {
+			return "Kamion "+this.ID+" je k dispozici v pivovaru.";
+		}
 	}
 }

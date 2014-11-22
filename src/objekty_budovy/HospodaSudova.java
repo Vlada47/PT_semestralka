@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import objekty_ostatni.Pozice;
 
-public class HospodaSudova extends Budova {
+public class HospodaSudova {
 
 	public final Pozice pozice;
 	private final int ID;
@@ -48,14 +48,6 @@ public class HospodaSudova extends Budova {
 		return this.idPrekladiste;
 	}
 	
-	public int getPocetPrazdnychSudu() {
-		return this.pocetPrazdnychSudu;
-	}
-	
-	public int getPocetPlnychSudu() {
-		return this.pocetPlnychSudu;
-	}
-	
 	public Pozice getPosition() {
 		return pozice;
 	}
@@ -72,5 +64,9 @@ public class HospodaSudova extends Budova {
 		int mnozstvi = this.pocetPrazdnychSudu;
 		this.pocetPrazdnychSudu = 0;
 		return mnozstvi;
+	}
+	
+	public String getVypis() {
+		return "Sudova hospoda "+this.ID+" ma "+this.pocetPlnychSudu+" plnych a "+this.pocetPrazdnychSudu+" prazdnych sudu.";
 	}
 }

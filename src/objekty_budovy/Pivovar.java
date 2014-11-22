@@ -14,7 +14,7 @@ import simulace.Simulace;
  * @author Vlada47 & Shag0n
  *
  */
-public class Pivovar extends Budova {
+public class Pivovar {
 	
 	public static final int DENNI_PRODUKCE = 7000;
 
@@ -57,14 +57,6 @@ public class Pivovar extends Budova {
 			instance = new Pivovar();
 		}
 		return instance;
-	}
-	
-	/**
-	 * Metoda pro zjisteni mnozstvi piva v pivovaru.
-	 * @return - aktualni stav piva
-	 */
-	public int getStavPiva() {
-		return this.stavPiva;
 	}
 	
 	public int getPocetKamionuNaCeste() {
@@ -309,5 +301,9 @@ public class Pivovar extends Budova {
 	private void zmenDobuObjednani(Objednavka o, int denObjednani, int hodinaObjednani) {
 		o.setDenObednani(denObjednani);
 		o.setCasObednani(hodinaObjednani);
+	}
+	
+	public String getVypis() {
+		return "Pivovar ma akutalne k dispozici "+this.stavPiva+"hl piva.";
 	}
 }

@@ -17,7 +17,7 @@ import simulace.Simulace;
  * @author Vlada47 & Shag0n
  *
  */
-public class Prekladiste extends Budova{
+public class Prekladiste{
 
 	public static final int KAPACITA = 2000;
 
@@ -196,18 +196,10 @@ public class Prekladiste extends Budova{
 	
 	public void prijmiPlneSudy(int pocet) {
 		this.pocetPlnychSudu += pocet;
-		
-		if((this.pocetPlnychSudu + this.pocetPrazdnychSudu) > KAPACITA) {
-			System.err.println("Prekrocena kapacita prekladiste "+this.ID+"!");
-		}
 	}
 	
 	public void prijmiPrazdneSudy(int pocet) {
 		this.pocetPrazdnychSudu += pocet;
-		
-		if((this.pocetPlnychSudu + this.pocetPrazdnychSudu) > KAPACITA) {
-			System.err.println("Prekrocena kapacita prekladiste "+this.ID+"!");
-		}
 	}
 	
 	public int odevzdejPrazdneSudy() {
@@ -220,5 +212,9 @@ public class Prekladiste extends Budova{
 			this.pocetPrazdnychSudu = 0;
 			return pocet;
 		}
+	}
+	
+	public String getVypis() {
+		return "Prekladiste "+this.ID+" ma "+this.pocetPlnychSudu+"plnych a "+this.pocetPrazdnychSudu+" prazdnych sudu.";
 	}
 }
