@@ -24,6 +24,7 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;
 	private static boolean bezi = true;
+	private static boolean spusteno = false;
 	public static JTextArea textArea;
 
 	public static void startOkno() {
@@ -47,14 +48,12 @@ public class Window extends JFrame {
 		JPanel buttonPanel = new JPanel();
 
 		// tlacitka a obsluhy udalosti
-		JButton aktualizace = new JButton("Aktualizuj data");
+		JButton aktualizace = new JButton("Generuj matici");
 		JButton mapa = new JButton("Vykresli rozmÌstÏnÌ");
-		JButton zacni = new JButton("Spusù simulaci");
-		final JButton pozastav = new JButton("Pozastavit");
-		JButton objednej = new JButton("Objednej");
+		final JButton zacni = new JButton("Spusù simulaci");
+		final JButton objednej = new JButton("Objednej");
 		JButton stavBudov = new JButton("Stav budov");
 		JButton stavVozidel = new JButton("Stav vozidel");
-		
 
 		mapa.addActionListener(new ActionListener() {
 
@@ -68,7 +67,30 @@ public class Window extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Simulace.start();
+				if (!spusteno) {
+					Simulace.start();
+					objednej.setEnabled(true);
+					spusteno=true;
+					zacni.setText("Pozastavit");
+				}
+
+				else {
+					if (bezi) {
+						Simulace.timer.stop();
+						bezi = false;
+						zacni.setText("PokraËovat");
+						objednej.setEnabled(false);
+					}
+
+					else {
+						Simulace.timer.start();
+						bezi = true;
+						zacni.setText("Pozastavit");
+						objednej.setEnabled(true);
+					}
+
+				}
+
 			}
 		});
 
@@ -86,35 +108,17 @@ public class Window extends JFrame {
 			}
 		});
 
-		pozastav.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (bezi) {
-					Simulace.timer.stop();
-					bezi = false;
-					pozastav.setText("PokraËovat");
-				}
-
-				else {
-					Simulace.timer.start();
-					bezi = true;
-					pozastav.setText("Pozastavit");
-				}
-
-			}
-		});
 
 		objednej.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				new OknoObjednavky();
 
 			}
 		});
-		
+
 		stavBudov.addActionListener(new ActionListener() {
 
 			@Override
@@ -135,7 +139,7 @@ public class Window extends JFrame {
 				System.out.println(Simulace.pivovar.getVypis());
 			}
 		});
-		
+
 		stavVozidel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -152,7 +156,7 @@ public class Window extends JFrame {
 				for (Kamion k : p.kamiony) {
 					System.out.println(k.getVypis());
 				}
-					
+
 				for (Cisterna c : p.cisterny) {
 					System.out.println(c.getVypis());
 				}
@@ -162,10 +166,10 @@ public class Window extends JFrame {
 		buttonPanel.add(aktualizace);
 		buttonPanel.add(mapa);
 		buttonPanel.add(zacni);
-		buttonPanel.add(pozastav);
 		buttonPanel.add(objednej);
 		buttonPanel.add(stavBudov);
 		buttonPanel.add(stavVozidel);
+		objednej.setEnabled(false);
 		frame.add(buttonPanel, BorderLayout.PAGE_END);
 	}
 
