@@ -123,24 +123,27 @@ public class Prekladiste{
 		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
 		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;
 		
-		if(((Simulace.hodina + dobaCesty) > StaticData.MAX_HODINA_OBJEDNANI) && (dobaCesty <= (StaticData.MAX_HODINA_OBJEDNANI - StaticData.MIN_HODINA_OBJEDNANI))) {
-			zmenDobuObjednani(o, Simulace.den+1, StaticData.MIN_HODINA_OBJEDNANI);
+		NakladniAuto a = this.nakladniAuta.get(0);
+		for(int i = 0; i < nakladniAuta.size(); i++) {
+			a = this.nakladniAuta.get(i);
+			if(!(a.isNaCeste())) break;
 		}
-		else {
-			this.pocetPlnychSudu -= o.getMnozstvi();
-			this.pocetPozadovanychSudu += o.getMnozstvi();
-			NakladniAuto a = this.nakladniAuta.get(0);
-			for(int i = 0; i < nakladniAuta.size(); i++) {
-				a = this.nakladniAuta.get(i);
-				if(!(a.isNaCeste())) break;
-			}
-			a.nalozPlneSudy(o.getMnozstvi());
-			a.setStartovniPrekladiste(this.ID);
-			a.setCilovaHospoda(o.getIdObjednavajiciho());
-			o.setVyrizena(true);
+		
+		
+
+		this.pocetPlnychSudu -= o.getMnozstvi();
+		this.pocetPozadovanychSudu += o.getMnozstvi();
+		
+		a.nalozPlneSudy(o.getMnozstvi());
+		a.setStartovniPrekladiste(this.ID);
+		a.setCilovaHospoda(o.getIdObjednavajiciho());
+		o.setVyrizena(true);
 			
-			vysliAutoDoHospody(a, dobaCesty);
-		}
+		vysliAutoDoHospody(a, dobaCesty);
+	}
+	
+	private void zjistiCas(NakladniAuto a, double dobaCesty) {
+		
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package objekty_vozidla;
 
+import java.util.ArrayList;
+
 import objekty_budovy.HospodaSudova;
 import objekty_budovy.Prekladiste;
 import semestralka.StaticData;
@@ -13,10 +15,13 @@ public class NakladniAuto {
 	private final int ID;
 	private int pocetPlnychSudu;
 	private int pocetPrazdnychSudu;
-	private int cilovaHospoda;
 	private int startovniPrekladiste;
+	private int cilovaHospoda;
+	private ArrayList<Integer> ciloveHospody;
 	private int denDorazeniDoHospody;
+	private ArrayList<Integer> denVyrizeniObjednavky;
 	private int hodinaDorazeniDoHospody;
+	private ArrayList<Integer> hodinaVyrizeniObjednavky;
 	private int denPrelozeniSudu;
 	private int hodinaPrelozeniSudu;
 	private int denNavratuDoPrekladiste;
@@ -27,6 +32,7 @@ public class NakladniAuto {
 		this.ID = ID;
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
+		this.ciloveHospody = new ArrayList<Integer>();
 		this.setNaCeste(false);
 	}
 	
@@ -68,6 +74,14 @@ public class NakladniAuto {
 		this.naCeste = naCeste;
 	}
 	
+	public void setStartovniPrekladiste(int startovniPrekladiste) {
+		this.startovniPrekladiste = startovniPrekladiste;
+	}
+	
+	public int getStartovniPrekladiste() {
+		return this.startovniPrekladiste;
+	}
+	
 	public void setCilovaHospoda(int cilovaHospoda) {
 		this.cilovaHospoda = cilovaHospoda;
 	}
@@ -76,20 +90,43 @@ public class NakladniAuto {
 		return this.cilovaHospoda;
 	}
 	
-	public void setStartovniPrekladiste(int startovniPrekladiste) {
-		this.startovniPrekladiste = startovniPrekladiste;
+	public void addCilovaHospoda(int cilovaHospoda) {
+		this.ciloveHospody.add(cilovaHospoda);
 	}
 	
-	public int getStartovniPrekladiste() {
-		return this.startovniPrekladiste;
-	}
-
 	public void setDenDorazeniDoHospody(int denDorazeniDoHospody) {
 		this.denDorazeniDoHospody = denDorazeniDoHospody;
+	}
+	
+	public void addDenVyrizeniObjednavky(int den) {
+		this.denVyrizeniObjednavky.add(den);
+	}
+	
+	public int getDenVyrizeniPosledniObjednavky() {
+		if(this.denVyrizeniObjednavky.size() > 0) {
+			return this.denVyrizeniObjednavky.get(this.denVyrizeniObjednavky.size()-1);
+		}
+		else {
+			return Simulace.den;
+		}
 	}
 
 	public void setHodinaDorazeniDoHospody(int hodinaDorazeniDoHospody) {
 		this.hodinaDorazeniDoHospody = hodinaDorazeniDoHospody;
+	}
+	
+	public void addHodinaVyrizeniObjednavky(int hodina) {
+		this.hodinaVyrizeniObjednavky.add(hodina);
+	}
+	
+	public int getHodinaVyrizeniPosledniObjednavky() {
+		if(this.hodinaVyrizeniObjednavky.size() > 0) {
+			return this.hodinaVyrizeniObjednavky.get(this.hodinaVyrizeniObjednavky.size()-1);
+		}
+		else {
+			return Simulace.hodina;
+		}
+		
 	}
 
 	public void setDenPrelozeniSudu(int denPrelozeniSudu) {
