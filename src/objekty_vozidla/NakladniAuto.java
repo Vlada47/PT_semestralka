@@ -16,14 +16,12 @@ public class NakladniAuto {
 	private int pocetPlnychSudu;
 	private int pocetPrazdnychSudu;
 	private int startovniPrekladiste;
-	private int cilovaHospoda;
 	private ArrayList<Integer> ciloveHospody;
-	private int denDorazeniDoHospody;
-	private ArrayList<Integer> denVyrizeniObjednavky;
-	private int hodinaDorazeniDoHospody;
-	private ArrayList<Integer> hodinaVyrizeniObjednavky;
-	private int denPrelozeniSudu;
-	private int hodinaPrelozeniSudu;
+	private ArrayList<Integer> objednavky;
+	private ArrayList<Integer> denVyrizeni;
+	private ArrayList<Integer> hodinaVyrizeni;
+	private ArrayList<Integer> maxDenVyrizeni;
+	private ArrayList<Integer> maxHodinaVyrizeni;
 	private int denNavratuDoPrekladiste;
 	private int hodinaNavratuDoPrekladiste;
 	private boolean naCeste;
@@ -32,7 +30,12 @@ public class NakladniAuto {
 		this.ID = ID;
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
+		this.objednavky = new ArrayList<Integer>();
 		this.ciloveHospody = new ArrayList<Integer>();
+		this.denVyrizeni = new ArrayList<Integer>();
+		this.hodinaVyrizeni = new ArrayList<Integer>();
+		this.maxDenVyrizeni = new ArrayList<Integer>();
+		this.maxHodinaVyrizeni = new ArrayList<Integer>();
 		this.setNaCeste(false);
 	}
 	
@@ -82,59 +85,35 @@ public class NakladniAuto {
 		return this.startovniPrekladiste;
 	}
 	
-	public void setCilovaHospoda(int cilovaHospoda) {
-		this.cilovaHospoda = cilovaHospoda;
-	}
-	
-	public int getCilovaHospoda() {
-		return this.cilovaHospoda;
-	}
-	
 	public void addCilovaHospoda(int cilovaHospoda) {
 		this.ciloveHospody.add(cilovaHospoda);
 	}
 	
-	public void setDenDorazeniDoHospody(int denDorazeniDoHospody) {
-		this.denDorazeniDoHospody = denDorazeniDoHospody;
-	}
-	
 	public void addDenVyrizeniObjednavky(int den) {
-		this.denVyrizeniObjednavky.add(den);
+		this.denVyrizeni.add(den);
 	}
 	
 	public int getDenVyrizeniPosledniObjednavky() {
-		if(this.denVyrizeniObjednavky.size() > 0) {
-			return this.denVyrizeniObjednavky.get(this.denVyrizeniObjednavky.size()-1);
+		if(this.denVyrizeni.size() > 0) {
+			return this.denVyrizeni.get(this.denVyrizeni.size()-1);
 		}
 		else {
 			return Simulace.den;
 		}
 	}
-
-	public void setHodinaDorazeniDoHospody(int hodinaDorazeniDoHospody) {
-		this.hodinaDorazeniDoHospody = hodinaDorazeniDoHospody;
-	}
 	
 	public void addHodinaVyrizeniObjednavky(int hodina) {
-		this.hodinaVyrizeniObjednavky.add(hodina);
+		this.hodinaVyrizeni.add(hodina);
 	}
 	
 	public int getHodinaVyrizeniPosledniObjednavky() {
-		if(this.hodinaVyrizeniObjednavky.size() > 0) {
-			return this.hodinaVyrizeniObjednavky.get(this.hodinaVyrizeniObjednavky.size()-1);
+		if(this.hodinaVyrizeni.size() > 0) {
+			return this.hodinaVyrizeni.get(this.hodinaVyrizeni.size()-1);
 		}
 		else {
 			return Simulace.hodina;
 		}
 		
-	}
-
-	public void setDenPrelozeniSudu(int denPrelozeniSudu) {
-		this.denPrelozeniSudu = denPrelozeniSudu;
-	}
-
-	public void setHodinaPrelozeniSudu(int hodinaPrelozeniSudu) {
-		this.hodinaPrelozeniSudu = hodinaPrelozeniSudu;
 	}
 
 	public void setDenNavratuDoPrekladiste(int denNavratuDoPrekladiste) {
@@ -145,20 +124,37 @@ public class NakladniAuto {
 		this.hodinaNavratuDoPrekladiste = hodinaNavratuDoPrekladiste;
 	}
 	
+	public void kontrolaKapacity() {
+		if(this.pocetPlnychSudu == KAPACITA) {
+			//predej auto mezi cestujici
+		}
+	}
+	
+	public void kontrolaCasu() {
+		for(int i = 0; i < this.maxDenVyrizeni.size(); i++) {
+			if((this.hodinaVyrizeni.get(i) >= this.maxHodinaVyrizeni.get(i)) && (this.denVyrizeni.get(i) >= this.maxDenVyrizeni.get(i))) {
+				//predej auto mezi cestujici
+			}
+		}
+	}
+	
 	public void nalozPlneSudy(int pocet) {
 		this.pocetPlnychSudu += pocet;
 	}
 	
 	private void nalozPrazdneSudy() {
-		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody()];
+		// vyresit pocet odebranych sudu, aby se do auta jeste vesel
+		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody(this.ciloveHospody.get(0))];
 		int pocet = h.odeberPrazdneSudy();
 		this.pocetPrazdnychSudu += pocet;
+		this.ciloveHospody.remove(0);
 	}
 	
 	private void vylozPlneSudy() {
-		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody()];
-		h.pridejPlneSudy(this.pocetPlnychSudu);
-		this.pocetPlnychSudu = 0;
+		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody(this.ciloveHospody.get(0))];
+		h.pridejPlneSudy(this.objednavky.get(0));
+		this.pocetPlnychSudu -= this.objednavky.get(0);
+		this.objednavky.remove(0);
 	}
 	
 	private void vylozPrazdneSudy() {
@@ -167,9 +163,8 @@ public class NakladniAuto {
 		this.pocetPrazdnychSudu = 0;
 	}
 	
-	private int spocitejIndexHospody() {
-		int index = this.cilovaHospoda - 1;
-		int id = this.cilovaHospoda;
+	private int spocitejIndexHospody(int id) {
+		int index = id - 1;
 		
 		while(id > StaticData.POMER_HOSPOD) {
 			index--;
