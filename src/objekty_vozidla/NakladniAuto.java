@@ -1,5 +1,7 @@
 package objekty_vozidla;
 
+import generovani_dat.Matice;
+
 import java.util.ArrayList;
 
 import objekty_budovy.HospodaSudova;
@@ -13,9 +15,9 @@ public class NakladniAuto {
 	public static final int KAPACITA = 30;
 	
 	private final int ID;
+	private final int startovniPrekladiste;
 	private int pocetPlnychSudu;
 	private int pocetPrazdnychSudu;
-	private int startovniPrekladiste;
 	private ArrayList<Integer> ciloveHospody;
 	private ArrayList<Integer> objednavky;
 	private ArrayList<Integer> denVyrizeni;
@@ -26,8 +28,9 @@ public class NakladniAuto {
 	private int hodinaNavratuDoPrekladiste;
 	private boolean naCeste;
 	
-	public NakladniAuto(int ID) {
+	public NakladniAuto(int ID, int startovniPrekladiste) {
 		this.ID = ID;
+		this.startovniPrekladiste = startovniPrekladiste;
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
 		this.objednavky = new ArrayList<Integer>();
@@ -40,20 +43,24 @@ public class NakladniAuto {
 	}
 	
 	public void provedAkci() {
-		if((this.hodinaDorazeniDoHospody == Simulace.hodina) && (this.denDorazeniDoHospody == Simulace.den)) {
-			System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo "+this.pocetPlnychSudu+" sudu do hospody "+this.cilovaHospoda+".");
+		if(this.naCeste) {
+			if((this.denVyrizeni.get(0) == Simulace.hodina) && (this.hodinaVyrizeni.get(0) == Simulace.den)) {
+				System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo "+this.pocetPlnychSudu+" sudu do hospody "+this.ciloveHospody.get(0)+".");
+				vylozPlneSudy();
+				nalozPrazdneSudy();
+			}
+			if((this.hodinaNavratuDoPrekladiste == Simulace.hodina) && (this.denNavratuDoPrekladiste == Simulace.den)) {
+				System.out.println("Nakladni auto "+this.ID+" se vratilo do prekladiste "+this.startovniPrekladiste+".");
+				vylozPrazdneSudy();
+				setNaCeste(false);
+				
+				Prekladiste p = Simulace.prekladiste[this.startovniPrekladiste];
+				p.setPocetAutNaCeste(p.getPocetAutNaCeste()-1);
+			}
 		}
-		if((this.hodinaPrelozeniSudu == Simulace.hodina) && (this.denPrelozeniSudu == Simulace.den)) {
-			vylozPlneSudy();
-			nalozPrazdneSudy();
-		}
-		if((this.hodinaNavratuDoPrekladiste == Simulace.hodina) && (this.denNavratuDoPrekladiste == Simulace.den)) {
-			System.out.println("Nakladni auto "+this.ID+" se vratilo do prekladiste "+this.startovniPrekladiste+".");
-			vylozPrazdneSudy();
-			this.setNaCeste(false);
-			
-			Prekladiste p = Simulace.prekladiste[this.startovniPrekladiste];
-			p.setPocetAutNaCeste(p.getPocetAutNaCeste()-1);
+		else {
+			kontrolaKapacity();
+			kontrolaCasu();
 		}
 	}
 	
@@ -75,10 +82,6 @@ public class NakladniAuto {
 
 	public void setNaCeste(boolean naCeste) {
 		this.naCeste = naCeste;
-	}
-	
-	public void setStartovniPrekladiste(int startovniPrekladiste) {
-		this.startovniPrekladiste = startovniPrekladiste;
 	}
 	
 	public int getStartovniPrekladiste() {
@@ -115,31 +118,38 @@ public class NakladniAuto {
 		}
 		
 	}
-
-	public void setDenNavratuDoPrekladiste(int denNavratuDoPrekladiste) {
-		this.denNavratuDoPrekladiste = denNavratuDoPrekladiste;
-	}
-
-	public void setHodinaNavratuDoPrekladiste(int hodinaNavratuDoPrekladiste) {
-		this.hodinaNavratuDoPrekladiste = hodinaNavratuDoPrekladiste;
-	}
 	
-	public void kontrolaKapacity() {
+	private void kontrolaKapacity() {
 		if(this.pocetPlnychSudu == KAPACITA) {
-			//predej auto mezi cestujici
+			nastavDobuNavratuDoPrekladiste();
+			setNaCeste(true);
 		}
 	}
 	
-	public void kontrolaCasu() {
-		for(int i = 0; i < this.maxDenVyrizeni.size(); i++) {
-			if((this.hodinaVyrizeni.get(i) >= this.maxHodinaVyrizeni.get(i)) && (this.denVyrizeni.get(i) >= this.maxDenVyrizeni.get(i))) {
-				//predej auto mezi cestujici
+	private void kontrolaCasu() {
+		if(this.maxDenVyrizeni.size() > 0) {
+			for(int i = 0; i < this.maxDenVyrizeni.size(); i++) {
+				if((this.hodinaVyrizeni.get(i) >= this.maxHodinaVyrizeni.get(i)) && (this.denVyrizeni.get(i) >= this.maxDenVyrizeni.get(i)) || (Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI)) {
+					nastavDobuNavratuDoPrekladiste();
+					setNaCeste(true);
+				}
+				else {
+					int den = this.denVyrizeni.get(i);
+					int hodina = this.hodinaVyrizeni.get(i) + 1;
+					if(hodina >= 24) {
+						hodina = 0;
+						den++;
+					}
+					this.denVyrizeni.set(i, den);
+					this.hodinaVyrizeni.set(i, hodina);
+				}
 			}
 		}
 	}
 	
 	public void nalozPlneSudy(int pocet) {
 		this.pocetPlnychSudu += pocet;
+		this.objednavky.add(pocet);
 	}
 	
 	private void nalozPrazdneSudy() {
@@ -172,6 +182,25 @@ public class NakladniAuto {
 		}
 		
 		return index;
+	}
+	
+	private void nastavDobuNavratuDoPrekladiste() {
+		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(this.ciloveHospody.get(this.ciloveHospody.size()-1), StaticData.POCET_HOSPOD+this.startovniPrekladiste);
+		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
+		double dobaCesty = vzdalenost / RYCHLOST;
+		
+		int denNavratuDoPrekladiste = getDenVyrizeniPosledniObjednavky();
+		double hodinaNavratuDoPrekladisteD = getHodinaVyrizeniPosledniObjednavky() + dobaCesty;
+		
+		while(hodinaNavratuDoPrekladisteD >= 24) {
+			hodinaNavratuDoPrekladisteD -= 24;
+			denNavratuDoPrekladiste++;
+		}
+		
+		int hodinaNavratuDoPrekladiste = (int)Math.round(hodinaNavratuDoPrekladisteD);
+		
+		this.denNavratuDoPrekladiste = denNavratuDoPrekladiste;
+		this.hodinaNavratuDoPrekladiste = hodinaNavratuDoPrekladiste;
 	}
 	
 	public String getVypis() {

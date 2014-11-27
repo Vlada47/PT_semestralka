@@ -40,7 +40,7 @@ public class Prekladiste{
 		this.objednavky = new ArrayList<Objednavka>();
 		
 		for(int i = 0; i < StaticData.POCET_AUT; i++) {
-			this.nakladniAuta.add(new NakladniAuto(i));
+			this.nakladniAuta.add(new NakladniAuto(i, this.ID));
 		}
 		
 		this.setPocetPozadovanychSudu(0);
@@ -91,22 +91,12 @@ public class Prekladiste{
 	 */
 	public void zpracujObjednavky() {
 		for(Objednavka o : this.objednavky) {
-			if((o.getCasObednani() == Simulace.hodina) && (o.getDenObednani() == Simulace.den) && !(o.isVyrizena())) {
+			if((o.getDenObednani() <= Simulace.den) && (o.getCasObednani() <= Simulace.hodina) && !(o.isVyrizena())) {
 				if(((this.nakladniAuta.size()-this.pocetAutNaCeste) > 0) && (o.getMnozstvi() <= this.pocetPlnychSudu)) {
 					pripravObjednavku(o);
 				}
 				else {
-					int den = Simulace.den;
-					int hodina = Simulace.hodina;
-					
-					if(Simulace.hodina >= StaticData.MAX_HODINA_OBJEDNANI) {
-						den++;
-						hodina = StaticData.MIN_HODINA_OBJEDNANI;
-					}
-					else {
-						hodina++;
-					}	
-					zmenDobuObjednani(o, den, hodina);
+					break;
 				}
 			}
 		}
@@ -119,16 +109,23 @@ public class Prekladiste{
 	 * @param o - objekt drzici onformace o objednavce
 	 */
 	private void pripravObjednavku(Objednavka o) {
-		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+this.ID, o.getIdObjednavajiciho());
-		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
-		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;
-		
+		for(NakladniAuto a : this.nakladniAuta) {
+			if(!(a.isNaCeste())) {
+				if((o.getMnozstvi() + a.getPocetPlnychSudu() <= NakladniAuto.KAPACITA) && (jeStihnutelna(a, o))) {
+					a.nalozPlneSudy(o.getMnozstvi());
+				}
+			}
+		}
 		NakladniAuto a = this.nakladniAuta.get(0);
 		for(int i = 0; i < nakladniAuta.size(); i++) {
 			a = this.nakladniAuta.get(i);
 			if(!(a.isNaCeste())) break;
 		}
 		
+		
+		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+this.ID, o.getIdObjednavajiciho());
+		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
+		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;	
 		
 
 		this.pocetPlnychSudu -= o.getMnozstvi();
@@ -142,7 +139,7 @@ public class Prekladiste{
 		vysliAutoDoHospody(a, dobaCesty);
 	}
 	
-	private void zjistiCas(NakladniAuto a, double dobaCesty) {
+	private boolean jeStihnutelna(NakladniAuto a, Objednavka o) {
 		
 	}
 	
