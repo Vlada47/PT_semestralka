@@ -43,9 +43,14 @@ public class NakladniAuto {
 	}
 	
 	public void provedAkci() {
+		if(!(this.naCeste)) {
+			kontrolaKapacity();
+			kontrolaCasu();
+		}
+		
 		if(this.naCeste) {
 			if((this.denVyrizeni.get(0) == Simulace.hodina) && (this.hodinaVyrizeni.get(0) == Simulace.den)) {
-				System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo "+this.pocetPlnychSudu+" sudu do hospody "+this.ciloveHospody.get(0)+".");
+				System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" dovezlo "+this.objednavky.get(0)+" sudu do hospody "+this.ciloveHospody.get(0)+".");
 				vylozPlneSudy();
 				nalozPrazdneSudy();
 			}
@@ -57,10 +62,6 @@ public class NakladniAuto {
 				Prekladiste p = Simulace.prekladiste[this.startovniPrekladiste];
 				p.setPocetAutNaCeste(p.getPocetAutNaCeste()-1);
 			}
-		}
-		else {
-			kontrolaKapacity();
-			kontrolaCasu();
 		}
 	}
 	
@@ -92,6 +93,15 @@ public class NakladniAuto {
 		this.ciloveHospody.add(cilovaHospoda);
 	}
 	
+	public int getPosledniCilovaHospoda() {
+		if(this.ciloveHospody.size() > 0) {
+			return this.ciloveHospody.get(this.ciloveHospody.size()-1);
+		}
+		else {
+			return (StaticData.POCET_HOSPOD + this.startovniPrekladiste);
+		}
+	}
+	
 	public void addDenVyrizeniObjednavky(int den) {
 		this.denVyrizeni.add(den);
 	}
@@ -120,9 +130,10 @@ public class NakladniAuto {
 	}
 	
 	private void kontrolaKapacity() {
-		if(this.pocetPlnychSudu == KAPACITA) {
+		if(this.pocetPlnychSudu >= KAPACITA) {
 			nastavDobuNavratuDoPrekladiste();
 			setNaCeste(true);
+			System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" vyrazilo s objednavkami (celkem "+this.pocetPlnychSudu+" sudu).");
 		}
 	}
 	
@@ -132,6 +143,7 @@ public class NakladniAuto {
 				if((this.hodinaVyrizeni.get(i) >= this.maxHodinaVyrizeni.get(i)) && (this.denVyrizeni.get(i) >= this.maxDenVyrizeni.get(i)) || (Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI)) {
 					nastavDobuNavratuDoPrekladiste();
 					setNaCeste(true);
+					System.out.println("Nakladni auto "+this.ID+" z prekladiste "+this.startovniPrekladiste+" vyrazilo s objednavkami (celkem "+this.pocetPlnychSudu+" sudu).");
 				}
 				else {
 					int den = this.denVyrizeni.get(i);
@@ -153,9 +165,8 @@ public class NakladniAuto {
 	}
 	
 	private void nalozPrazdneSudy() {
-		// vyresit pocet odebranych sudu, aby se do auta jeste vesel
 		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody(this.ciloveHospody.get(0))];
-		int pocet = h.odeberPrazdneSudy();
+		int pocet = h.odeberPrazdneSudy(KAPACITA - (this.pocetPlnychSudu+this.pocetPrazdnychSudu));
 		this.pocetPrazdnychSudu += pocet;
 		this.ciloveHospody.remove(0);
 	}

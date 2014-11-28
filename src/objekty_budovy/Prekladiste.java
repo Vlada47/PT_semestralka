@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import objekty_ostatni.Objednavka;
 import objekty_ostatni.Pozice;
-import objekty_vozidla.Cisterna;
 import objekty_vozidla.Kamion;
 import objekty_vozidla.NakladniAuto;
 import semestralka.StaticData;
@@ -83,12 +82,6 @@ public class Prekladiste{
 		this.pocetPozadovanychSudu = pocetPozadovanychSudu;
 	}
 	
-	/**
-	 * Metoda postupne resici jednotlive objednavky sudovych hospod. U kazde objednavky se zkontroluje, zda jeji cas odpovida aktualnimu casu simulace.
-	 * Pokud ano, probehne kontrola stavu volnych aut a mnozstvi plnych sudu v prekladisti. V pripade kladneho vysledku se objednavka dale zpracovava metodou pripravObjednavku.
-	 * V opacnem pripade se objednavce nastavi novy cas - inkrementuje se o jednu hodinu... v pripade, ze prekroci maximalni povolenou mez (16 hodin),
-	 * je jako hodina nastavena minimalni mez (8 hodin) a inkrementuje se den. Metoda pak pokracuje dalsi objednavkou.
-	 */
 	public void zpracujObjednavky() {
 		for(Objednavka o : this.objednavky) {
 			if((o.getDenObednani() <= Simulace.den) && (o.getCasObednani() <= Simulace.hodina) && !(o.isVyrizena())) {
@@ -102,97 +95,50 @@ public class Prekladiste{
 		}
 	}
 	
-	/**
-	 * Metoda resici jednu konkretni objednavku "schvalenou" predchazejici metodou. Nejprve se urci, jak dlouho se objednavka poveze,
-	 * a pote se rozhodne, zda je stihnutelna do maximalni casove meze (16 hodin). Pokud ne, odlozi se na dalsi den na minimalni cas (8 hodin).
-	 * Pokud ano, odebere se pozadovany pocet plnych sudu z prekladiste a preda se volnemu autu, ktere se pak resi metodou vysliAutoDoHospody. Objednavka se zaroven odstrani z ArrayListu.
-	 * @param o - objekt drzici onformace o objednavce
-	 */
 	private void pripravObjednavku(Objednavka o) {
 		for(NakladniAuto a : this.nakladniAuta) {
 			if(!(a.isNaCeste())) {
 				if((o.getMnozstvi() + a.getPocetPlnychSudu() <= NakladniAuto.KAPACITA) && (jeStihnutelna(a, o))) {
+					this.pocetPlnychSudu -= o.getMnozstvi();
+					this.pocetPozadovanychSudu += o.getMnozstvi();
 					a.nalozPlneSudy(o.getMnozstvi());
+					o.setVyrizena(true);
+					return;
 				}
 			}
 		}
-		NakladniAuto a = this.nakladniAuta.get(0);
-		for(int i = 0; i < nakladniAuta.size(); i++) {
-			a = this.nakladniAuta.get(i);
-			if(!(a.isNaCeste())) break;
-		}
-		
-		
-		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+this.ID, o.getIdObjednavajiciho());
-		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
-		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;	
-		
-
-		this.pocetPlnychSudu -= o.getMnozstvi();
-		this.pocetPozadovanychSudu += o.getMnozstvi();
-		
-		a.nalozPlneSudy(o.getMnozstvi());
-		a.setStartovniPrekladiste(this.ID);
-		a.setCilovaHospoda(o.getIdObjednavajiciho());
-		o.setVyrizena(true);
-			
-		vysliAutoDoHospody(a, dobaCesty);
 	}
 	
 	private boolean jeStihnutelna(NakladniAuto a, Objednavka o) {
+		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(a.getPosledniCilovaHospoda(), o.getIdObjednavajiciho());
+		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
+		double dobaCesty = vzdalenost / NakladniAuto.RYCHLOST;
 		
-	}
-	
-	/**
-	 * Metoda resici nastaveni casu dojezdu auta do hospody a jeho navratu do prekladiste (obdoba metody pro kamion).
-	 * Volne auto se pak vlozi do ArrayListu vyuzivanych aut a je odstraneno z ArrayListu volnych aut.
-	 * @param a - auto, do ktere se casy ukladaji
-	 * @param dobaCesty - doba cesty v hodinach
-	 */
-	private void vysliAutoDoHospody(NakladniAuto a, double dobaCesty) {
+		//objednavky musi dorazit nejdele stejnou hodinu (jako kdy byla objednana) druheho dne:
+		int maxDenVyrizeniObjednavky = a.getDenVyrizeniPosledniObjednavky() + 1;
+		int maxHodinaVyrizeniObjednavky = a.getHodinaVyrizeniPosledniObjednavky();
 		
-		int denDorazeniDoHospody = Simulace.den;
-		double hodinaDorazeniDoHospodyD = Simulace.hodina + dobaCesty;
-		int hodinaDorazeniDoHospody = (int)Math.round(hodinaDorazeniDoHospodyD);
+		//vyrizena bude objednavka v case prictenem o cas cesty z posledni hospody a prelozeni sudu k case vyrizeni posledni objednavky
+		int denVyrizeniObjednavky = a.getDenVyrizeniPosledniObjednavky();
+		double hodinaVyrizeniObjednavkyD = a.getHodinaVyrizeniPosledniObjednavky() + dobaCesty + (o.getMnozstvi()*StaticData.SUD_CAS*2);
 		
-		int denPrelozeniSudu = denDorazeniDoHospody;
-		double hodinaPrelozeniSuduD = hodinaDorazeniDoHospodyD + (a.getPocetPlnychSudu()*StaticData.SUD_CAS);
-		int hodinaPrelozeniSudu = (int)Math.round(hodinaPrelozeniSuduD);
-		
-		
-		int denNavratuDoPrekladiste = denDorazeniDoHospody;
-		double hodinaNavratuDoPrekladisteD = hodinaPrelozeniSuduD + dobaCesty;
-		
-		while(hodinaNavratuDoPrekladisteD > 23) {
-			hodinaNavratuDoPrekladisteD -= 24;
-			denNavratuDoPrekladiste++;
+		//pokud vypocitany cas prekroci 1 den
+		while(hodinaVyrizeniObjednavkyD >= 24) {
+			hodinaVyrizeniObjednavkyD -= 24;
+			denVyrizeniObjednavky++;
 		}
-		int hodinaNavratuDoPrekladiste = (int)Math.round(hodinaNavratuDoPrekladisteD);
+		int hodinaVyrizeniObjednavky = (int)Math.round(hodinaVyrizeniObjednavkyD);
 		
-		a.setDenDorazeniDoHospody(denDorazeniDoHospody);
-		a.setHodinaDorazeniDoHospody(hodinaDorazeniDoHospody);
-		a.setDenPrelozeniSudu(denPrelozeniSudu);
-		a.setHodinaPrelozeniSudu(hodinaPrelozeniSudu);
-		a.setDenNavratuDoPrekladiste(denNavratuDoPrekladiste);
-		a.setHodinaNavratuDoPrekladiste(hodinaNavratuDoPrekladiste);
-		
-		a.setNaCeste(true);
-		this.pocetAutNaCeste++;
-		System.out.println("Nakladni auto "+a.getID()+" vyrazilo z prekladiste "+a.getStartovniPrekladiste()+" do hospody "+a.getCilovaHospoda()+".");
+		if((denVyrizeniObjednavky > maxDenVyrizeniObjednavky) && (hodinaVyrizeniObjednavky > maxHodinaVyrizeniObjednavky)) {
+			return false;
+		}
+		else {
+			a.addCilovaHospoda(o.getIdObjednavajiciho());
+			a.addDenVyrizeniObjednavky(denVyrizeniObjednavky);
+			a.addHodinaVyrizeniObjednavky(hodinaVyrizeniObjednavky);
+			return true;
+		}
 	}
-	
-	
-	/**
-	 * Metoda pro zmenu hodiny a dne dane objednavky.
-	 * @param o - objekt objednavky
-	 * @param denObjednani - den objednani, ktery se ma k dane objednavce ulozit
-	 * @param hodinaObjednani - hodina objednani, ktera se ma k dane objednave ulozit
-	 */
-	private void zmenDobuObjednani(Objednavka o, int denObjednani, int hodinaObjednani) {
-		o.setDenObednani(denObjednani);
-		o.setCasObednani(hodinaObjednani);
-	}
-	
 	
 	public void prijmiPlneSudy(int pocet) {
 		this.pocetPlnychSudu += pocet;

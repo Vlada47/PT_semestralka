@@ -60,10 +60,16 @@ public class HospodaSudova {
 		this.pocetPlnychSudu += mnozstvi;
 	}
 	
-	public int odeberPrazdneSudy() {
-		int mnozstvi = this.pocetPrazdnychSudu;
-		this.pocetPrazdnychSudu = 0;
-		return mnozstvi;
+	public int odeberPrazdneSudy(int pocet) {
+		if(this.pocetPrazdnychSudu >= pocet) {
+			this.pocetPrazdnychSudu -= pocet;
+			return pocet;
+		}
+		else {
+			int mnozstvi = this.pocetPrazdnychSudu;
+			this.pocetPrazdnychSudu = 0;
+			return mnozstvi;
+		}
 	}
 	
 	public String getVypis() {
