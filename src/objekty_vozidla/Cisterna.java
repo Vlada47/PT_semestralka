@@ -137,6 +137,7 @@ public class Cisterna {
 		
 		this.hospody.add(this.cilovaHospoda);
 		this.zavezenePivo.add(this.naklad);
+		h.ulozCisternu(this.ID);
 		
 		this.naklad = 0;
 	}

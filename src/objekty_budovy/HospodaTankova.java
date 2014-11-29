@@ -5,6 +5,8 @@ import io.InputOutput;
 import java.util.ArrayList;
 
 import objekty_ostatni.Pozice;
+import semestralka.StaticData;
+import simulace.Simulace;
 
 public class HospodaTankova {
 	
@@ -13,11 +15,16 @@ public class HospodaTankova {
 	private int stavPiva;
 	private ArrayList<Integer> denniSpotreba;
 	
+	private String[] dovezeneObjednavky;
+	private String[] vozidla;
+	
 	public HospodaTankova(int ID, Pozice pozice) {
 		this.ID = ID;
 		this.pozice = pozice;
 		this.stavPiva = 6;
 		this.denniSpotreba = new ArrayList<Integer>();
+		this.dovezeneObjednavky = new String[StaticData.POCET_DNU];
+		this.vozidla = new String[StaticData.POCET_DNU];
 	}
 	
 	public void spotrebujPivo(){
@@ -40,12 +47,25 @@ public class HospodaTankova {
 		return pozice;
 	}
 	
+	public String[] getDovezeneObjednavky() {
+		return this.dovezeneObjednavky;
+	}
+	
+	public String[] getVozidla() {
+		return this.vozidla;
+	}
+	
 	public void addDenniSpotreba(int mnozstvi) {
 		this.denniSpotreba.add(mnozstvi);
 	}
 	
 	public void nacerpejPivo(int mnozstvi) {
 		this.stavPiva += mnozstvi;
+		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"/";
+	}
+	
+	public void ulozCisternu(int id) {
+		this.vozidla[Simulace.den-1] += "Cisterna "+id+"/";
 	}
 	
 	public String getVypis() {

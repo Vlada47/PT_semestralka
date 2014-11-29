@@ -5,6 +5,8 @@ import io.InputOutput;
 import java.util.ArrayList;
 
 import objekty_ostatni.Pozice;
+import semestralka.StaticData;
+import simulace.Simulace;
 
 public class HospodaSudova {
 
@@ -14,6 +16,8 @@ public class HospodaSudova {
 	private int pocetPrazdnychSudu;
 	private ArrayList<Integer> denniSpotreba;
 	private int idPrekladiste;
+	private String[] dovezeneObjednavky;
+	private String[] vozidla;
 
 	public HospodaSudova(int ID, Pozice pozice) {
 		this.ID = ID;
@@ -21,6 +25,8 @@ public class HospodaSudova {
 		this.pocetPlnychSudu = 6;
 		this.pocetPrazdnychSudu = 0;
 		this.denniSpotreba = new ArrayList<Integer>();
+		this.dovezeneObjednavky = new String[StaticData.POCET_DNU];
+		this.vozidla = new String[StaticData.POCET_DNU];
 	}
 	
 	public void spotrebujPivo(){
@@ -52,12 +58,25 @@ public class HospodaSudova {
 		return pozice;
 	}
 	
+	public String[] getDovezeneObjednavky() {
+		return this.dovezeneObjednavky;
+	}
+	
+	public String[] getVozidla() {
+		return this.vozidla;
+	}
+	
 	public void addDenniSpotreba(int mnozstvi) {
 		this.denniSpotreba.add(mnozstvi);
 	}
 	
 	public void pridejPlneSudy(int mnozstvi) {
 		this.pocetPlnychSudu += mnozstvi;
+		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"/";
+	}
+	
+	public void ulozNakladniAuto(int idAuta, int idPrekladiste) {
+		this.vozidla[Simulace.den-1] += "Auto "+idAuta+" z prekladiste "+idPrekladiste+"/";
 	}
 	
 	public int odeberPrazdneSudy() {

@@ -159,6 +159,7 @@ public class NakladniAuto {
 		
 		this.hospody.add(this.cilovaHospoda);
 		this.zavezenePlneSudy.add(this.pocetPlnychSudu);
+		h.ulozNakladniAuto(this.ID, this.startovniPrekladiste);
 		
 		this.pocetPlnychSudu = 0;
 	}

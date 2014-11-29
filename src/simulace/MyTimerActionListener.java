@@ -32,6 +32,7 @@ class MyTimerActionListener implements ActionListener {
 		if (Simulace.hodina == 24) {
 			if(Simulace.den == StaticData.POCET_DNU) {
 				InputOutput.zapisVysledek();
+				zapisStatistikyHospod();
 				zapisStatistikyVozidel();
 				Simulace.timer.stop();
 			}
@@ -149,6 +150,38 @@ class MyTimerActionListener implements ActionListener {
 				}
 				InputOutput.zapisStatistiku(InputOutput.STATISTIKA_NAKLADNI_AUTA, "\n");
 			}
+		}
+	}
+	
+	private void zapisStatistikyHospod() {
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_TANKOVE_HOSPODY, "ID hospody;Den 1;Den 2;Den 3;Den 4;Den 5;Den 6;Den 7;\n");
+		for(HospodaTankova h : Simulace.tankoveHospody) {
+			String[] dovezeneObjednavky = h.getDovezeneObjednavky();
+			String[] vozidla = h.getVozidla();
+			String ret = ""+h.getID()+";";
+			
+			for(int i = 0; i < dovezeneObjednavky.length; i++) {
+				ret += dovezeneObjednavky[i]+" od "+vozidla[i]+";";
+			}
+			
+			ret += "\n";
+			
+			InputOutput.zapisStatistiku(InputOutput.STATISTIKA_TANKOVE_HOSPODY, ret);
+		}
+		
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_SUDOVE_HOSPODY, "ID hospody;Den 1;Den 2;Den 3;Den 4;Den 5;Den 6;Den 7;\n");
+		for(HospodaSudova h : Simulace.sudoveHospody) {
+			String[] dovezeneObjednavky = h.getDovezeneObjednavky();
+			String[] vozidla = h.getVozidla();
+			String ret = ""+h.getID()+";";
+			
+			for(int i = 0; i < dovezeneObjednavky.length; i++) {
+				ret += dovezeneObjednavky[i]+" od "+vozidla[i]+";";
+			}
+			
+			ret += "\n";
+			
+			InputOutput.zapisStatistiku(InputOutput.STATISTIKA_SUDOVE_HOSPODY, ret);
 		}
 	}
 }

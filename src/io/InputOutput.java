@@ -35,6 +35,8 @@ public class InputOutput {
 	public static final String STATISTIKA_KAMIONY = "data\\statistika_kamiony.csv";
 	public static final String STATISTIKA_CISTERNY = "data\\statistika_cisterny.csv";
 	public static final String STATISTIKA_NAKLADNI_AUTA = "data\\statistika_nakladni_auta.csv";
+	public static final String STATISTIKA_TANKOVE_HOSPODY = "data\\statistika_tankove_hospody.csv";
+	public static final String STATISTIKA_SUDOVE_HOSPODY = "data\\statistika_sudove_hospody.csv";
 
 	public static void zapisSouradniceACestyDoSouboru() {
 		InputOutput.zapisSouradnicPrekladiste(Generator.souradnicePrekladist);
