@@ -1,5 +1,7 @@
 package objekty_vozidla;
 
+import java.util.ArrayList;
+
 import objekty_budovy.HospodaTankova;
 import objekty_budovy.Pivovar;
 import semestralka.StaticData;
@@ -26,6 +28,9 @@ public class Cisterna {
 	private int hodinaNavratuDoPivovaru;
 	private boolean naCeste;
 	
+	private ArrayList<Integer> hospody;
+	private ArrayList<Integer> zavezenePivo;
+	
 	/**
 	 * Konstruktor objektu Cisterna - nastavuje se zde ID podle vstupu a mnozstvi piva na 0.
 	 * @param ID - jedinecny identifikator konkretni cisterny
@@ -34,6 +39,9 @@ public class Cisterna {
 		this.ID = ID;
 		this.naklad = 0;
 		this.setNaCeste(false);
+		
+		this.hospody = new ArrayList<Integer>();
+		this.zavezenePivo = new ArrayList<Integer>();
 	}
 	
 	/**
@@ -104,6 +112,20 @@ public class Cisterna {
 		this.hodinaPrecerpaniPiva = hodinaPrecerpaniPiva;
 	}
 	
+	/**
+	 * @return the hospody
+	 */
+	public ArrayList<Integer> getHospody() {
+		return hospody;
+	}
+
+	/**
+	 * @return the zavezenePivo
+	 */
+	public ArrayList<Integer> getZavezenePivo() {
+		return zavezenePivo;
+	}
+	
 	public void nacerpejPivo(int pocet) {
 		this.naklad += pocet;
 	}
@@ -112,9 +134,13 @@ public class Cisterna {
 		int index = this.cilovaHospoda / StaticData.POMER_HOSPOD;
 		HospodaTankova h = Simulace.tankoveHospody[index];
 		h.nacerpejPivo(this.naklad);
+		
+		this.hospody.add(this.cilovaHospoda);
+		this.zavezenePivo.add(this.naklad);
+		
 		this.naklad = 0;
 	}
-	
+
 	public String getVypis() {
 		if(naCeste) {
 			return "Cisterna "+this.ID+" je na ceste a veze "+this.naklad+"hl piva.";

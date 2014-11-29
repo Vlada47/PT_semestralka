@@ -32,6 +32,9 @@ public class InputOutput {
 	public static final String CESTY_HOSPOD_SOUBOR = "data\\cestyHospod.txt";
 	public static final String MATICE_CEST_SOUBOR = "data\\maticeCest.txt";
 	public static final String LOG_SOUBOR = "data\\log.txt";
+	public static final String STATISTIKA_KAMIONY = "data\\statistika_kamiony.csv";
+	public static final String STATISTIKA_CISTERNY = "data\\statistika_cisterny.csv";
+	public static final String STATISTIKA_NAKLADNI_AUTA = "data\\statistika_nakladni_auta.csv";
 
 	public static void zapisSouradniceACestyDoSouboru() {
 		InputOutput.zapisSouradnicPrekladiste(Generator.souradnicePrekladist);
@@ -368,9 +371,9 @@ public class InputOutput {
 				Double.parseDouble(podRetezce[2]));
 		return cesta;
 	}
-
+	
 	public static void zapisVysledek() {
-
+		
 		try {
 			BufferedWriter bwFile = new BufferedWriter(new FileWriter(LOG_SOUBOR));
 
@@ -380,9 +383,19 @@ public class InputOutput {
 		} catch (IOException e) {
 			System.out.println("I/O error in: " + LOG_SOUBOR + "\n" + e.getMessage());
 		}
-
-		
-
+	}
+	
+	public static void zapisStatistiku(String soubor, String retezec) {
+		try {
+			BufferedWriter bwFile = new BufferedWriter(new FileWriter(soubor, true));
+			
+			bwFile.append(retezec);
+			
+			bwFile.close();
+		}
+		catch (IOException e) {
+			System.out.println("I/O error in: " + soubor + "\n" + e.getMessage());
+		}
 	}
 
 }

@@ -1,5 +1,7 @@
 package objekty_vozidla;
 
+import java.util.ArrayList;
+
 import objekty_budovy.HospodaSudova;
 import objekty_budovy.Prekladiste;
 import semestralka.StaticData;
@@ -23,11 +25,20 @@ public class NakladniAuto {
 	private int hodinaNavratuDoPrekladiste;
 	private boolean naCeste;
 	
+	private ArrayList<Integer> hospody;
+	private ArrayList<Integer> zavezenePlneSudy;
+	private ArrayList<Integer> odvezenePrazdneSudy;
+	
+	
 	public NakladniAuto(int ID) {
 		this.ID = ID;
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
 		this.setNaCeste(false);
+		
+		this.hospody = new ArrayList<Integer>();
+		this.zavezenePlneSudy = new ArrayList<Integer>();
+		this.odvezenePrazdneSudy = new ArrayList<Integer>();
 	}
 	
 	public void provedAkci() {
@@ -108,6 +119,27 @@ public class NakladniAuto {
 		this.hodinaNavratuDoPrekladiste = hodinaNavratuDoPrekladiste;
 	}
 	
+	/**
+	 * @return the hospody
+	 */
+	public ArrayList<Integer> getHospody() {
+		return hospody;
+	}
+
+	/**
+	 * @return the zavezenePlneSudy
+	 */
+	public ArrayList<Integer> getZavezenePlneSudy() {
+		return zavezenePlneSudy;
+	}
+
+	/**
+	 * @return the odvezenePrazdneSudy
+	 */
+	public ArrayList<Integer> getOdvezenePrazdneSudy() {
+		return odvezenePrazdneSudy;
+	}
+	
 	public void nalozPlneSudy(int pocet) {
 		this.pocetPlnychSudu += pocet;
 	}
@@ -115,12 +147,19 @@ public class NakladniAuto {
 	private void nalozPrazdneSudy() {
 		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody()];
 		int pocet = h.odeberPrazdneSudy();
+		
+		this.odvezenePrazdneSudy.add(pocet);
+		
 		this.pocetPrazdnychSudu += pocet;
 	}
-	
+
 	private void vylozPlneSudy() {
 		HospodaSudova h = Simulace.sudoveHospody[spocitejIndexHospody()];
 		h.pridejPlneSudy(this.pocetPlnychSudu);
+		
+		this.hospody.add(this.cilovaHospoda);
+		this.zavezenePlneSudy.add(this.pocetPlnychSudu);
+		
 		this.pocetPlnychSudu = 0;
 	}
 	

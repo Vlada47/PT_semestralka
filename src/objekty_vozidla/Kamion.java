@@ -1,5 +1,7 @@
 package objekty_vozidla;
 
+import java.util.ArrayList;
+
 import objekty_budovy.Pivovar;
 import objekty_budovy.Prekladiste;
 import simulace.Simulace;
@@ -26,6 +28,10 @@ public class Kamion {
 	private int hodinaNavratuDoPivovaru;
 	private boolean naCeste;
 	
+	private ArrayList<Integer> prekladiste;
+	private ArrayList<Integer> zavezenePlneSudy;
+	private ArrayList<Integer> odvezenePrazdneSudy;
+	
 	/**
 	 * Konstruktor objektu Kamion - nastavuje se zde ID podle vstupu a pocty plnych i prazdnych sudu na 0.
 	 * @param ID - jedinecny identifikator konkretniho kamionu
@@ -35,6 +41,10 @@ public class Kamion {
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
 		this.setNaCeste(false);
+		
+		this.prekladiste = new ArrayList<Integer>();
+		this.zavezenePlneSudy = new ArrayList<Integer>();
+		this.odvezenePrazdneSudy = new ArrayList<Integer>();
 	}
 	
 	/**
@@ -111,6 +121,27 @@ public class Kamion {
 		this.hodinaPrelozeniSudu = hodinaPrelozeniSudu;
 	}
 	
+	/**
+	 * @return the prekladiste
+	 */
+	public ArrayList<Integer> getPrekladiste() {
+		return prekladiste;
+	}
+
+	/**
+	 * @return the zavezenePlneSudy
+	 */
+	public ArrayList<Integer> getZavezenePlneSudy() {
+		return zavezenePlneSudy;
+	}
+
+	/**
+	 * @return the odvezenePrazdneSudy
+	 */
+	public ArrayList<Integer> getOdvezenePrazdneSudy() {
+		return odvezenePrazdneSudy;
+	}
+	
 	public void nalozPlneSudy(int pocet) {
 		this.pocetPlnychSudu += pocet;
 	}
@@ -118,12 +149,19 @@ public class Kamion {
 	private void nalozPrazdneSudy() {
 		Prekladiste p = Simulace.prekladiste[this.cilovePrekladiste];
 		int pocet = p.odevzdejPrazdneSudy();
+		
+		this.odvezenePrazdneSudy.add(pocet);
+		
 		this.pocetPrazdnychSudu += pocet;
 	}
-	
+
 	private void vylozPlneSudy() {
 		Prekladiste p = Simulace.prekladiste[this.cilovePrekladiste];
 		p.prijmiPlneSudy(this.pocetPlnychSudu);
+		
+		this.prekladiste.add(this.cilovePrekladiste);
+		this.zavezenePlneSudy.add(this.pocetPlnychSudu);
+		
 		this.pocetPlnychSudu = 0;
 	}
 	
