@@ -35,8 +35,12 @@ class MyTimerActionListener implements ActionListener {
 		if(Simulace.hodina >= StaticData.MIN_HODINA_OBJEDNANI && Simulace.hodina <= StaticData.MAX_HODINA_OBJEDNANI) {
 			provedObjednavky();
 		}
+		
 		provedAkciVozidel();
-		if(Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI) spotrebujPivo();
+		
+		if(Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI) {
+			spotrebujPivo();
+		}
 		
 		vypisPoctyVyuzivanychVozidel();
 		
@@ -88,6 +92,7 @@ class MyTimerActionListener implements ActionListener {
 	private void vypisPoctyVyuzivanychVozidel() {
 		for(Prekladiste p : Simulace.prekladiste) {
 			System.out.println("Pocet vyuzivanych aut z prekladiste "+p.getID()+ ": "+p.getPocetAutNaCeste()+".");
+			System.out.println(p.getVypis());
 		}
 	}
 }

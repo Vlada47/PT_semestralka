@@ -26,8 +26,11 @@ public class HospodaSudova {
 	public void spotrebujPivo(){
 		if(this.pocetPlnychSudu < this.denniSpotreba.get(0)) {
 			System.err.println("Sudova hospoda "+this.ID+" nema dostatek piva!");
-			InputOutput.zapisVysledek();
-			System.exit(1);
+			this.pocetPlnychSudu -= this.denniSpotreba.get(0);
+			this.pocetPrazdnychSudu += this.denniSpotreba.get(0);
+			this.denniSpotreba.remove(0);
+			//InputOutput.zapisVysledek();
+			//System.exit(1);
 		}
 		else {
 			this.pocetPlnychSudu -= this.denniSpotreba.get(0);

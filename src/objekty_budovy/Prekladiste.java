@@ -115,12 +115,12 @@ public class Prekladiste{
 		double dobaCesty = vzdalenost / NakladniAuto.RYCHLOST;
 		
 		//objednavky musi dorazit nejdele stejnou hodinu (jako kdy byla objednana) druheho dne:
-		int maxDenVyrizeniObjednavky = a.getDenVyrizeniPosledniObjednavky() + 1;
-		int maxHodinaVyrizeniObjednavky = a.getHodinaVyrizeniPosledniObjednavky();
+		int maxDenVyrizeniObjednavky = o.getDenObednani() + 1;
+		int maxHodinaVyrizeniObjednavky = o.getCasObednani();
 		
-		//vyrizena bude objednavka v case prictenem o cas cesty z posledni hospody a prelozeni sudu k case vyrizeni posledni objednavky
+		//vyrizena bude objednavka v case slozenem z casu cesty z posledni hospody a prelozeni sudu k case vyrizeni posledni objednavky
 		int denVyrizeniObjednavky = a.getDenVyrizeniPosledniObjednavky();
-		double hodinaVyrizeniObjednavkyD = a.getHodinaVyrizeniPosledniObjednavky() + dobaCesty + (o.getMnozstvi()*StaticData.SUD_CAS*2);
+		double hodinaVyrizeniObjednavkyD = a.getHodinaVyrizeniPosledniObjednavky() + dobaCesty + (o.getMnozstvi()*StaticData.SUD_CAS);
 		
 		//pokud vypocitany cas prekroci 1 den
 		while(hodinaVyrizeniObjednavkyD >= 24) {
@@ -129,13 +129,16 @@ public class Prekladiste{
 		}
 		int hodinaVyrizeniObjednavky = (int)Math.round(hodinaVyrizeniObjednavkyD);
 		
-		if((denVyrizeniObjednavky > maxDenVyrizeniObjednavky) && (hodinaVyrizeniObjednavky > maxHodinaVyrizeniObjednavky)) {
+		//kontrola, zda se objednavka opravdu stihne dorucit
+		if((denVyrizeniObjednavky >= maxDenVyrizeniObjednavky) && (hodinaVyrizeniObjednavky > maxHodinaVyrizeniObjednavky)) {
 			return false;
 		}
 		else {
 			a.addCilovaHospoda(o.getIdObjednavajiciho());
 			a.addDenVyrizeniObjednavky(denVyrizeniObjednavky);
 			a.addHodinaVyrizeniObjednavky(hodinaVyrizeniObjednavky);
+			a.addMaxDenVyrizeniObjednavky(maxDenVyrizeniObjednavky);
+			a.addMaxHodinaVyrizeniObjednavky(maxHodinaVyrizeniObjednavky);
 			return true;
 		}
 	}
