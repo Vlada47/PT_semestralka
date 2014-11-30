@@ -32,8 +32,11 @@ class MyTimerActionListener implements ActionListener {
 		if (Simulace.hodina == 24) {
 			if(Simulace.den == StaticData.POCET_DNU) {
 				InputOutput.zapisVysledek();
+				System.out.println("Zapsano do logu.");
 				zapisStatistikyHospod();
+				System.out.println("Zapsany statistiky hospod.");
 				zapisStatistikyVozidel();
+				System.out.println("Zapsany statistiky vozidel.");
 				Simulace.timer.stop();
 			}
 			Simulace.hodina = 0;
@@ -112,6 +115,9 @@ class MyTimerActionListener implements ActionListener {
 	 * Tento retezec se pak posle metode ze tridy InputOutput na jeho zapsani jako jednoho radku.
 	 */
 	private void zapisStatistikyVozidel() {
+		int plnychSuduCelkem = 0;
+		int prazdnychSuduCelkem = 0;
+		
 		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_KAMIONY, "ID vozidla;Cil cesty;Pocet zavezenych plnych sudu;Pocet odvezenych prazdnych sudu;\n");
 		for(Kamion k : Simulace.pivovar.kamiony) {
 			ArrayList<Integer> prekladiste = k.getPrekladiste();
@@ -121,9 +127,16 @@ class MyTimerActionListener implements ActionListener {
 			for(int i = 0; i < prekladiste.size(); i++) {
 				String ret = ""+k.getID()+";Prekladiste c. "+prekladiste.get(i)+";"+zavezenePlneSudy.get(i)+";"+odvezenePrazdneSudy.get(i)+";\n";
 				InputOutput.zapisStatistiku(InputOutput.STATISTIKA_KAMIONY, ret);
+				plnychSuduCelkem += zavezenePlneSudy.get(i);
+				prazdnychSuduCelkem += odvezenePrazdneSudy.get(i);
 			}
 			InputOutput.zapisStatistiku(InputOutput.STATISTIKA_KAMIONY, "\n");
 		}
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_KAMIONY, "Kamiony odvozily celkem "+plnychSuduCelkem+" plnych sudu a "+prazdnychSuduCelkem+" prazdnych sudu.\n");
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_KAMIONY, "\n");
+		
+		plnychSuduCelkem = 0;
+		prazdnychSuduCelkem = 0;
 		
 		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_CISTERNY, "ID vozidla;Cil cesty;Pocet zavezenych hektolitru piva;\n");
 		for(Cisterna c : Simulace.pivovar.cisterny) {
@@ -133,9 +146,15 @@ class MyTimerActionListener implements ActionListener {
 			for(int i = 0; i < hospody.size(); i++) {
 				String ret = ""+c.getID()+";Hospoda c. "+hospody.get(i)+";"+zavezenePivo.get(i)+";\n";
 				InputOutput.zapisStatistiku(InputOutput.STATISTIKA_CISTERNY, ret);
+				plnychSuduCelkem += zavezenePivo.get(i);
 			}
 			InputOutput.zapisStatistiku(InputOutput.STATISTIKA_CISTERNY, "\n");
 		}
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_CISTERNY, "Cisterny odvozily celkem "+plnychSuduCelkem+" hektolitru piva.\n");
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_CISTERNY, "\n");
+		
+		plnychSuduCelkem = 0;
+		prazdnychSuduCelkem = 0;
 		
 		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_NAKLADNI_AUTA, "ID vozidla a prislusneho prekladiste;Cil cesty;Pocet zavezenych plnych sudu;Pocet odvezenych prazdnych sudu;\n");
 		for(Prekladiste p : Simulace.prekladiste) {
@@ -147,10 +166,14 @@ class MyTimerActionListener implements ActionListener {
 				for(int i = 0; i < hospody.size(); i++) {
 					String ret = "Auto "+a.getID()+" z prekladiste c. "+a.getStartovniPrekladiste()+";Hospoda c. "+hospody.get(i)+";"+zavezenePlneSudy.get(i)+";"+odvezenePrazdneSudy.get(i)+";\n";
 					InputOutput.zapisStatistiku(InputOutput.STATISTIKA_NAKLADNI_AUTA, ret);
+					plnychSuduCelkem += zavezenePlneSudy.get(i);
+					prazdnychSuduCelkem += odvezenePrazdneSudy.get(i);
 				}
 				InputOutput.zapisStatistiku(InputOutput.STATISTIKA_NAKLADNI_AUTA, "\n");
 			}
 		}
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_NAKLADNI_AUTA, "Nakladni auta odvozila celkem "+plnychSuduCelkem+" plnych sudu a "+prazdnychSuduCelkem+" prazdnych sudu.\n");
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_NAKLADNI_AUTA, "\n");
 	}
 	
 	private void zapisStatistikyHospod() {
@@ -168,6 +191,7 @@ class MyTimerActionListener implements ActionListener {
 			
 			InputOutput.zapisStatistiku(InputOutput.STATISTIKA_TANKOVE_HOSPODY, ret);
 		}
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_TANKOVE_HOSPODY, "\n");
 		
 		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_SUDOVE_HOSPODY, "ID hospody;Den 1;Den 2;Den 3;Den 4;Den 5;Den 6;Den 7;\n");
 		for(HospodaSudova h : Simulace.sudoveHospody) {
@@ -183,5 +207,6 @@ class MyTimerActionListener implements ActionListener {
 			
 			InputOutput.zapisStatistiku(InputOutput.STATISTIKA_SUDOVE_HOSPODY, ret);
 		}
+		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_SUDOVE_HOSPODY, "\n");
 	}
 }

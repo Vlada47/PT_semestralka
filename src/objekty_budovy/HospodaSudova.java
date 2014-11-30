@@ -72,6 +72,7 @@ public class HospodaSudova {
 	
 	public void pridejPlneSudy(int mnozstvi) {
 		this.pocetPlnychSudu += mnozstvi;
+		
 		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"/";
 	}
 	

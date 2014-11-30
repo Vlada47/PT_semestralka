@@ -28,7 +28,6 @@ public class Simulace {
 	static public void start() {
 
 		Window.textArea.setText(null);
-		System.out.println(prekladiste.length);
 		najdiNejblizsiPrekladiste();
 		Generator.generujObjednavky();
 

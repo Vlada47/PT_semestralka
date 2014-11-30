@@ -61,6 +61,7 @@ public class HospodaTankova {
 	
 	public void nacerpejPivo(int mnozstvi) {
 		this.stavPiva += mnozstvi;
+		
 		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"/";
 	}
 	
