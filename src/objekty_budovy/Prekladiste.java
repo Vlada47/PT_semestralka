@@ -13,25 +13,65 @@ import semestralka.StaticData;
 import simulace.Simulace;
 
 /**
- * 
+ * Trida uchovavajici atributy a konstruktor a metody pro praci s objektem Prekladiste.
  * @author Vlada47 & Shag0n
  *
  */
 public class Prekladiste{
-
+	
+	/**
+	 * Maximalni kapacita prekladiste pro obsah plnych + prazdnych sudu.
+	 */
 	public static final int KAPACITA = 2000;
-
+	
+	/**
+	 * Identifikator prekladiste.
+	 */
 	private final int ID;
+	
+	/**
+	 * Objekt typu Pozice uchovavajici souradnice prekladiste.
+	 */
 	private final Pozice pozice;
+	
+	/**
+	 * Aktualni pocet plnych sudu v prekladisti.
+	 */
 	private int pocetPlnychSudu;
+	
+	/**
+	 * Aktualni pocet prazdnych sudu v prekladisti.
+	 */
 	private int pocetPrazdnychSudu;
+	
+	/**
+	 * ArrayList uchovavajici nakladni auta, ktera rozvazeji sudy do hospod.
+	 */
 	public ArrayList<NakladniAuto> nakladniAuta;
+	
+	/**
+	 * ArrayList uchovavajici objednavky hospod, ktere prislusi danemu prekladisti.
+	 */
 	public ArrayList<Objednavka> objednavky;
+	
+	/**
+	 * Promenna urcujici, kolik prekladiste odeslalo sudu hospodam a kolik bude pozadovat od pivovaru.
+	 */
 	private int pocetPozadovanychSudu;
+	
+	/**
+	 * Pocet aut, co jsou aktualne na ceste.
+	 */
 	private int pocetAutNaCeste;
-
-	public Prekladiste(int ID, Pozice pozice) {
-		this.ID = ID;
+	
+	/**
+	 * Kontruktor objektu Prekladiste. Postupne zde dochazi k vytvareni jednotlivych ArrayListu pro prislusne objekty vozidel a objednavek.
+	 * Pocet plnych sudu se nastavi na maximalni mez (k dovazeni z pivovaru dochazi zpravidla az nasledujici den) a pocet nakladnich aut na ceste se nastavi a pocet pozadovanych sudu na 0.
+	 * @param id - identifikator prekladiste
+	 * @param pozice - objekt obsahujici souradnice prekladiste na mape
+	 */
+	public Prekladiste(int id, Pozice pozice) {
+		this.ID = id;
 		this.pozice = pozice;
 		this.pocetPlnychSudu = KAPACITA;
 		this.pocetPrazdnychSudu = 0;
@@ -47,38 +87,74 @@ public class Prekladiste{
 		this.setPocetAutNaCeste(0);
 	}
 	
+	/**
+	 * Metoda na ziskani identifikatoru prekladiste.
+	 * @return - ID prekladiste
+	 */
 	public int getID() {
 		return this.ID;
 	}
-
+	
+	/**
+	 * Metoda pro ziskani pozice prekladiste.
+	 * @return - objekt se souradnicemi prekladiste
+	 */
 	public Pozice getPosition() {
 		return pozice;
 	}
 	
+	/**
+	 * Metoda pro ziskani aktualniho poctu aut na ceste.
+	 * @return - pocet aut, co jsou momentalne na ceste
+	 */
 	public int getPocetAutNaCeste() {
 		return this.pocetAutNaCeste;
 	}
-
+	
+	/**
+	 * Metoda pro nastaveni aktualniho poctu aut na ceste.
+	 * @param pocetAutNaCeste - pocet aut na ceste
+	 */
 	public void setPocetAutNaCeste(int pocetAutNaCeste) {
 		this.pocetAutNaCeste = pocetAutNaCeste;
 	}
 	
+	/**
+	 * Metoda pro ziskani aktualniho poctu plnych sudu.
+	 * @return - aktualni pocet plnych sudu
+	 */
 	public int getPocetPlnychSudu() {
 		return this.pocetPlnychSudu;
 	}
 	
+	/**
+	 * Metoda pro ziskani aktualniho poctu prazdnych sudu.
+	 * @return - aktualni pocet prazdnych sudu
+	 */
 	public int getPocetPrazdnychSudu() {
 		return this.pocetPrazdnychSudu;
 	}
 	
+	/**
+	 * Metoda pro pridani objednavky do listu objednavek.
+	 * @param o - objekt s informacemi o objednavce
+	 */
 	public void pridejObjednavku(Objednavka o) {
 		this.objednavky.add(o);
 	}
 	
+	/**
+	 * Metoda pro ziskani aktualniho poctu pozadovanych sudu.
+	 * @return - aktualni pocet pozadovanych sudu
+	 */
 	public int getPocetPozadovanychSudu() {
 		return this.pocetPozadovanychSudu;
 	}
-
+	
+	/**
+	 * Metoda pro nastaveni aktualniho poctu pozadovanych sudu.
+	 * @param pocetPozadovanychSudu - aktualni pocet pozadovanych sudu
+	 */
 	public void setPocetPozadovanychSudu(int pocetPozadovanychSudu) {
 		this.pocetPozadovanychSudu = pocetPozadovanychSudu;
 	}
@@ -193,15 +269,27 @@ public class Prekladiste{
 		o.setCasObednani(hodinaObjednani);
 	}
 	
-	
+	/**
+	 * Metoda pro prijeti plnych sudu od kamionu.
+	 * @param pocet - naklad, ktery kamion preda prekladisti
+	 */
 	public void prijmiPlneSudy(int pocet) {
 		this.pocetPlnychSudu += pocet;
 	}
 	
+	/**
+	 * Metoda pro prijeti prazdnych sudu od nakladniho auta.
+	 * @param pocet - prazdne sudy nakladniho auta
+	 */
 	public void prijmiPrazdneSudy(int pocet) {
 		this.pocetPrazdnychSudu += pocet;
 	}
 	
+	/**
+	 * Metoda k odevzdani prazdnych sudu obsluhujicimu kamionu. Dochazi zde ke kontrole, jestli prekladiste ma alespon tolik sudu, kolik vyplni jeden kamion.
+	 * Pokud ano, odevzda presne pocet sudu odpovidajici kapacite kamionu, pokud ne, odevzda, co mu zbyva.
+	 * @return - pocet odevzdanych prazdnych sudu
+	 */
 	public int odevzdejPrazdneSudy() {
 		if(this.pocetPrazdnychSudu >= Kamion.KAPACITA) {
 			this.pocetPrazdnychSudu -= Kamion.KAPACITA;
@@ -214,6 +302,10 @@ public class Prekladiste{
 		}
 	}
 	
+	/**
+	 * Metoda pro ziskani retezce s informacemi o stavu prekladiste (pocet plnych a prazdnych sudu).
+	 * @return - retezec s informacemi
+	 */
 	public String getVypis() {
 		return "Prekladiste "+this.ID+" ma "+this.pocetPlnychSudu+"plnych a "+this.pocetPrazdnychSudu+" prazdnych sudu.";
 	}

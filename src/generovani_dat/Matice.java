@@ -16,11 +16,29 @@ import semestralka.StaticData;
  */
 public class Matice {
 	
+	/**
+	 * Pole typu Cesta pro ulozeni cest pivovaru ze souboru a nasledne pouziti pro vytvoreni matice sousednosti.
+	 */
 	public static Cesta[] cestyPivovaru;
+	
+	/**
+	 * Pole typu Cesta pro ulozeni cest prekladist ze souboru a nasledne pouziti pro vytvoreni matice sousednosti.
+	 */
 	public static Cesta[][] cestyPrekladist;
+	
+	/**
+	 * Pole typu Cesta pro ulozeni cest hospod ze souboru a nasledne pouziti pro vytvoreni matice sousednosti.
+	 */
 	public static Cesta[][] cestyHospod;
 	
+	/**
+	 * Pole pro ulozeni matice sousednosti se vsemi uzly, ktere se v simulaci budou vyskytovat.
+	 */
 	public static double[][] maticeSousednosti = new double[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
+	
+	/**
+	 * Pole pro ulozeni matice, kterou vytvari Floyd-Warshalùv algoritmus.
+	 */
 	public static int[][] maticeNejkratsichCest = new int[StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1][StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST+1];
 	
 	/**
@@ -38,7 +56,7 @@ public class Matice {
 	}
 	
 	/**
-	 * Metoda provytvoreni matice sousednosti mezi vsemi uzly na mape.
+	 * Metoda pro vytvoreni matice sousednosti mezi vsemi uzly na mape.
 	 * Nejprve vyplni matici maximalni hodnotou typu Double (reprezentuje nekonecno) a na diagonalu umisti 0.
 	 * Pote uklada jednotlive vzdalenost mezi uzly z poli, kde jsou ulozeny. Indexace matice - prvni indexy patri hospodam, po nich nasleduji prekladiste a posledni index matice odpovida pivovaru.
 	 */
@@ -150,8 +168,12 @@ public class Matice {
 	 * @param a - ArrayList pro ukladani cesty
 	 */
 	private static void najdiNejkratsiCestu(int[][] maticePredchudcu, int i, int j, ArrayList<Integer> a) {
-		if (i == j) a.add(i);
-		else if (maticePredchudcu[i][j] == -1) System.out.println("Cesta z "+i+" do "+j+" neexistuje!");
+		if (i == j) {
+			a.add(i);
+		}
+		else if (maticePredchudcu[i][j] == -1) {
+			System.out.println("Cesta z "+i+" do "+j+" neexistuje!");
+		}
 		else {
 			najdiNejkratsiCestu(maticePredchudcu, i, maticePredchudcu[i][j], a);
 			a.add(j);

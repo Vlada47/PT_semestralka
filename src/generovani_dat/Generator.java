@@ -19,11 +19,30 @@ import simulace.Simulace;
  *
  */
 public class Generator {
-
+	
+	/**
+	 * Pole typu Pozice uchovavajici souradnice prekladist pro dalsi pouziti.
+	 */
 	public static Pozice[] souradnicePrekladist = new Pozice[StaticData.POCET_PREKLADIST];
+	
+	/**
+	 * Pole typu Pozice uchovavajici souradnice hospod pro dalsi pouziti.
+	 */
 	public static Pozice[] souradniceHospod = new Pozice[StaticData.POCET_HOSPOD];
+	
+	/**
+	 * Pole typu Cesta uchovavajici cesty vedouci z pivovaru pro dalsi pouziti.
+	 */
 	public static Cesta[] cestyPivovaru = new Cesta[StaticData.POCET_CEST_PIVOVARU];
+	
+	/**
+	 * Pole typu Cesta uchovavajici cesty vedouci z jednotlivych prekladist pro dalsi pouziti.
+	 */
 	public static Cesta[][] cestyPrekladist = new Cesta[StaticData.POCET_PREKLADIST][StaticData.POCET_CEST_PREKLADISTE];
+	
+	/**
+	 * Pole typu Cesta uchovavajici cesty vedouci z jednotlivych hospod pro dalsi pouziti.
+	 */
 	public static Cesta[][] cestyHospod = new Cesta[StaticData.POCET_HOSPOD][StaticData.POCET_CEST_HOSPODY];
 	
 	/**
@@ -137,6 +156,11 @@ public class Generator {
 		}
 	}
 	
+	/**
+	 * Metoda, ktera postupne generuje objednavky jednotlivych hospod pro celou dobu simulace a pripradi je pivovaru nebo prislusnemu prekladisti
+	 * Mnozstvi, ktere ma hospoda objednat se vypocte pomoci metody vyberMnozstvi. Tato hodnota se rovnez pouzije pro urceni denni spotreby hospody.
+	 * Cas, kdy dojde k objednani je zase vypocitan metodou vyberCas.
+	 */
 	public static void generujObjednavky() {
 		for(HospodaTankova h : Simulace.tankoveHospody) {
 			for(int i = 1; i <= StaticData.POCET_DNU; i++) {
@@ -157,32 +181,54 @@ public class Generator {
 		}
 	}
 	
+	/**
+	 * Metoda na vybrani mnozstvi, ktere si dana hospoda objedna v rozsahu 1 az 6 sudu / hl.
+	 * Nejprve je pomoci tridy Random vybrano pseudonahodne cislo a podle nej rozrazeno do jednotlivych kategorii (podle pravdepodobnosti uvedene v zadani). 
+	 * @return vraci mnostvi, ktere si ma hospoda objednat
+	 */
 	private static int vyberMnozstvi() {
 		Random r = new Random();
 		int generaceMnozstvi = r.nextInt(101);
 		int mnozstvi;
 		
-		if (generaceMnozstvi < 25)
+		if (generaceMnozstvi < 25) {
 			mnozstvi = 1;
-		else if (generaceMnozstvi < 50)
+		}	
+		else if (generaceMnozstvi < 50) {
 			mnozstvi = 2;
-		else if (generaceMnozstvi < 71)
+		}
+		else if (generaceMnozstvi < 71) {
 			mnozstvi = 3;
-		else if (generaceMnozstvi < 86)
+		}
+		else if (generaceMnozstvi < 86) {
 			mnozstvi = 4;
-		else if (generaceMnozstvi < 96)
+		}
+		else if (generaceMnozstvi < 96) {
 			mnozstvi = 5;
-		else
+		}
+		else {
 			mnozstvi = 6;
+		}
+			
 		
 		return mnozstvi;
 	}
 	
+	/**
+	 * Metoda na urceni casu, ve kterem dojde k objednavce. Pomoci tridy Random a jeji metody nextGaussian je vybrana hodnota casu dle Gaussovy rozdeleni pravdepodobnosti.
+	 * Vzhledem k vlastnostem Gaussovy krivky je vysledek, pokud presahuje stanovene meze, na tyto meze snizen / zvysen.
+	 * Vrchol krivky odpovida hodine, kdy ma chodit nejvice objednavek. 
+	 * @return vraci cas, ve kterem dojde k objednavce
+	 */
 	private static int vyberCas() {
 		Random r = new Random();
 		double cas = r.nextGaussian()*StaticData.GAUSS_ROZSAH + StaticData.HODINA_OBJEDNAVEK;
-		if(cas < 8) cas = 8.0;
-		if(cas > 16) cas = 16.0;
+		if(cas < StaticData.MIN_HODINA_OBJEDNANI) {
+			cas = StaticData.MIN_HODINA_OBJEDNANI;
+		}
+		if(cas > StaticData.MAX_HODINA_OBJEDNANI) {
+			cas = StaticData.MAX_HODINA_OBJEDNANI;
+		}
 		
 		return (int) Math.round(cas);
 	}

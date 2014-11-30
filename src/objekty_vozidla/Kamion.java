@@ -8,36 +8,97 @@ import simulace.Simulace;
 
 /**
  * Trida pro vytvareni objektu typu Kamion. Uchovava pocet plnych a prazdnych sudu, cilove prekladiste a cas, kdy tam dorazi a kdy se vrati zpet do pivovaru.
- * @author Vlada47
+ * @author Vlada47 & Shag0n
  *
  */
 public class Kamion {
 	
+	/**
+	 * Prumerna rychlost nakladniho kamionu.
+	 */
 	public static final double RYCHLOST = 90.0;
+	
+	/**
+	 * Maximalni kapacita kamionu v sudech.
+	 */
 	public static final int KAPACITA = 100;
 	
+	/**
+	 * Identifikator kamionu.
+	 */
 	private final int ID;
+	
+	/**
+	 * Aktualne prevazene mnozstvi plnych sudu.
+	 */
 	private int pocetPlnychSudu;
+	
+	/**
+	 * Aktualne prevazene mnozstvi prazdnych sudu.
+	 */
 	private int pocetPrazdnychSudu;
+	
+	/**
+	 * Aktualne nastavene cilove prekladiste.
+	 */
 	private int cilovePrekladiste;
+	
+	/**
+	 * Den, kdy kamion dorazi do aktualne nastaveneho ciloveho prekladiste.
+	 */
 	private int denDorazeniDoPrekladiste;
+	
+	/**
+	 * Hodina, kdy kamion dorazi do aktualne nastaveneho ciloveho prekladiste.
+	 */
 	private int hodinaDorazeniDoPrekladiste;
+	
+	/**
+	 * Den, kdy kamion prelozi sudy v aktualne nastavenem cilovem prekladisti.
+	 */
 	private int denPrelozeniSudu;
+	
+	/**
+	 * Hodina, kdy kamion prelozi sudy v aktualne nastavenem cilovem prekladisti.
+	 */
 	private int hodinaPrelozeniSudu;
+	
+	/**
+	 * Den, kdy se kamion vrati do pivovaru.
+	 */
 	private int denNavratuDoPivovaru;
+	
+	/**
+	 * Hodina, kdy se kamion vrati do pivovaru.
+	 */
 	private int hodinaNavratuDoPivovaru;
+	
+	/**
+	 * Indikator, zda je kamion aktualne na ceste nebo ceka v pivovaru.
+	 */
 	private boolean naCeste;
 	
+	/**
+	 * ArrayList s prekladisti, ktere kamion behem simulace obslouzil.
+	 */
 	private ArrayList<Integer> prekladiste;
+	
+	/**
+	 * ArrayList s mnozstvim plnych sudu, ktere kamion zavezl prekladistim behem simulace.
+	 */
 	private ArrayList<Integer> zavezenePlneSudy;
+	
+	/**
+	 * ArrayList s mnozstvim prazdnych sudu, ktere kamion odvezl z prekladist behem simulace.
+	 */
 	private ArrayList<Integer> odvezenePrazdneSudy;
 	
 	/**
 	 * Konstruktor objektu Kamion - nastavuje se zde ID podle vstupu a pocty plnych i prazdnych sudu na 0.
-	 * @param ID - jedinecny identifikator konkretniho kamionu
+	 * @param id - jedinecny identifikator konkretniho kamionu
 	 */
-	public Kamion(int ID) {
-		this.ID = ID;
+	public Kamion(int id) {
+		this.ID = id;
 		this.pocetPrazdnychSudu = 0;
 		this.pocetPlnychSudu = 0;
 		this.setNaCeste(false);
@@ -89,8 +150,8 @@ public class Kamion {
 		this.naCeste = naCeste;
 	}
 	
-	public void setCilovePrekladiste(int IDPrekladiste) {
-		this.cilovePrekladiste = IDPrekladiste;
+	public void setCilovePrekladiste(int idPrekladiste) {
+		this.cilovePrekladiste = idPrekladiste;
 	}
 	
 	public int getCilovePrekladiste() {

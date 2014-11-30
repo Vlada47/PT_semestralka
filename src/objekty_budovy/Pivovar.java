@@ -10,25 +10,52 @@ import semestralka.StaticData;
 import simulace.Simulace;
 
 /**
- * Trida uchovavajici kontruktor a metody pro praci s objektem Pivovar.
+ * Trida uchovavajici atributy a konstruktor a metody pro praci s objektem Pivovar.
  * @author Vlada47 & Shag0n
  *
  */
-public class Pivovar {
+public final class Pivovar {
 	
+	/**
+	 * Pocet hl piva, ktere pivovar vyprodukuje za jeden den.
+	 */
 	public static final int DENNI_PRODUKCE = 7000;
-
+	
+	/**
+	 * Aktualni stav piva v pivovaru
+	 */
 	private int stavPiva;
+	
+	/**
+	 * ArrayList obsahujici instance kamionu, ktere vozi sudy mezi pivovarem a prekladisti.
+	 */
 	public ArrayList<Kamion> kamiony;
+	
+	/**
+	 * ArrayList obsahujici instance cisteren, ktere vozi pivo mezi pivovarem a hospodami.
+	 */
 	public ArrayList<Cisterna> cisterny;
+	
+	/**
+	 * ArrayList obsahujici instance objednavek vyrizovanych pro tankove hospody.
+	 */
 	public ArrayList<Objednavka> objednavkyHospod;
+	
+	/**
+	 * Aktualni pocet kamionu, co jsou na ceste.
+	 */
 	private int pocetKamionuNaCeste;
+	
+	/**
+	 * Aktualni pocet cisteren na ceste.
+	 */
 	private int pocetCisterenNaCeste;
 
 	private static Pivovar instance;
 	
 	/**
 	 * Kontruktor objektu Pivovar. Postupne zde dochazi k vytvareni jednotlivych ArrayListu pro prislusne objekty vozidel a objednavek.
+	 * Stav piva se nastavi na 0 (k produkci dojde vzdy na zacatku noveho dne) a pocet kamionu a cisteren na ceste se nastavi na 0.
 	 */
 	private Pivovar() {
 		this.stavPiva = 0;
@@ -59,18 +86,34 @@ public class Pivovar {
 		return instance;
 	}
 	
+	/**
+	 * Metoda k vraceni poctu kamionu na ceste.
+	 * @return - pocet kamionu, co jsou prave na ceste.
+	 */
 	public int getPocetKamionuNaCeste() {
 		return this.pocetKamionuNaCeste;
 	}
-
+	
+	/**
+	 * Metoda k nastaveni poctu kamionu, co jsou prave na ceste.
+	 * @param pocetKamionuNaCeste - pocet, na ktery se atribut nastavi
+	 */
 	public void setPocetKamionuNaCeste(int pocetKamionuNaCeste) {
 		this.pocetKamionuNaCeste = pocetKamionuNaCeste;
 	}
 
+	/**
+	 * Metoda k vraceni poctu cisteren na ceste.
+	 * @return - pocet cisteren, co jsou prave na ceste.
+	 */
 	public int getPocetCisterenNaCeste() {
 		return this.pocetCisterenNaCeste;
 	}
-
+	
+	/**
+	 * Metoda k nastaveni poctu cisteren, co jsou prave na ceste.
+	 * @param pocetCisterenNaCeste - pocet, na ktery se atribut nastavi
+	 */
 	public void setPocetCisterenNaCeste(int pocetCisterenNaCeste) {
 		this.pocetCisterenNaCeste = pocetCisterenNaCeste;
 	}
@@ -101,9 +144,9 @@ public class Pivovar {
 	}
 	
 	/**
-	 * Metoda resici odvoz sudu do jednoho konkretniho prekladiste. Odesle staticky nastaveny pocet kamionu z ArrayListu dostupneKamiony,
-	 * kterym pak nastavi naklad na jejich maximalni kapacitu (a odebere prislusne mnozstvi piva z pivovaru) a zavola metodu odesliKamionDoPrekladiste.
-	 * Po jejim vykonani odstrani prislusny kamion z listu dostupneKamiony a priradi jej do listu kamionyNaCeste.
+	 * Metoda resici odvoz sudu do jednoho konkretniho prekladiste. Odesle nastaveny pocet kamionu z ArrayListu kamiony podle toho, kolik potrebuje prekladiste sudu.
+	 * List se postupne prohledava, dokud se nenajde kamion, ktery neni jeste na ceste, tomu se pak priradi sudy pomoci metody nalozPlneSudy.
+	 * Kamion se pak odesle na cestu metodou odesliKamionDoPrekladiste.
 	 * @param p - objekt prekladiste, do ktereho se kamiony maji poslat
 	 */
 	private void odvozDoPrekladiste(Prekladiste p) {
@@ -151,6 +194,8 @@ public class Pivovar {
 	
 	/**
 	 * Metoda, ktera pro konkretni kamion zjisti nejvyhodnejsi cestu, vypocita jeji vzdalenost a na zaklade prumerne rychlosti kamionu mu urci, kdy dorazi do cile.
+	 * Od tohoto casu se pak odviji i cas, kdy dojde k prelozeni vsech sudu, tim ze se pripocita doba potrebna k prelozeni jednoho sudu prenasobena pocetm sudu.
+	 * Nakonec se pripocita doba, kdy se kamion vrati do pivovaru. Tyto hodnoty (vzdy den a hodina) se ulozi do atributu kamionu, ktery s nimi pak dale pracuje.
 	 * Cil (prekladiste) se rovnez uklada k prislusnemu kamionu.
 	 * @param k - objekt kamionu, kteremu se urcuje cesta a jeji cil
 	 * @param p - objekt prekladiste, ktere predstavuje cil pro kamion
@@ -303,6 +348,10 @@ public class Pivovar {
 		o.setCasObednani(hodinaObjednani);
 	}
 	
+	/**
+	 * Metoda k vraceni retezce, obsahujici informace o stavu pivovaru (stav piva).
+	 * @return - retezec s informaci
+	 */
 	public String getVypis() {
 		return "Pivovar ma akutalne k dispozici "+this.stavPiva+"hl piva.";
 	}

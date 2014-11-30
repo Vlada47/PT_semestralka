@@ -6,9 +6,16 @@ package objekty_ostatni;
  *
  */
 public class Pozice {
-
-	public int x;
-	public int y;
+	
+	/**
+	 * Souradnice x.
+	 */
+	public final int x;
+	
+	/**
+	 * Souradnice y.
+	 */
+	public final int y;
 	
 	/**
 	 * Kontruktor objektu.
@@ -19,17 +26,27 @@ public class Pozice {
 		this.x = x;
 		this.y = y;
 	}
-
+	
+	/**
+	 * Metoda na vraceni souradnice x.
+	 * @return - souradnice x
+	 */
 	public int getX() {
 		return x;
 	}
-
+	
+	/**
+	 * Metoda na vraceni souradnice y.
+	 * @return - souradnice y
+	 */
 	public int getY() {
 		return y;
 	}
 
-	@Override
+	/**
+	 * Metoda na vraceni vypisu atributu objektu.
+	 */
 	public String toString() {
-		return ""+x +" "+ y;
+		return x +" "+ y;
 	}
 }
