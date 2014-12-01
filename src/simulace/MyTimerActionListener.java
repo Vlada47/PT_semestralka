@@ -51,6 +51,7 @@ class MyTimerActionListener implements ActionListener {
 		
 		provedObjednavky();
 		provedAkciVozidel();
+
 		if(Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI) {
 			spotrebujPivo();
 		}

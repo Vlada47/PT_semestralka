@@ -3,20 +3,10 @@ package gui;
 import generovani_dat.Matice;
 import io.CustomOutputStream;
 import io.InputOutput;
-
 import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.PrintStream;
-
 import javax.swing.*;
-
-import objekty_budovy.HospodaSudova;
-import objekty_budovy.HospodaTankova;
-import objekty_budovy.Pivovar;
-import objekty_budovy.Prekladiste;
-import objekty_vozidla.Cisterna;
-import objekty_vozidla.Kamion;
-import objekty_vozidla.NakladniAuto;
 import simulace.Simulace;
 
 public class Window extends JFrame {
@@ -26,6 +16,8 @@ public class Window extends JFrame {
 	private static boolean bezi = true;
 	private static boolean spusteno = false;
 	public static JTextArea textArea;
+	public static JButton zacni;
+	public static JButton aktualizace;
 
 	public static void startOkno() {
 
@@ -48,20 +40,12 @@ public class Window extends JFrame {
 		JPanel buttonPanel = new JPanel();
 
 		// tlacitka a obsluhy udalosti
-		JButton aktualizace = new JButton("Generuj matici");
-		JButton mapa = new JButton("Vykresli rozmÌstÏnÌ");
-		final JButton zacni = new JButton("Spusù simulaci");
+		aktualizace = new JButton("Generuj matici");
+		zacni = new JButton("Spusù simulaci");
 		final JButton objednej = new JButton("Objednej");
-		JButton stavBudov = new JButton("Stav budov");
-		JButton stavVozidel = new JButton("Stav vozidel");
-
-		mapa.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new ScrollPane();
-			}
-		});
+		final JButton stavBudov = new JButton("Stav hospod");
+		final JButton stavCisteren = new JButton("Stav cisteren");
+		final JButton stavNakladaku = new JButton("Stav n·kladnÌch aut");
 
 		zacni.addActionListener(new ActionListener() {
 
@@ -70,6 +54,10 @@ public class Window extends JFrame {
 				if (!spusteno) {
 					Simulace.start();
 					objednej.setEnabled(true);
+					stavBudov.setEnabled(true);
+					stavCisteren.setEnabled(true);
+					stavNakladaku.setEnabled(true);
+					aktualizace.setEnabled(false);
 					spusteno=true;
 					zacni.setText("Pozastavit");
 				}
@@ -79,14 +67,12 @@ public class Window extends JFrame {
 						Simulace.timer.stop();
 						bezi = false;
 						zacni.setText("PokraËovat");
-						objednej.setEnabled(false);
 					}
 
 					else {
 						Simulace.timer.start();
 						bezi = true;
 						zacni.setText("Pozastavit");
-						objednej.setEnabled(true);
 					}
 
 				}
@@ -118,61 +104,49 @@ public class Window extends JFrame {
 
 			}
 		});
-
+		
 		stavBudov.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				textArea.setText(null);
-				for (HospodaSudova h : Simulace.sudoveHospody) {
-					System.out.println(h.getVypis());
-				}
-
-				for (HospodaTankova h : Simulace.tankoveHospody) {
-					System.out.println(h.getVypis());
-				}
-
-				for (Prekladiste p : Simulace.prekladiste) {
-					System.out.println(p.getVypis());
-				}
-
-				System.out.println(Simulace.pivovar.getVypis());
+				
+				new OknoHospody();
+				
 			}
 		});
 
-		stavVozidel.addActionListener(new ActionListener() {
+		stavCisteren.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				textArea.setText(null);
-
-				for (Prekladiste p : Simulace.prekladiste) {
-					for (NakladniAuto a : p.nakladniAuta) {
-						System.out.println(a.getVypis());
-					}
-				}
-
-				Pivovar p = Simulace.pivovar;
-
-				for (Kamion k : p.kamiony) {
-					System.out.println(k.getVypis());
-				}
-
-				for (Cisterna c : p.cisterny) {
-					System.out.println(c.getVypis());
-				}
+				
+				new OknoCisteren();
+			}
+		});
+		
+		stavNakladaku.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				new OknoNakladaku();
 			}
 		});
 
 		buttonPanel.add(aktualizace);
-		buttonPanel.add(mapa);
 		buttonPanel.add(zacni);
 		buttonPanel.add(objednej);
 		buttonPanel.add(stavBudov);
-		buttonPanel.add(stavVozidel);
+		buttonPanel.add(stavCisteren);
+		buttonPanel.add(stavNakladaku);
 		objednej.setEnabled(false);
+		stavBudov.setEnabled(false);
+		stavCisteren.setEnabled(false);
+		stavNakladaku.setEnabled(false);
+		aktualizace.setEnabled(false);
 		frame.add(buttonPanel, BorderLayout.PAGE_END);
 	}
 
+	
+	
 	public static void initOutputWindow() {
 
 		textArea = new JTextArea(15, 40);

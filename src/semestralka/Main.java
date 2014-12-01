@@ -1,5 +1,6 @@
 package semestralka;
 
+import java.io.File;
 import io.InputOutput;
 import generovani_dat.Generator;
 import generovani_dat.Matice;
@@ -21,13 +22,25 @@ public class Main {
 	public static void main(String[] args) {
 
 		Window.startOkno();
+		Window.zacni.setEnabled(false);
 
 		System.out.println("Spoustim...");
 
 		Generator.generujSouradniceACesty();
 		InputOutput.zapisSouradniceACestyDoSouboru();
 		Matice.vygenerujMatice();
-		Matice.nactiMaticiNejkratsichCestZeSouboru();
+
+		File f = new File(InputOutput.MATICE_CEST_SOUBOR);
+		if (f.exists() && !f.isDirectory()) {
+			Matice.nactiMaticiNejkratsichCestZeSouboru();
+		} else {
+			System.out.println("Generuji matici nejkratsich cest");
+			Matice.vytvorNejkratsiCesty();
+			InputOutput.zapisMaticeNejkratsichCest(Matice.maticeNejkratsichCest);
+		}
+
 		System.out.println("Pripraveno...");
+		Window.zacni.setEnabled(true);
+		Window.aktualizace.setEnabled(true);
 	}
 }

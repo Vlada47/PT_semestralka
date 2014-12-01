@@ -10,16 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import objekty_ostatni.Objednavka;
 import semestralka.StaticData;
 import simulace.Simulace;
 
-public class OknoObjednavky extends JFrame {
+public class OknoHospody extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public OknoObjednavky() {
-		super("Objednani");
+	public OknoHospody() {
+		super("Hospoda");
 
 		setSize(100, 180);
 		setLocationRelativeTo(null);
@@ -38,41 +37,28 @@ public class OknoObjednavky extends JFrame {
 				new Integer(1) // step
 		);
 
-		SpinnerNumberModel numberModel2 = new SpinnerNumberModel(new Integer(1), // value
-				new Integer(1), // min
-				new Integer(6), // max
-				new Integer(1) // step
-		);
-
 		final JSpinner hospoda = new JSpinner(numberModel1);
-		final JSpinner mnozstvi = new JSpinner(numberModel2);
-
+		
 		cont.add(new JLabel("Zadejte ID hospody: "));
 		cont.add(hospoda);
-		cont.add(new JLabel("			Zadejte množství: "));
-		cont.add(mnozstvi);
 
-		JButton objednej = new JButton("Objednej");
+		JButton vypis = new JButton("Vypis");
 
-		objednej.addActionListener(new ActionListener() {
+		vypis.addActionListener(new ActionListener() {
 
 			// @Override
 			public void actionPerformed(ActionEvent arg0) {
 
 				int idHospody = (Integer) hospoda.getValue();
-				int objednaneMnozstvi = (Integer) mnozstvi.getValue();
-
+				
 				if (idHospody % 20 == 0) {
-					Simulace.pivovar.objednavkyHospod.add(new Objednavka(Simulace.den, Simulace.hodina + 1, idHospody,
-							0, objednaneMnozstvi));
+				System.out.println(Simulace.tankoveHospody[(idHospody/20)].getVypis());			
 				}
 
 				else {
 
 					int praveId = spocitejIndexHospody(idHospody);
-					int idPrekladiste = Simulace.sudoveHospody[praveId].getIdPrekladiste();
-					Simulace.prekladiste[idPrekladiste].objednavky.add(new Objednavka(Simulace.den,
-							Simulace.hodina + 1, idHospody, idPrekladiste, objednaneMnozstvi));
+					System.out.println(Simulace.sudoveHospody[(praveId)].getVypis());	
 				}
 
 				Simulace.timer.start();
@@ -80,7 +66,7 @@ public class OknoObjednavky extends JFrame {
 			}
 		});
 
-		cont.add(objednej);
+		cont.add(vypis);
 
 		setContentPane(cont);
 	}
