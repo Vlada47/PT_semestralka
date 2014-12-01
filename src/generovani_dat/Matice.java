@@ -4,6 +4,7 @@ import io.InputOutput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import objekty_ostatni.Cesta;
 import semestralka.StaticData;
@@ -154,8 +155,8 @@ public class Matice {
 	 * @param kam - index uzlu, do kterehose snazime dostat
 	 * @return ArrayList s posloupnosti indexu uzlu, pres ktere cesta vede. 
 	 */
-	public static ArrayList<Integer> getNejkratsiCesta(int odkud, int kam) {
-		ArrayList<Integer> nejkratsiCesta = new ArrayList<Integer>();
+	public static List<Integer> getNejkratsiCesta(int odkud, int kam) {
+		List<Integer> nejkratsiCesta = new ArrayList<Integer>();
 		najdiNejkratsiCestu(maticeNejkratsichCest, odkud, kam, nejkratsiCesta);
 		return nejkratsiCesta;
 	}
@@ -167,7 +168,7 @@ public class Matice {
 	 * @param j - index koncoveho uzlu
 	 * @param a - ArrayList pro ukladani cesty
 	 */
-	private static void najdiNejkratsiCestu(int[][] maticePredchudcu, int i, int j, ArrayList<Integer> a) {
+	private static void najdiNejkratsiCestu(int[][] maticePredchudcu, int i, int j, List<Integer> a) {
 		if (i == j) {
 			a.add(i);
 		}
@@ -185,7 +186,7 @@ public class Matice {
 	 * @param nejkratsiCesta - ArrayList s posloupnosti indexu uzlu dane cesty
 	 * @return delka zadane cesty
 	 */
-	public static double getDelkaNejkratsiCesty(ArrayList<Integer> nejkratsiCesta) {
+	public static double getDelkaNejkratsiCesty(List<Integer> nejkratsiCesta) {
 		double delka = 0.0;
 		
 		for(int i = 0; i < nejkratsiCesta.size()-1; i++) {

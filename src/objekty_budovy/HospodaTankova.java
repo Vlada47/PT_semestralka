@@ -3,6 +3,7 @@ package objekty_budovy;
 import io.InputOutput;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import objekty_ostatni.Pozice;
 import semestralka.StaticData;
@@ -34,7 +35,7 @@ public class HospodaTankova {
 	 * List s spotrebou hospody v jednotlivych dnech, do ktereho je ukladano pri vytvrani objednavek na zacatku simulace.
 	 * Hospoda podle nej odebira mnozstvi dostupneho piva a prislusny zaznam se spotrebou pote odstrani.
 	 */
-	private ArrayList<Integer> denniSpotreba;
+	private List<Integer> denniSpotreba;
 	
 	/**
 	 * Pole se zaznamy o dovezenych objednavkach v jednotlivych dnech. Indexove odpovida poli se seznamem obsluhujicich vozidel.

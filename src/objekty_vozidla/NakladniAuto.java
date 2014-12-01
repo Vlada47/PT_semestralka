@@ -1,6 +1,7 @@
 package objekty_vozidla;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import objekty_budovy.HospodaSudova;
 import objekty_budovy.Prekladiste;
@@ -87,17 +88,17 @@ public class NakladniAuto {
 	/**
 	 * ArrayList s hospodami, ktere auto behem simulace obslouzilo.
 	 */
-	private ArrayList<Integer> hospody;
+	final private List<Integer> hospody;
 	
 	/**
 	 * ArrayList s mnozstvim plnych sudu, ktere auto zavezlo hospodam behem simulace.
 	 */
-	private ArrayList<Integer> zavezenePlneSudy;
+	final private List<Integer> zavezenePlneSudy;
 	
 	/**
 	 * ArrayList s mnozstvim prazdnych sudu, ktere auto odvezlo z hospod behem simulace.
 	 */
-	private ArrayList<Integer> odvezenePrazdneSudy;
+	final private List<Integer> odvezenePrazdneSudy;
 	
 	/**
 	 * Konstruktor objektu NakladniAuto - nastavuje se zde ID podle vstupu a mnozstvi plnych/prazdnych sudu na 0.
@@ -261,7 +262,7 @@ public class NakladniAuto {
 	 * Metoda k ziskani pole behem simulace obslouzenych hospod.
 	 * @return - pole s obslouzenymi hospodami
 	 */
-	public ArrayList<Integer> getHospody() {
+	public List<Integer> getHospody() {
 		return hospody;
 	}
 
@@ -269,7 +270,7 @@ public class NakladniAuto {
 	 * Metoda pro ziskani mnozstvi behem simulace zavezenych plnych sudu.
 	 * @return - pole s mnozstvim zavezenych plnych sudu
 	 */
-	public ArrayList<Integer> getZavezenePlneSudy() {
+	public List<Integer> getZavezenePlneSudy() {
 		return zavezenePlneSudy;
 	}
 
@@ -277,7 +278,7 @@ public class NakladniAuto {
 	 * Metoda pro ziskani mnozstvi behem simulace odvezenych prazdnych sudu.
 	 * @return - pole s mnozstvim odvezenych prazdnych sudu
 	 */
-	public ArrayList<Integer> getOdvezenePrazdneSudy() {
+	public List<Integer> getOdvezenePrazdneSudy() {
 		return odvezenePrazdneSudy;
 	}
 	

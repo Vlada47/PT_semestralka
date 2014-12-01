@@ -1,6 +1,7 @@
 package objekty_vozidla;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import objekty_budovy.Pivovar;
 import objekty_budovy.Prekladiste;
@@ -81,17 +82,17 @@ public class Kamion {
 	/**
 	 * ArrayList s prekladisti, ktere kamion behem simulace obslouzil.
 	 */
-	private ArrayList<Integer> prekladiste;
+	final private List<Integer> prekladiste;
 	
 	/**
 	 * ArrayList s mnozstvim plnych sudu, ktere kamion zavezl prekladistim behem simulace.
 	 */
-	private ArrayList<Integer> zavezenePlneSudy;
+	final private List<Integer> zavezenePlneSudy;
 	
 	/**
 	 * ArrayList s mnozstvim prazdnych sudu, ktere kamion odvezl z prekladist behem simulace.
 	 */
-	private ArrayList<Integer> odvezenePrazdneSudy;
+	final private List<Integer> odvezenePrazdneSudy;
 	
 	/**
 	 * Konstruktor objektu Kamion - nastavuje se zde ID podle vstupu a pocty plnych i prazdnych sudu na 0.
@@ -240,7 +241,7 @@ public class Kamion {
 	 * Metoda pro ziskani pole s obslouzenymi prekladisti behem simulace.
 	 * @return - pole s obslouzenymi prekladisti
 	 */
-	public ArrayList<Integer> getPrekladiste() {
+	public List<Integer> getPrekladiste() {
 		return prekladiste;
 	}
 
@@ -248,7 +249,7 @@ public class Kamion {
 	 * Metoda pro ziskani pole s dovezenymi plnymi sudy behem simulace.
 	 * @return - pole s dovezenymi plnymi sudy
 	 */
-	public ArrayList<Integer> getZavezenePlneSudy() {
+	public List<Integer> getZavezenePlneSudy() {
 		return zavezenePlneSudy;
 	}
 
@@ -256,7 +257,7 @@ public class Kamion {
 	 * Metoda pro ziskani pole s odvezenymi prazdnymi sudy behem simulace.
 	 * @return - pole odvezenymi prazdnymi sudy
 	 */
-	public ArrayList<Integer> getOdvezenePrazdneSudy() {
+	public List<Integer> getOdvezenePrazdneSudy() {
 		return odvezenePrazdneSudy;
 	}
 	

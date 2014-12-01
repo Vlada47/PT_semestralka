@@ -1,6 +1,7 @@
 package objekty_budovy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import generovani_dat.Matice;
 import objekty_ostatni.Objednavka;
@@ -29,17 +30,17 @@ public final class Pivovar {
 	/**
 	 * ArrayList obsahujici instance kamionu, ktere vozi sudy mezi pivovarem a prekladisti.
 	 */
-	public ArrayList<Kamion> kamiony;
+	public List<Kamion> kamiony;
 	
 	/**
 	 * ArrayList obsahujici instance cisteren, ktere vozi pivo mezi pivovarem a hospodami.
 	 */
-	public ArrayList<Cisterna> cisterny;
+	public List<Cisterna> cisterny;
 	
 	/**
 	 * ArrayList obsahujici instance objednavek vyrizovanych pro tankove hospody.
 	 */
-	public ArrayList<Objednavka> objednavkyHospod;
+	public List<Objednavka> objednavkyHospod;
 	
 	/**
 	 * Aktualni pocet kamionu, co jsou na ceste.
@@ -160,7 +161,9 @@ public final class Pivovar {
 				Kamion k = this.kamiony.get(0);
 				for(int j = 0; j < this.kamiony.size(); j++) {
 					k = this.kamiony.get(j);
-					if(!(k.isNaCeste())) break;
+					if(!(k.isNaCeste())) {
+						break;
+					}
 				}
 				k.nalozPlneSudy(Kamion.KAPACITA);
 				
@@ -178,7 +181,9 @@ public final class Pivovar {
 				Kamion k = this.kamiony.get(0);
 				for(int j = 0; j < this.kamiony.size(); j++) {
 					k = this.kamiony.get(j);
-					if(!(k.isNaCeste())) break;
+					if(!(k.isNaCeste())) {
+						break;
+					}
 				}
 				k.nalozPlneSudy(p.getPocetPozadovanychSudu());
 				p.setPocetPozadovanychSudu(0);
@@ -201,7 +206,7 @@ public final class Pivovar {
 	 * @param p - objekt prekladiste, ktere predstavuje cil pro kamion
 	 */
 	private void odesliKamionDoPrekladiste(Kamion k, Prekladiste p) {
-		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, StaticData.POCET_HOSPOD+p.getID());
+		List<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, StaticData.POCET_HOSPOD+p.getID());
 		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
 		double dobaCesty = vzdalenost / Kamion.RYCHLOST;
 		
@@ -278,7 +283,7 @@ public final class Pivovar {
 	 * @param o - objekt drzici onformace o objednavce
 	 */
 	private void pripravObjednavku(Objednavka o) {
-		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, o.getIdObjednavajiciho());
+		List<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+StaticData.POCET_PREKLADIST, o.getIdObjednavajiciho());
 		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
 		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;
 		
@@ -290,7 +295,9 @@ public final class Pivovar {
 			Cisterna c = this.cisterny.get(0);
 			for(int i = 0; i < this.cisterny.size(); i++) {
 				c = this.cisterny.get(i);
-				if(!(c.isNaCeste())) break;
+				if(!(c.isNaCeste())) {
+					break;
+				}
 			}
 			c.nacerpejPivo(o.getMnozstvi());
 			c.setCilovaHospoda(o.getIdObjednavajiciho());

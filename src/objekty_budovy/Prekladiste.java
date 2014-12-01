@@ -3,6 +3,7 @@ package objekty_budovy;
 import generovani_dat.Matice;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import objekty_ostatni.Objednavka;
 import objekty_ostatni.Pozice;
@@ -47,12 +48,12 @@ public class Prekladiste{
 	/**
 	 * ArrayList uchovavajici nakladni auta, ktera rozvazeji sudy do hospod.
 	 */
-	public ArrayList<NakladniAuto> nakladniAuta;
+	public List<NakladniAuto> nakladniAuta;
 	
 	/**
 	 * ArrayList uchovavajici objednavky hospod, ktere prislusi danemu prekladisti.
 	 */
-	public ArrayList<Objednavka> objednavky;
+	public List<Objednavka> objednavky;
 	
 	/**
 	 * Promenna urcujici, kolik prekladiste odeslalo sudu hospodam a kolik bude pozadovat od pivovaru.
@@ -195,7 +196,7 @@ public class Prekladiste{
 	 * @param o - objekt drzici onformace o objednavce
 	 */
 	private void pripravObjednavku(Objednavka o) {
-		ArrayList<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+this.ID, o.getIdObjednavajiciho());
+		List<Integer> cesta = Matice.getNejkratsiCesta(StaticData.POCET_HOSPOD+this.ID, o.getIdObjednavajiciho());
 		double vzdalenost = Matice.getDelkaNejkratsiCesty(cesta);
 		double dobaCesty = vzdalenost / Cisterna.RYCHLOST;
 		
@@ -208,7 +209,9 @@ public class Prekladiste{
 			NakladniAuto a = this.nakladniAuta.get(0);
 			for(int i = 0; i < nakladniAuta.size(); i++) {
 				a = this.nakladniAuta.get(i);
-				if(!(a.isNaCeste())) break;
+				if(!(a.isNaCeste())) {
+					break;
+				}
 			}
 			a.nalozPlneSudy(o.getMnozstvi());
 			a.setStartovniPrekladiste(this.ID);

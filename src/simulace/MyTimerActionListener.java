@@ -4,7 +4,7 @@ import io.InputOutput;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 import objekty_budovy.HospodaSudova;
 import objekty_budovy.HospodaTankova;
@@ -51,7 +51,9 @@ class MyTimerActionListener implements ActionListener {
 		
 		provedObjednavky();
 		provedAkciVozidel();
-		if(Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI) spotrebujPivo();
+		if(Simulace.hodina == StaticData.MAX_HODINA_OBJEDNANI) {
+			spotrebujPivo();
+		}
 		
 		Simulace.hodina++;
 	}
@@ -120,9 +122,9 @@ class MyTimerActionListener implements ActionListener {
 		
 		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_KAMIONY, "ID vozidla;Cil cesty;Pocet zavezenych plnych sudu;Pocet odvezenych prazdnych sudu;\n");
 		for(Kamion k : Simulace.pivovar.kamiony) {
-			ArrayList<Integer> prekladiste = k.getPrekladiste();
-			ArrayList<Integer> zavezenePlneSudy = k.getZavezenePlneSudy();
-			ArrayList<Integer> odvezenePrazdneSudy = k.getOdvezenePrazdneSudy();
+			List<Integer> prekladiste = k.getPrekladiste();
+			List<Integer> zavezenePlneSudy = k.getZavezenePlneSudy();
+			List<Integer> odvezenePrazdneSudy = k.getOdvezenePrazdneSudy();
 			
 			for(int i = 0; i < prekladiste.size(); i++) {
 				String ret = ""+k.getID()+";Prekladiste c. "+prekladiste.get(i)+";"+zavezenePlneSudy.get(i)+";"+odvezenePrazdneSudy.get(i)+";\n";
@@ -140,8 +142,8 @@ class MyTimerActionListener implements ActionListener {
 		
 		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_CISTERNY, "ID vozidla;Cil cesty;Pocet zavezenych hektolitru piva;\n");
 		for(Cisterna c : Simulace.pivovar.cisterny) {
-			ArrayList<Integer> hospody = c.getHospody();
-			ArrayList<Integer> zavezenePivo = c.getZavezenePivo();
+			List<Integer> hospody = c.getHospody();
+			List<Integer> zavezenePivo = c.getZavezenePivo();
 			
 			for(int i = 0; i < hospody.size(); i++) {
 				String ret = ""+c.getID()+";Hospoda c. "+hospody.get(i)+";"+zavezenePivo.get(i)+";\n";
@@ -159,9 +161,9 @@ class MyTimerActionListener implements ActionListener {
 		InputOutput.zapisStatistiku(InputOutput.STATISTIKA_NAKLADNI_AUTA, "ID vozidla a prislusneho prekladiste;Cil cesty;Pocet zavezenych plnych sudu;Pocet odvezenych prazdnych sudu;\n");
 		for(Prekladiste p : Simulace.prekladiste) {
 			for(NakladniAuto a : p.nakladniAuta) {
-				ArrayList<Integer> hospody = a.getHospody();
-				ArrayList<Integer> zavezenePlneSudy = a.getZavezenePlneSudy();
-				ArrayList<Integer> odvezenePrazdneSudy = a.getOdvezenePrazdneSudy();
+				List<Integer> hospody = a.getHospody();
+				List<Integer> zavezenePlneSudy = a.getZavezenePlneSudy();
+				List<Integer> odvezenePrazdneSudy = a.getOdvezenePrazdneSudy();
 				
 				for(int i = 0; i < hospody.size(); i++) {
 					String ret = "Auto "+a.getID()+" z prekladiste c. "+a.getStartovniPrekladiste()+";Hospoda c. "+hospody.get(i)+";"+zavezenePlneSudy.get(i)+";"+odvezenePrazdneSudy.get(i)+";\n";

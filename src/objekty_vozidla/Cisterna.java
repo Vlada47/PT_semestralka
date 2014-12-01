@@ -1,6 +1,7 @@
 package objekty_vozidla;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import objekty_budovy.HospodaTankova;
 import objekty_budovy.Pivovar;
@@ -77,12 +78,12 @@ public class Cisterna {
 	/**
 	 * ArrayList s hospodami, ktere cisterna behem simulace obslouzila.
 	 */
-	private ArrayList<Integer> hospody;
+	final private List<Integer> hospody;
 	
 	/**
 	 * ArrayList s mnozstvim piva, ktere cisterna zavezla hospodam behem simulace.
 	 */
-	private ArrayList<Integer> zavezenePivo;
+	final private List<Integer> zavezenePivo;
 	
 	/**
 	 * Konstruktor objektu Cisterna - nastavuje se zde ID podle vstupu a mnozstvi piva na 0.
@@ -220,7 +221,7 @@ public class Cisterna {
 	 * Metoda k ziskani pole behem simulace obslouzenych hospod.
 	 * @return - pole s obslouzenymi hospodami
 	 */
-	public ArrayList<Integer> getHospody() {
+	public List<Integer> getHospody() {
 		return hospody;
 	}
 
@@ -228,7 +229,7 @@ public class Cisterna {
 	 * Metoda pro ziskani mnozstvi behem simulace zavezeneho piva.
 	 * @return - pole s mnozstvim zavezeneho pivem
 	 */
-	public ArrayList<Integer> getZavezenePivo() {
+	public List<Integer> getZavezenePivo() {
 		return zavezenePivo;
 	}
 	

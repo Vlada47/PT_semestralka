@@ -3,6 +3,7 @@ package objekty_budovy;
 import io.InputOutput;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import objekty_ostatni.Pozice;
 import semestralka.StaticData;
@@ -39,7 +40,7 @@ public class HospodaSudova {
 	 * List s spotrebou hospody v jednotlivych dnech, do ktereho je ukladano pri vytvrani objednavek na zacatku simulace.
 	 * Hospoda podle nej odebira plne sudy a prislusny zaznam se spotrebou pote odstrani.
 	 */
-	private ArrayList<Integer> denniSpotreba;
+	private List<Integer> denniSpotreba;
 	
 	/**
 	 * Identifikator prekladiste, ktere obsluhuje danou hospodu.

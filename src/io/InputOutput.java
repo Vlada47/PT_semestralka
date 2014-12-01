@@ -250,7 +250,9 @@ public class InputOutput {
 
 			for (int i = 0; i < StaticData.POCET_HOSPOD; i++) {
 				radka = bfr.readLine();
-				if(i % StaticData.POMER_HOSPOD == 0) continue;
+				if(i % StaticData.POMER_HOSPOD == 0) {
+					continue;
+				}
 				hospody[index] = vytvorSudovouHospodu(radka);
 				index++;
 			}
@@ -278,7 +280,9 @@ public class InputOutput {
 
 			for (int i = 0; i < StaticData.POCET_HOSPOD; i++) {
 				radka = bfr.readLine();
-				if(i % StaticData.POMER_HOSPOD != 0) continue;
+				if(i % StaticData.POMER_HOSPOD != 0) {
+					continue;
+				}
 				hospody[index] = vytvorTankovouHospodu(radka);
 				index++;
 			}
