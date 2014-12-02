@@ -9,16 +9,28 @@ import java.io.PrintStream;
 import javax.swing.*;
 import simulace.Simulace;
 
+/**
+ * Trida vytvarejici okno applikace
+ * @author Vlada47 & Shag0n
+ */
 public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;
+	/** Indikuje jestli simulace bezi */
 	private static boolean bezi = true;
+	/** Indikuje zda byla simulace spustena */
 	private static boolean spusteno = false;
+	/** Vystupni JTextArea */
 	public static JTextArea textArea;
+	/** Tlacitko pro zacatek simulace */
 	public static JButton zacni;
+	/** Tlacitko pro pregenerovani matice sousednosti */
 	public static JButton aktualizace;
 
+	/**
+	 * Metoda, ktera vytvori okno
+	 */
 	public static void startOkno() {
 
 		// okno
@@ -35,6 +47,9 @@ public class Window extends JFrame {
 
 	}
 
+	/**
+	 * Metoda pro inicializaci tlacitek
+	 */
 	public static void initButtons() {
 
 		JPanel buttonPanel = new JPanel();
@@ -61,22 +76,18 @@ public class Window extends JFrame {
 					spusteno=true;
 					zacni.setText("Pozastavit");
 				}
-
 				else {
 					if (bezi) {
 						Simulace.timer.stop();
 						bezi = false;
 						zacni.setText("Pokraèovat");
 					}
-
 					else {
 						Simulace.timer.start();
 						bezi = true;
 						zacni.setText("Pozastavit");
 					}
-
 				}
-
 			}
 		});
 
@@ -84,41 +95,32 @@ public class Window extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
 				Matice.vytvorNejkratsiCesty();
 				System.out.println("Vytvorena matice nejkratsich cest...");
-
 				InputOutput.zapisMaticeNejkratsichCest(Matice.maticeNejkratsichCest);
 				System.out.println("Matice nejkratsich cest zapsana do souboru...");
-
 			}
 		});
-
 
 		objednej.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
 				new OknoObjednavky();
-
 			}
 		});
 		
 		stavBudov.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				
+			public void actionPerformed(ActionEvent arg0) {	
 				new OknoHospody();
-				
 			}
 		});
 
 		stavCisteren.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
 				new OknoCisteren();
 			}
 		});
@@ -126,7 +128,6 @@ public class Window extends JFrame {
 		stavNakladaku.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
 				new OknoNakladaku();
 			}
 		});
@@ -146,7 +147,9 @@ public class Window extends JFrame {
 	}
 
 	
-	
+	/**
+	 * Metoda pro inicializaci vystupniho textArea
+	 */
 	public static void initOutputWindow() {
 
 		textArea = new JTextArea(15, 40);

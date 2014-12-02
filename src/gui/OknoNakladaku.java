@@ -12,10 +12,18 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import simulace.Simulace;
 
+/**
+ * Trida vytvarejici okno pro vypis nakladniho auta
+ * @author Vlada47 & Shag0n
+ */
 public class OknoNakladaku extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Konstruktor tridy OknoNakladaku
+	 * Vytvori okno 100x180 se dvema Jspinnery a tlacitkem
+	 */	
 	public OknoNakladaku() {
 		super("Nakladaky");
 
@@ -27,7 +35,6 @@ public class OknoNakladaku extends JFrame {
 		cont = getContentPane();
 		FlowLayout layout = new FlowLayout();
 		cont.setLayout(layout);
-		Simulace.timer.stop();
 		cont.setBackground(Color.white);
 
 		SpinnerNumberModel numberModel1 = new SpinnerNumberModel(new Integer(0), // value
@@ -63,7 +70,6 @@ public class OknoNakladaku extends JFrame {
 				
 				System.out.println(Simulace.prekladiste[idPrekladiste].nakladniAuta.get(idNakladaku).getVypis());			
 				
-				Simulace.timer.start();
 				dispose();
 			}
 		});

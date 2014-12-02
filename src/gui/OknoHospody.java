@@ -13,10 +13,18 @@ import javax.swing.SpinnerNumberModel;
 import semestralka.StaticData;
 import simulace.Simulace;
 
+/**
+ * Trida vytvarejici okno pro vypis cisterny
+ * @author Vlada47 & Shag0n
+ */
 public class OknoHospody extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Konstruktor tridy OknoHospody
+	 * Vytvori okno 100x180 sJspinnerem a tlacitkem
+	 */
 	public OknoHospody() {
 		super("Hospoda");
 
@@ -28,7 +36,6 @@ public class OknoHospody extends JFrame {
 		cont = getContentPane();
 		FlowLayout layout = new FlowLayout();
 		cont.setLayout(layout);
-		Simulace.timer.stop();
 		cont.setBackground(Color.white);
 
 		SpinnerNumberModel numberModel1 = new SpinnerNumberModel(new Integer(0), // value
@@ -61,7 +68,6 @@ public class OknoHospody extends JFrame {
 					System.out.println(Simulace.sudoveHospody[(praveId)].getVypis());	
 				}
 
-				Simulace.timer.start();
 				dispose();
 			}
 		});
@@ -71,6 +77,11 @@ public class OknoHospody extends JFrame {
 		setContentPane(cont);
 	}
 
+	/**
+	 * Vypocita id hospody v poli z praveho id hospody
+	 * @param id prave id hospody
+	 * @return id hospody v poli
+	 */
 	private int spocitejIndexHospody(int id) {
 		int idParam=id;
 		int index = id - 1;

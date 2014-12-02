@@ -2,11 +2,12 @@ package io;
 
 import java.io.IOException;
 import java.io.OutputStream;
- 
 import javax.swing.JTextArea;
  
 /**
- * This class extends from OutputStream to redirect output to a JTextArrea
+ * Tato trida dedi z OuputStream a presmerovava vystup do JTextArea
+ * 
+ * @author Vlada47 & Shag0n
  */
 public class CustomOutputStream extends OutputStream {
     final private JTextArea textArea;

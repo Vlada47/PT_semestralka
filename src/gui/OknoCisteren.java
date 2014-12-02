@@ -12,10 +12,18 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import simulace.Simulace;
 
+/**
+ * Trida vytvarejici okno pro vypis cisterny
+ * @author Vlada47 & Shag0n
+ */
 public class OknoCisteren extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Konstruktor tridy OknoCisterny
+	 * Vytvori okno 100x180 se dvema Jspinnery a tlacitkem
+	 */
 	public OknoCisteren() {
 		super("Cisterny");
 

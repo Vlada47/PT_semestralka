@@ -14,10 +14,18 @@ import objekty_ostatni.Objednavka;
 import semestralka.StaticData;
 import simulace.Simulace;
 
+/**
+ * Trida vytvarejici okno pro vytvoreni objednavky
+ * @author Vlada47 & Shag0n
+ */
 public class OknoObjednavky extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Konstruktor tridy OknoObjednavky
+	 * Vytvori okno 100x180 se dvema Jspinnery a tlacitkem
+	 */
 	public OknoObjednavky() {
 		super("Objednani");
 
@@ -29,7 +37,6 @@ public class OknoObjednavky extends JFrame {
 		cont = getContentPane();
 		FlowLayout layout = new FlowLayout();
 		cont.setLayout(layout);
-		Simulace.timer.stop();
 		cont.setBackground(Color.white);
 
 		SpinnerNumberModel numberModel1 = new SpinnerNumberModel(new Integer(0), // value
@@ -75,7 +82,6 @@ public class OknoObjednavky extends JFrame {
 							Simulace.hodina + 1, idHospody, idPrekladiste, objednaneMnozstvi));
 				}
 
-				Simulace.timer.start();
 				dispose();
 			}
 		});
@@ -85,6 +91,11 @@ public class OknoObjednavky extends JFrame {
 		setContentPane(cont);
 	}
 
+	/**
+	 * Vypocita id hospody v poli z praveho id hospody
+	 * @param id prave id hospody
+	 * @return id hospody v poli
+	 */
 	private int spocitejIndexHospody(int id) {
 		int idParam=id;
 		int index = id - 1;
