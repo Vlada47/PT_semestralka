@@ -180,7 +180,7 @@ public class NakladniAuto {
 	
 	/**
 	 * Metoda k nastaveni aktualni cilove hospody.
-	 * @param idHospoda - aktualni cilova hospoda
+	 * @param cilovaHospoda - aktualni cilova hospoda
 	 */
 	public void setCilovaHospoda(int cilovaHospoda) {
 		this.cilovaHospoda = cilovaHospoda;

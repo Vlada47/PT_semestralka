@@ -68,18 +68,30 @@ public class OknoObjednavky extends JFrame {
 
 				int idHospody = (Integer) hospoda.getValue();
 				int objednaneMnozstvi = (Integer) mnozstvi.getValue();
+				int denObjednavky = Simulace.den;
+				int hodinaObjednavky = Simulace.hodina + 1;
+				
+				if(hodinaObjednavky > StaticData.MAX_HODINA_OBJEDNANI) {
+					denObjednavky++;
+					hodinaObjednavky = StaticData.MIN_HODINA_OBJEDNANI;
+				}
+				else if(hodinaObjednavky < StaticData.MIN_HODINA_OBJEDNANI) {
+					hodinaObjednavky = StaticData.MIN_HODINA_OBJEDNANI;					
+				}
 
 				if (idHospody % 20 == 0) {
-					Simulace.pivovar.objednavkyHospod.add(new Objednavka(Simulace.den, Simulace.hodina + 1, idHospody,
+					Simulace.pivovar.objednavkyHospod.add(new Objednavka(denObjednavky, hodinaObjednavky, idHospody,
 							0, objednaneMnozstvi));
+					System.out.println("Pridana objednavka pro tankovou hospodu "+idHospody+" - "+objednaneMnozstvi+" hl. Den objednani - "+denObjednavky+", hodina objednani - "+hodinaObjednavky+".");
 				}
 
 				else {
 
 					int praveId = spocitejIndexHospody(idHospody);
 					int idPrekladiste = Simulace.sudoveHospody[praveId].getIdPrekladiste();
-					Simulace.prekladiste[idPrekladiste].objednavky.add(new Objednavka(Simulace.den,
-							Simulace.hodina + 1, idHospody, idPrekladiste, objednaneMnozstvi));
+					Simulace.prekladiste[idPrekladiste].objednavky.add(new Objednavka(denObjednavky,
+							hodinaObjednavky, idHospody, idPrekladiste, objednaneMnozstvi));
+					System.out.println("Pridana objednavka pro sudovou hospodu "+idHospody+" - "+objednaneMnozstvi+" sudu. Den objednani - "+denObjednavky+", hodina objednani - "+hodinaObjednavky+".");
 				}
 
 				dispose();

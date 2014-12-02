@@ -231,7 +231,7 @@ public class Kamion {
 	
 	/**
 	 * Metoda pro nastaveni hodiny, kdy kamion prelozi sudy v aktualnim cilovem prekladisti.
-	 * @param denPrelozeniSudu - hodina, kdy kamion prelozi sudy
+	 * @param hodinaPrelozeniSudu - hodina, kdy kamion prelozi sudy
 	 */
 	public void setHodinaPrelozeniSudu(int hodinaPrelozeniSudu) {
 		this.hodinaPrelozeniSudu = hodinaPrelozeniSudu;
