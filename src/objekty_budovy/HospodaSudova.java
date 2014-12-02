@@ -72,6 +72,11 @@ public class HospodaSudova {
 		this.denniSpotreba = new ArrayList<Integer>();
 		this.dovezeneObjednavky = new String[StaticData.POCET_DNU];
 		this.vozidla = new String[StaticData.POCET_DNU];
+		
+		for(int i = 0; i < StaticData.POCET_DNU; i++) {
+			dovezeneObjednavky[i] = "|";
+			vozidla[i] = "|";
+		}
 	}
 	
 	/**
@@ -154,7 +159,7 @@ public class HospodaSudova {
 	 */
 	public void pridejPlneSudy(int mnozstvi) {
 		this.pocetPlnychSudu += mnozstvi;
-		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"/";
+		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"|";
 	}
 	
 	/**
@@ -163,7 +168,7 @@ public class HospodaSudova {
 	 * @param idPrekladiste - identifikator prekladiste, ze ktereho auto pochazi
 	 */
 	public void ulozNakladniAuto(int idAuta, int idPrekladiste) {
-		this.vozidla[Simulace.den-1] += "Auto "+idAuta+" z prekladiste "+idPrekladiste+"/";
+		this.vozidla[Simulace.den-1] += "Auto "+idAuta+" z prekladiste "+idPrekladiste+"|";
 	}
 	
 	/**

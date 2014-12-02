@@ -85,7 +85,7 @@ public class StaticData {
 	/**
 	 * Pauza mezi kroky simulace v milisekundach.
 	 */
-	public static final int SIMULACE_MILIS = 1000; 
+	public static final int SIMULACE_MILIS = 100; 
 	
 	/**
 	 * Pocet dnu, po ktere bude simulace probihat.

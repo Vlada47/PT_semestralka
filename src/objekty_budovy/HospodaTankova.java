@@ -61,6 +61,11 @@ public class HospodaTankova {
 		this.denniSpotreba = new ArrayList<Integer>();
 		this.dovezeneObjednavky = new String[StaticData.POCET_DNU];
 		this.vozidla = new String[StaticData.POCET_DNU];
+		
+		for(int i = 0; i < StaticData.POCET_DNU; i++) {
+			dovezeneObjednavky[i] = "|";
+			vozidla[i] = "|";
+		}
 	}
 	
 	/**
@@ -126,7 +131,7 @@ public class HospodaTankova {
 	 */
 	public void nacerpejPivo(int mnozstvi) {
 		this.stavPiva += mnozstvi;
-		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"/";
+		this.dovezeneObjednavky[Simulace.den-1] += mnozstvi+"|";
 	}
 	
 	/**
@@ -134,7 +139,7 @@ public class HospodaTankova {
 	 * @param id - identifikator cisterny
 	 */
 	public void ulozCisternu(int id) {
-		this.vozidla[Simulace.den-1] += "Cisterna "+id+"/";
+		this.vozidla[Simulace.den-1] += "Cisterna "+id+"|";
 	}
 	
 	/**
