@@ -350,7 +350,7 @@ public class NakladniAuto {
 	 */
 	public String getVypis() {
 		if(naCeste) {
-			return "Nakladni auto "+this.ID+" je na ceste a veze "+this.pocetPlnychSudu+" plnych a "+this.pocetPrazdnychSudu+" prazdnych sudu.";
+			return "Nakladni auto "+this.ID+" je na ceste do/z hospody "+this.cilovaHospoda+" a veze "+this.pocetPlnychSudu+" plnych a "+this.pocetPrazdnychSudu+" prazdnych sudu.";
 		}
 		else {
 			return "Nakladni "+this.ID+" je k dispozici v prekladisti.";

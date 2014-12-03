@@ -265,7 +265,7 @@ public class Cisterna {
 	 */
 	public String getVypis() {
 		if(naCeste) {
-			return "Cisterna "+this.ID+" je na ceste a veze "+this.naklad+"hl piva.";
+			return "Cisterna "+this.ID+" je na ceste do/z hospody "+this.cilovaHospoda+" a veze "+this.naklad+"hl piva.";
 		}
 		else {
 			return "Cisterna "+this.ID+" je k dispozici v pivovaru.";
